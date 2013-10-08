@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>funktion.fm</title>
+  <meta charset="utf-8">
+  <link href='http://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
+  <style>
+    @font-face {
+      font-family: 'Source Code Pro';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Source Code Pro'), local('SourceCodePro'), url('{{static.root}}css/sourcecodepro/sourcecodepro-light-webfont.woff') format('woff');
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Source Code Pro', sans-serif;
+      font-size: 120%;
+    }
+
+    .menuItem {
+      cursor: pointer;
+    }
+
+    path {
+      stroke: white;
+      stroke-width: 1;
+      fill-opacity: 0.9;
+    }
+
+    .PiYG .center{fill: white} /* #000020 */
+    .PiYG .q0{fill: #F7C24C}
+    .PiYG .q1{fill: #F7C85E}
+    .PiYG .q2{fill: #F5B935}
+    .PiYG .q3{fill: #F5B335}
+    .PiYG .q4{fill: #F7C25E}
+
+    /*http://colorschemedesigner.com/#0I51zc.6m5219*/
+    /*.PiYG .center{fill: #000010}
+    .PiYG .q0{fill: #332A1F}
+    .PiYG .q1{fill: #31291E}
+    .PiYG .q2{fill: #332B1F}
+    .PiYG .q3{fill: #312A1E}
+    .PiYG .q4{fill: #31281E}*/
+
+  </style>
+  <script src="js/jquery-2.0.3.min.js"></script>
+  <script src="js/d3.v3.min.js"></script>
+  <script src="js/underscore-min.js"></script>
+</head>
+
+<body>
+  <svg>
+  </svg>
+  <script>
+    var width = $(window).width(), height = $(window).height(), lineHeight = 20
+      , centers = [[width/5, height/5], [3 * width/5, 4 * height/5], [4.2 * width/5, 1.3 * height/5]]
+      , i, vertices = centers.slice(0)
+      , tessCount = 50
+      , teta = Math.random() * Math.PI, r = height/3;
+
+    // d3 variables
+    var svg = d3.select('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('class', 'PiYG')
+      , path = svg.append('g').selectAll('path')
+
+    svg.selectAll('text').data(centers)
+      .enter()
+      .append('text')
+        .text(function(d, i) {
+          if (i === 0) return 'CONTACT'
+          else if (i === 1) return 'PROJECTS'
+          else if (i === 2) return 'MEDIA'
+        })
+        .attr('x', function(d) { return d[0] - this.textContent.length * 7 })
+        .attr('y', function(d) { return d[1] + 7 })
+        .attr('class', 'menuItem')
+        .on('click', function() {
+          console.log(this)
+        })
+
+    // Generate a random-ish points :
+    // 1) take points evenly distributed on a disc
+    // 2) randomize a bit
+    centers.forEach(function(center) {
+      var x, y, vertex
+      for (i = 1; i < tessCount; i++) {
+        x = center[0] + r * Math.cos(teta)
+        y = center[1] + r * Math.sin(teta)
+        
+        // Randomized x and y
+        x = (Math.random() * 2 - 1) * width/(1 * tessCount) + x
+        y = (Math.random() * 2 - 1) * height/(1 * tessCount) + y
+        
+        // Extra, for animation and display
+        vertex = [x, y]
+        vertex.vx = []
+        vertex.vy = []
+        vertex.center = center
+
+        vertices.push(vertex)
+        teta += 2 * Math.PI / tessCount
+      }
+    })
+
+    // Move from previous position
+    var movePoints = function() {
+      vertices.slice(centers.length).forEach(function(v) {
+        v.vx.push((Math.random() * 2 - 1) * 1.8)
+        v.vy.push((Math.random() * 2 - 1) * 1.8)
+        // to smooth out, we compute the average from last positions
+        if (v.vy.length > 50) v.vy.shift()
+        if (v.vx.length > 50) v.vx.shift()
+        x = v[0] + avg(v.vx)
+        y = v[1] + avg(v.vy)
+        if (distance([x, y], [v.center[0], v.center[1]]) > r / 1.5) {
+          v[0] = x
+          v[1] = y
+        }
+      })
+    }
+
+    // Generate Voronoi tesselation
+    var calculateTesselation = function() {
+      return d3.geom.voronoi(vertices).map(function(d, i) {
+        return { d: 'M' + d.join('L') + 'Z' }
+      })
+    }
+
+    // Add elements to the svg
+    var redraw = function() {
+      path = path.data(calculateTesselation())
+      path.exit().remove()
+      path.enter()
+        .append('path')
+      path
+        .attr('class', function(d, i) {
+          if (i < centers.length) return 'center'
+          else return 'q' + (i % 4) + ' q'
+        })
+        .attr('d', function(d) { return String(d.d) })
+      path.order()
+    }
+    redraw()
+
+    var distance = function(a, b) {
+      return Math.pow(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2), 0.5)
+    }
+
+    var avg = function(array) {
+      return _.reduce(array, function(tot, val) { return tot + val }, 0) / array.length
+    }
+
+    // Animate the thing
+    setInterval(function() {
+      movePoints()
+      redraw()
+    }, 10)
+  </script>
+
+  <div>
+  {{#each getPosts}}
+    <div class="postTitle">{{title}}</div>
+    <div class="postTags">{{tags}}</div>
+    <div class="postDate">{{date}}</div>
+    <div class="postContent">{{{content}}}</div>
+  {{/each}}
+  </div>
+
+</body>
+
+</html>
