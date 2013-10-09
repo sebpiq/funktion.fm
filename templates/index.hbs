@@ -60,7 +60,10 @@
       , centers = [[width/5, height/5], [3 * width/5, 4 * height/5], [4.2 * width/5, 1.3 * height/5]]
       , i, vertices = centers.slice(0)
       , tessCount = 50
-      , teta = Math.random() * Math.PI, r = height/3;
+      , gravity = 1.7 // the higher the number, the lower the gravity
+      , speedIdle = 0.4, speedTransition = 1000
+      , teta = Math.random() * Math.PI
+      , r = height/3
 
     // d3 variables
     var svg = d3.select('svg')
@@ -81,47 +84,61 @@
         .attr('y', function(d) { return d[1] + 7 })
         .attr('class', 'menuItem')
         .on('click', function() {
-          console.log(this)
+          var center = d3.select(this).data()[0]
+          center.speed = speedTransition
+          _.forEach(center.vertices, function(vertex) {
+            vertex.gravityCenter = [-1000, -1000]
+          })
         })
 
     // Generate a random-ish points :
     // 1) take points evenly distributed on a disc
     // 2) randomize a bit
     centers.forEach(function(center) {
+      center.vertices = []
+      center.speed = speedIdle
       var x, y, vertex
       for (i = 1; i < tessCount; i++) {
         x = center[0] + r * Math.cos(teta)
         y = center[1] + r * Math.sin(teta)
+        vertex = []
+        vertex.gravityCenter = [x, y]
         
         // Randomized x and y
         x = (Math.random() * 2 - 1) * width/(1 * tessCount) + x
         y = (Math.random() * 2 - 1) * height/(1 * tessCount) + y
+        vertex[0] = x
+        vertex[1] = y
         
         // Extra, for animation and display
-        vertex = [x, y]
         vertex.vx = []
         vertex.vy = []
         vertex.center = center
 
         vertices.push(vertex)
+        center.vertices.push(vertex)
         teta += 2 * Math.PI / tessCount
       }
     })
 
     // Move from previous position
     var movePoints = function() {
-      vertices.slice(centers.length).forEach(function(v) {
-        v.vx.push((Math.random() * 2 - 1) * 1.8)
-        v.vy.push((Math.random() * 2 - 1) * 1.8)
-        // to smooth out, we compute the average from last positions
-        if (v.vy.length > 50) v.vy.shift()
-        if (v.vx.length > 50) v.vx.shift()
-        x = v[0] + avg(v.vx)
-        y = v[1] + avg(v.vy)
-        if (distance([x, y], [v.center[0], v.center[1]]) > r / 1.5) {
-          v[0] = x
-          v[1] = y
-        }
+      var x, y, xDist, yDist, xAttract, yAttract
+      centers.forEach(function(center) {
+        center.vertices.forEach(function(v) {
+          xDist = v[0] - v.gravityCenter[0]
+          yDist = v[1] - v.gravityCenter[1]
+          xAttract = sign(xDist) * 1 / Math.pow(1 + Math.abs(xDist), gravity)
+          yAttract = sign(yDist) * 1 / Math.pow(1 + Math.abs(yDist), gravity)
+          v.vx.push((Math.random() * 2 - 1 - xAttract) * center.speed)
+          v.vy.push((Math.random() * 2 - 1 - yAttract) * center.speed)
+
+          // to smooth out, we compute the average from last positions
+          if (v.vy.length > 50) v.vy.shift()
+          if (v.vx.length > 50) v.vx.shift()
+          v[0] = v[0] + avg(v.vx)
+          v[1] = v[1] + avg(v.vy)
+        })
       })
     }
 
@@ -134,6 +151,14 @@
 
     // Add elements to the svg
     var redraw = function() {
+      /*svg.selectAll('circle').data(vertices).enter().append('circle')
+        .attr('r', function (d) { return 5 })
+        .attr('fill', 'grey')
+      svg.selectAll('circle').data(vertices)
+        x.attr('cx', function (d) { return d[0] })
+        .attr('cy', function (d) { return d[1] })
+      */
+
       path = path.data(calculateTesselation())
       path.exit().remove()
       path.enter()
@@ -156,11 +181,13 @@
       return _.reduce(array, function(tot, val) { return tot + val }, 0) / array.length
     }
 
+    var sign = function (x) { return x > 0 ? 1 : x < 0 ? -1 : 0 }
+
     // Animate the thing
     setInterval(function() {
       movePoints()
       redraw()
-    }, 10)
+    }, 20)
   </script>
 
   <div>
