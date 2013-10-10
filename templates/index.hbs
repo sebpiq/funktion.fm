@@ -3,68 +3,7 @@
 <head>
   <title>funktion.fm</title>
   <meta charset="utf-8">
-  <link href='http://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
-  <style>
-    @font-face {
-      font-family: 'Source Code Pro';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Source Code Pro'), local('SourceCodePro'), url('{{static.root}}css/sourcecodepro/sourcecodepro-light-webfont.woff') format('woff');
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: 'Source Code Pro', sans-serif;
-      font-size: 14px;
-    }
-
-    #newsBody {
-      display: none;
-      position: absolute;
-      top: 400px;
-      font-size: 14px;
-      left: 400px;
-      z-index: -1;
-    }
-
-    #contact {
-      font-weight: bold;
-      font-size: 280%; 
-    }
-
-    .menuItem {
-      cursor: pointer;
-      font-size: 240%;
-    }
-
-    path {
-      stroke: white;
-      stroke-width: 1;
-      fill-opacity: 0.9;
-    }
-
-    .PiYG .core{fill: transparent} /* #000020 */
-    .PiYG .black{fill: black} /* #000020 */
-    .PiYG .q0{fill: #F7C24C}
-    .PiYG .q1{fill: #F7C85E}
-    .PiYG .q2{fill: #F5B935}
-    .PiYG .q3{fill: #F5B335}
-    .PiYG .q4{fill: #F7C25E}
-
-    /*http://colorschemedesigner.com/#0I51zc.6m5219*/
-    /*.PiYG .cluster{fill: #000010}
-    .PiYG .q0{fill: #332A1F}
-    .PiYG .q1{fill: #31291E}
-    .PiYG .q2{fill: #332B1F}
-    .PiYG .q3{fill: #312A1E}
-    .PiYG .q4{fill: #31281E}*/
-
-    /*text {fill: white;stroke: #444;}*/
-
-  </style>
+  <link href='{{static.root}}css/funktion.css' rel='stylesheet' type='text/css'>
   <script src="js/jquery-2.0.3.min.js"></script>
   <script src="js/d3.v3.min.js"></script>
   <script src="js/underscore-min.js"></script>
@@ -206,6 +145,11 @@
         , teta, radiuses = []
         , x, y
 
+      _.forEach(clusters, function(cluster) {
+        cluster.perturbation = 0.3
+      })
+
+      // Function to make appear flower petals from the tesselation
       var makeFlower = function(cluster) {
         var radiusAvg = avg(radiuses)
         _.forEach(cluster.vertices, function(vertex, i) {
@@ -215,8 +159,8 @@
         radiuses = []      
       }
 
+      // Moving core and vertices of the 'contact' cluster
       self.core = [width/10, height/15]
-
       _.forEach(this.vertices, function(vertex, i) {
         teta = i * 2 * Math.PI / tessCount
         vertex.gravityCenter = [
@@ -227,9 +171,9 @@
       })
       makeFlower(this)
       
+      // Moving core and vertices of the 'news' and 'projects' clusters
       news.core[0] = 0.8 * width
       news.core[1] = 4 * height/5
-      //projects.core = [7 * width/8, height/7]
       _.forEach([news, projects], function(cluster) {
         _.forEach(cluster.vertices, function(vertex, i) {
           teta = i * 2 * Math.PI / tessCount
@@ -241,6 +185,10 @@
         })
         makeFlower(cluster)
       })
+
+      // Hiding stuff, displaying other
+      self.text.classed({hidden: true})
+      $('#contactBody').show()
     }
 
 
@@ -292,6 +240,18 @@
       drawTesselations()
     }, 20)
   </script>
+
+  <div id="contactBody">
+    <div id="contactTitle">funktion.fm</div>
+    <div id="contactName">Sébastien Piquemal</div>
+    <div id="contactMail">sebpiq@gmail.com</div>
+    <div id="contactSocial">
+      <a href="https://twitter.com/sebpiq"><img src="images/twitter.png" /></a>
+      <a href="https://github.com/sebpiq"><img src="images/github.png" /></a>
+      <a href="https://soundcloud.com/sebpiq"><img src="images/soundcloud.png" /></a>
+      <a href="https://vimeo.com/sebpiq"><img src="images/vimeo.png" /></a>
+    </div>
+  </div>
 
   <div id="newsBody">
   {{#each getPosts}}

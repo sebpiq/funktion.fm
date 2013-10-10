@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Code Pro'), local('SourceCodePro'), url('sourcecodepro/sourcecodepro-light-webfont.woff') format('woff');
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Source Code Pro', sans-serif;
+  font-size: 14px;
+}
+
+#newsBody {
+  display: none;
+  position: absolute;
+  top: 400px;
+  font-size: 14px;
+  left: 400px;
+  z-index: -1;
+}
+
+#contactBody {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1.5em 1.5em;
+  font-size: 120%
+}
+
+#contactBody > div {
+  margin-bottom: 0.4em;
+}
+
+#contactTitle {
+  font-size: 200%;
+}
+
+#contactSocial {
+  margin-top: 0.8em;
+}
+
+#contact {
+  font-weight: bold;
+  font-size: 280%; 
+}
+
+.menuItem {
+  cursor: pointer;
+  font-size: 220%;
+}
+
+.hidden {
+  display: none;
+}
+
+path {
+  stroke: white;
+  stroke-width: 1;
+  fill-opacity: 0.9;
+}
+
+.PiYG .core{fill: transparent} /* #000020 */
+.PiYG .black{fill: black} /* #000020 */
+.PiYG .q0{fill: #F7C24C}
+.PiYG .q1{fill: #F7C85E}
+.PiYG .q2{fill: #F5B935}
+.PiYG .q3{fill: #F5B335}
+.PiYG .q4{fill: #F7C25E}
+
+/*http://colorschemedesigner.com/#0I51zc.6m5219*/
+/*.PiYG .cluster{fill: #000010}
+.PiYG .q0{fill: #332A1F}
+.PiYG .q1{fill: #31291E}
+.PiYG .q2{fill: #332B1F}
+.PiYG .q3{fill: #312A1E}
+.PiYG .q4{fill: #31281E}*/
+
+/*text {fill: white;stroke: #444;}*/
