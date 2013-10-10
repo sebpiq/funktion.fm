@@ -120,16 +120,46 @@
 
     })
 
-    contact = new Cluster({id: 'contact', text: 'funktion.fm', core: [width/8, height/7]})
-    news = new Cluster({id: 'news', text: 'NEWS', core: [0.5 * width, 2 * height/5]})
-    projects = new Cluster({id: 'projects', text: 'PROJECTS', core: [7 * width/8, height/7]})
+    contact = new Cluster({ id: 'contact', text: 'funktion.fm', core: [width/8, height/7] })
+    news = new Cluster({ id: 'news', text: 'NEWS', core: [0.5 * width, 2 * height/5] })
+    projects = new Cluster({ id: 'projects', text: 'PROJECTS', core: [7 * width/8, height/7] })
 
     news._expand = function() {
-      var self = this, teta
+      var self = this, teta, radiuses = []
+
+      _.forEach(vertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
+      _.forEach(clusters, function(cluster) {
+        cluster.perturbation = 0.3
+        cluster.text.classed({hidden: false})
+      })
+
+      self.text.classed({hidden: true})
+      self.core[0] = width/2
+      self.core[1] = -10000
       _.forEach(this.vertices, function(vertex, i) {
         teta = i * 2 * Math.PI / tessCount
-        vertex.gravityCenter = [self.core[0] + 10000 * Math.cos(teta), self.core[1] + 10000 * Math.sin(teta)]
+        vertex.gravityCenter = [self.core[0] + 200 * Math.cos(teta), self.core[1] + 200 * Math.sin(teta)]
       })
+
+      // Moving core and vertices of the 'news' and 'projects' clusters
+      contact.core[0] = width/8
+      contact.core[1] = height/7
+      _.forEach([contact, projects], function(cluster) {
+        cluster.text.classed({hidden: false})
+        _.forEach(cluster.vertices, function(vertex, i) {
+          teta = i * 2 * Math.PI / tessCount
+          vertex.gravityCenter = [
+            cluster.core[0] + 200 * Math.cos(teta) * (0.8 + Math.random() * 0.2),
+            cluster.core[1] + 200 * Math.sin(teta) * (0.8 + Math.random() * 0.2)
+          ]
+          radiuses.push(distance(vertex.gravityCenter, cluster.core))
+        })
+        makeFlower(cluster, radiuses)
+        radiuses = []
+      })
+
+      $('#newsBody').slideDown()
+      $('#contactBody').fadeOut()
     }
 
     projects._expand = function() {
@@ -145,19 +175,11 @@
         , teta, radiuses = []
         , x, y
 
+      _.forEach(vertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
       _.forEach(clusters, function(cluster) {
         cluster.perturbation = 0.3
+        cluster.text.classed({hidden: false})
       })
-
-      // Function to make appear flower petals from the tesselation
-      var makeFlower = function(cluster) {
-        var radiusAvg = avg(radiuses)
-        _.forEach(cluster.vertices, function(vertex, i) {
-          if (distance(vertex.gravityCenter, cluster.core) > radiusAvg)
-            vertex.pathClass = 'black'
-        })
-        radiuses = []      
-      }
 
       // Moving core and vertices of the 'contact' cluster
       self.core = [width/10, height/15]
@@ -169,7 +191,8 @@
         ]
         radiuses.push(distance(vertex.gravityCenter, self.core))
       })
-      makeFlower(this)
+      makeFlower(this, radiuses)
+      radiuses = []
       
       // Moving core and vertices of the 'news' and 'projects' clusters
       news.core[0] = 0.8 * width
@@ -183,14 +206,26 @@
           ]
           radiuses.push(distance(vertex.gravityCenter, cluster.core))
         })
-        makeFlower(cluster)
+        makeFlower(cluster, radiuses)
+        radiuses = []
       })
 
       // Hiding stuff, displaying other
       self.text.classed({hidden: true})
-      $('#contactBody').show()
+      $('#newsBody').slideUp()
+      $('#contactBody').fadeIn()
     }
 
+    // Function to make appear flower petals from the tesselation
+    var makeFlower = function(cluster, radiuses) {
+      var radiusAvg = avg(radiuses)
+      _.forEach(cluster.vertices, function(vertex, i) {
+        if (distance(vertex.gravityCenter, cluster.core) > radiusAvg)
+          vertex.pathClass = 'black'
+      })
+    }
+
+    // ---------- MISC
 
     // Calculate Voronoi tesselation
     var calculateTesselation = function() {
@@ -254,12 +289,15 @@
   </div>
 
   <div id="newsBody">
-  {{#each getPosts}}
-    <div class="postTitle">{{title}}</div>
-    <div class="postTags">{{tags}}</div>
-    <div class="postDate">{{date}}</div>
-    <div class="postContent">{{{content}}}</div>
-  {{/each}}
+    <div id="newsContainer">
+      <div id="newsTitle">News</div>    
+      {{#each getPosts}}
+        <div class="postTitle">{{title}}</div>
+        <div class="postTags">{{tags}}</div>
+        <div class="postDate">{{date}}</div>
+
+      {{/each}}
+    </div>
   </div>
 
 </body>
