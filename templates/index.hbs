@@ -73,6 +73,7 @@
           .attr('id', function(d, i) { return d.id })
           .on('click', function() {
             var cluster = d3.select(this).data()[0]
+            window.location.hash = cluster.id
             cluster.expand()
           })
 
@@ -111,6 +112,30 @@
         this._updateText()
       },
 
+      // Function to make appear flower petals from the tesselation
+      makeFlower: function() {
+        var self = this
+          , radiuses = _.map(this.vertices, function(v) {
+            return distance(v.gravityCenter, self.core)
+          })
+          , radiusAvg = avg(radiuses)
+        _.forEach(this.vertices, function(vertex, i) {
+          if (distance(vertex.gravityCenter, self.core) > radiusAvg)
+            vertex.pathClass = 'black'
+        })
+      },
+
+      moveVertices: function(r, randOffset, randRatio) {
+        var self = this, teta
+        _.forEach(this.vertices, function(vertex, i) {
+          teta = i * 2 * Math.PI / tessCount
+          vertex.gravityCenter = [
+            self.core[0] + r * Math.cos(teta) * (randOffset + Math.random() * randRatio),
+            self.core[1] + r * Math.sin(teta) * (randOffset + Math.random() * randRatio)
+          ]
+        })
+      },
+
       _updateText: function() {
         var self = this
         this.text
@@ -125,7 +150,7 @@
     projects = new Cluster({ id: 'projects', text: 'PROJECTS', core: [7 * width/8, height/7] })
 
     news._expand = function() {
-      var self = this, teta, radiuses = []
+      var self = this
 
       _.forEach(vertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
       _.forEach(clusters, function(cluster) {
@@ -133,30 +158,21 @@
         cluster.text.classed({hidden: false})
       })
 
-      self.text.classed({hidden: true})
-      self.core[0] = width/2
-      self.core[1] = -10000
-      _.forEach(this.vertices, function(vertex, i) {
-        teta = i * 2 * Math.PI / tessCount
-        vertex.gravityCenter = [self.core[0] + 200 * Math.cos(teta), self.core[1] + 200 * Math.sin(teta)]
-      })
+      this.text.classed({hidden: true})
+      this.core[0] = width/2
+      this.core[1] = -10000
+      this.moveVertices(200, 0, 0)
 
       // Moving core and vertices of the 'news' and 'projects' clusters
+      projects.text.classed({hidden: false})
+      projects.moveVertices(200, 0.8, 0.2)
+      projects.makeFlower()
+
       contact.core[0] = width/8
       contact.core[1] = height/7
-      _.forEach([contact, projects], function(cluster) {
-        cluster.text.classed({hidden: false})
-        _.forEach(cluster.vertices, function(vertex, i) {
-          teta = i * 2 * Math.PI / tessCount
-          vertex.gravityCenter = [
-            cluster.core[0] + 200 * Math.cos(teta) * (0.8 + Math.random() * 0.2),
-            cluster.core[1] + 200 * Math.sin(teta) * (0.8 + Math.random() * 0.2)
-          ]
-          radiuses.push(distance(vertex.gravityCenter, cluster.core))
-        })
-        makeFlower(cluster, radiuses)
-        radiuses = []
-      })
+      contact.text.classed({hidden: false})
+      contact.moveVertices(400, 0.8, 0.2)
+      contact.makeFlower()
 
       $('#newsBody').slideDown()
       $('#contactBody').fadeOut()
@@ -164,16 +180,11 @@
 
     projects._expand = function() {
       var self = this, teta
-      _.forEach(this.vertices, function(vertex, i) {
-        teta = i * 2 * Math.PI / tessCount
-        vertex.gravityCenter = [self.core[0] + 10000 * Math.cos(teta), self.core[1] + 10000 * Math.sin(teta)]
-      })
+      
     }
 
     contact._expand = function() {
       var self = this
-        , teta, radiuses = []
-        , x, y
 
       _.forEach(vertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
       _.forEach(clusters, function(cluster) {
@@ -182,50 +193,26 @@
       })
 
       // Moving core and vertices of the 'contact' cluster
+      self.text.classed({hidden: true})
       self.core = [width/10, height/15]
-      _.forEach(this.vertices, function(vertex, i) {
-        teta = i * 2 * Math.PI / tessCount
-        vertex.gravityCenter = [
-          self.core[0] + 600 * Math.cos(teta) * (0.8 + Math.random() * 0.2),
-          self.core[1] + 600 * Math.sin(teta) * (0.8 + Math.random() * 0.2)
-        ]
-        radiuses.push(distance(vertex.gravityCenter, self.core))
-      })
-      makeFlower(this, radiuses)
-      radiuses = []
+      this.moveVertices(600, 0.8, 0.2)
+      this.makeFlower()
       
       // Moving core and vertices of the 'news' and 'projects' clusters
       news.core[0] = 0.8 * width
       news.core[1] = 4 * height/5
-      _.forEach([news, projects], function(cluster) {
-        _.forEach(cluster.vertices, function(vertex, i) {
-          teta = i * 2 * Math.PI / tessCount
-          vertex.gravityCenter = [
-            cluster.core[0] + 200 * Math.cos(teta) * (0.8 + Math.random() * 0.2),
-            cluster.core[1] + 200 * Math.sin(teta) * (0.8 + Math.random() * 0.2)
-          ]
-          radiuses.push(distance(vertex.gravityCenter, cluster.core))
-        })
-        makeFlower(cluster, radiuses)
-        radiuses = []
-      })
+      news.moveVertices(200, 0.8, 0.2)
+      news.makeFlower()
+
+      projects.moveVertices(200, 0.8, 0.2)
+      projects.makeFlower()
 
       // Hiding stuff, displaying other
-      self.text.classed({hidden: true})
       $('#newsBody').slideUp()
       $('#contactBody').fadeIn()
     }
 
-    // Function to make appear flower petals from the tesselation
-    var makeFlower = function(cluster, radiuses) {
-      var radiusAvg = avg(radiuses)
-      _.forEach(cluster.vertices, function(vertex, i) {
-        if (distance(vertex.gravityCenter, cluster.core) > radiusAvg)
-          vertex.pathClass = 'black'
-      })
-    }
-
-    // ---------- MISC
+    // ---------- MISC ---------- //
 
     // Calculate Voronoi tesselation
     var calculateTesselation = function() {
@@ -274,6 +261,21 @@
       clusters.forEach(function(cluster) { cluster.movePoints() })
       drawTesselations()
     }, 20)
+
+    $(function() {
+      switch (window.location.hash) {
+        case '#news':
+          news.expand()
+          break
+        case '#contact':
+          contact.expand()
+          break
+        case '#projects':
+          projects.expand()
+          break
+      }
+
+    })
   </script>
 
   <div id="contactBody">
@@ -295,7 +297,7 @@
         <div class="postTitle">{{title}}</div>
         <div class="postTags">{{tags}}</div>
         <div class="postDate">{{date}}</div>
-
+        <div class="postContent">{{{content}}}</div>
       {{/each}}
     </div>
   </div>

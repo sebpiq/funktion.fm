@@ -36,6 +36,10 @@ html, body {
   font-size: 250%;
 }
 
+.postContent {
+  display: none;
+}
+
 #contactBody {
   display: none;
   position: absolute;
@@ -59,7 +63,7 @@ html, body {
 
 #contact {
   font-weight: bold;
-  font-size: 280%; 
+  font-size: 250%; 
 }
 
 .menuItem {
