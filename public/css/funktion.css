@@ -87,7 +87,12 @@ path {
   fill-opacity: 0.9;
 }
 
-.PiYG .core{fill: transparent} /* #000020 */
+text {
+  fill: black;
+}
+
+.PiYG .starCore{fill: white} /* #000020 */
+.PiYG .flowerCore{fill: white} /* #000020 */
 .PiYG .black{fill: #111} /* #000020 */
 .PiYG .q0{fill: #F7C24C}
 .PiYG .q1{fill: #F7C85E}

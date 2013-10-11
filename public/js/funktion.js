@@ -1,6 +1,6 @@
 var width = $(window).width(), height = $(window).height(), lineHeight = 20
   , i, allVertices = [], clusters = []
-  , tessCount = 50
+  , tessCount = 60
   , winSize = 10
   , debugTesselations = false
   , r = height/30
@@ -15,7 +15,6 @@ var svg = d3.select('svg')
 
 var Cluster = function(opts) {
   _.extend(this, opts)
-  this.core.pathClass = 'core'
   this.vertices = []
   this.state = 'collapsed'
   this.gravity = 10
@@ -99,23 +98,23 @@ _.extend(Cluster.prototype, {
   },
 
   // Function to make appear flower petals from the tesselation
-  makeFlower: function(core, r, randOffset, randRatio) {
+  makeFlower: function(core, r, randomize) {
     this.core[0] = core[0]
     this.core[1] = core[1]
     var self = this
       , paths, corePath
       , isPetal
-      , teta
+      , teta, j
 
     // 'while' is because sometimes voronoi fails : https://github.com/mbostock/d3/issues/1578
     while(true) {
       
-      // Move the vertices around the core on `r` and randomized with `randRatio` and `randOffset`.
+      // Move the vertices around the core on `r` and randomized.
       _.forEach(this.vertices, function(vertex, i) {
         teta = i * 2 * Math.PI / tessCount
         vertex.gravityCenter = [
-          self.core[0] + r * Math.cos(teta) * (randOffset + Math.random() * randRatio),
-          self.core[1] + r * Math.sin(teta) * (randOffset + Math.random() * randRatio)
+          self.core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
+          self.core[1] + r * Math.sin(teta) * (1 - randomize + Math.random() * randomize * 2)
         ]
       })
 
@@ -130,14 +129,33 @@ _.extend(Cluster.prototype, {
 
     // Find all paths that have a common edge with the core, and make them a petal
     corePath = paths[0]
+    j = 0
     _.forEach(paths.slice(1), function(path, i) {
       isPetal = intersects(path, corePath)
-      if (!isPetal) self.vertices[i].pathClass = 'black'
+      if (isPetal) self.vertices[i].pathClass = ('q' + (j++ % 4) + ' q')
+      else self.vertices[i].pathClass = 'black'
     })
+    this.core.pathClass = 'flowerCore'
   },
 
-  makeStar: function() {
-    
+  makeStar: function(core, randomize, rStep, rStepExp) {
+    this.core[0] = core[0]
+    this.core[1] = core[1]
+    var self = this
+      , teta, r, c
+
+    // Move the vertices around the core in a spiral.
+    _.forEach(this.vertices, function(vertex, i) {
+      teta = (i + Math.random() * randomize * 2 - randomize) * 2 * Math.PI / 8
+      r = (i + Math.random() * randomize * 2 - randomize) * Math.pow(rStep, rStepExp)
+      vertex.gravityCenter = [
+        self.core[0] + r * Math.cos(teta),
+        self.core[1] + r * Math.sin(teta)
+      ]
+      c = Math.round((tessCount - i) / tessCount * 255)
+      vertex.pathFill = rgbToHex(c, c, c)
+    })
+    this.core.pathClass = 'starCore'
   },
 
   _updateText: function() {
@@ -158,19 +176,17 @@ news._expand = function() {
 
   _.forEach(allVertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
   _.forEach(clusters, function(cluster) {
-    cluster.perturbation = 0.3
-    cluster.text.classed({hidden: false})
+    cluster.perturbation = 0.5
   })
 
   this.text.classed({hidden: true})
-  this.makeFlower([width/2, -10000], 200, 0, 0)
+  this.makeFlower([width/2, -10000], 200, 0)
 
-  // Moving core and vertices of the 'news' and 'projects' clusters
   projects.text.classed({hidden: false})
-  projects.makeFlower([7 * width/8, height/7], 200, 0.8, 0.2)
+  projects.makeStar([7 * width/8, height/7], 0.2, 2, 1.2)
 
   contact.text.classed({hidden: false})
-  contact.makeFlower([width/8, height/7], 400, 0.8, 0.2)
+  contact.makeStar([width/8, height/7], 0.2, 4, 1.2)
 
   //$('#newsBody').slideDown()
   $('#contactBody').fadeOut()
@@ -187,18 +203,17 @@ contact._expand = function() {
   _.forEach(allVertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
   _.forEach(clusters, function(cluster) {
     cluster.perturbation = 0.3
-    cluster.text.classed({hidden: false})
   })
 
-  // Moving core and vertices of the 'contact' cluster
   this.text.classed({hidden: true})
-  this.makeFlower([width/10, height/15], 600, 0.8, 0.2)
+  this.makeFlower([width/10, height/15], 600, 0.1)
   
-  news.makeFlower([0.8 * width, 4 * height/5], 200, 0.8, 0.2)
+  news.text.classed({hidden: false})
+  news.makeFlower([0.8 * width, 4 * height/5], 200, 0.1)
 
-  projects.makeFlower([7 * width/8, height/7], 200, 0.8, 0.2)
+  projects.text.classed({hidden: false})
+  projects.makeFlower([7 * width/8, height/7], 200, 0.1)
 
-  // Hiding stuff, displaying other
   $('#newsBody').slideUp()
   $('#contactBody').fadeIn()
 }
@@ -217,7 +232,19 @@ var drawTesselations = function() {
   if (debugTesselations) {
     svg.selectAll('circle').data(allVertices).enter().append('circle')
       .attr('r', function (d) { return 5 })
-      .attr('fill', 'grey')
+      .attr('fill', function(d) {
+      switch (d.cluster){
+        case news:
+          return 'red'
+          break
+        case contact:
+          return 'blue'
+          break
+        case projects:
+          return 'green'
+          break
+      }
+    })
     svg.selectAll('circle').data(allVertices)
       .attr('cx', function (d) { return d[0] })
       .attr('cy', function (d) { return d[1] })
@@ -228,10 +255,9 @@ var drawTesselations = function() {
   path.enter()
     .append('path')
   path
-    .attr('class', function(d, i) {
-      return allVertices[i].pathClass || ('q' + (i % 4) + ' q')
-    })
+    .attr('class', function(d, i) { return allVertices[i].pathClass })
     .attr('d', function(d) { return String(d.d) })
+    .attr('fill', function(d, i) { return allVertices[i].pathFill })
   path.order()
 }
 
@@ -252,6 +278,15 @@ var intersects = function(path1, path2) {
       return _.isEqual(vertex1, vertex2)
     })
   })
+}
+
+var componentToHex = function(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+var rgbToHex = function (r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 // Animate the thing
