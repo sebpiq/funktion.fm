@@ -68,7 +68,7 @@ html, body {
 
 .menuItem {
   cursor: pointer;
-  font-size: 220%;
+  font-size: 200%;
 }
 
 .hidden {
@@ -82,7 +82,7 @@ path {
 }
 
 .PiYG .core{fill: transparent} /* #000020 */
-.PiYG .black{fill: black} /* #000020 */
+.PiYG .black{fill: #111} /* #000020 */
 .PiYG .q0{fill: #F7C24C}
 .PiYG .q1{fill: #F7C85E}
 .PiYG .q2{fill: #F5B935}
