@@ -29,15 +29,15 @@
   </div>
 
   <div id="newsBody">
-    <div id="newsContainer">
-      <div id="newsTitle">News</div>    
-      {{#each getPosts}}
-        <div class="postTitle">{{title}}</div>
-        <div class="postTags">{{tags}}</div>
-        <div class="postDate">{{date}}</div>
-        <div class="postContent">{{{content}}}</div>
-      {{/each}}
-    </div>
+    {{#each getPosts}}
+      <div class="post">
+        <div class="postDate">{{prettifyDate date}}</div>
+        <div class="postTitle"><a href="{{url}}">{{title}}</a></div>
+        <div class="clearfix"></div>
+        <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
+        <div class="clearfix"></div>
+      </div>
+    {{/each}}
   </div>
 
 </body>

@@ -1,6 +1,7 @@
 var express = require('express')
   , app = express()
   , Poet = require('poet')
+  , hbs = require('hbs')
   , poet = Poet(app, {
     posts: __dirname + '/_posts/',
     postsPerPage: 5,
@@ -21,4 +22,8 @@ app.listen(3000, function() {
   console.log('listening on port ' + 3000)
 })
 
-app.get('/', function (req, res) { res.render('index'); });
+app.get('/', function (req, res) { res.render('index') })
+
+hbs.registerHelper('prettifyDate', function(date) {
+  return '' + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+})

@@ -5,6 +5,7 @@ var width = $(window).width(), height = $(window).height(), lineHeight = 20
   , debugTesselations = false
   , r = height/30
   , contact, news, projects
+  , projectsText, newsText, contactText
 
 // d3 variables
 var svg = d3.select('svg')
@@ -19,14 +20,13 @@ var Cluster = function(opts) {
   this.state = 'collapsed'
   this.gravity = 10
   this.perturbation = 0.01
-  allVertices.unshift(this.core)
   clusters.push(this)
 
   // Generate a random-ish points :
   // 1) take points evenly distributed on a disc
   // 2) randomize a bit
   var x, y, vertex, teta
-  for (i = 1; i < tessCount; i++) {
+  for (i = 0; i < tessCount; i++) {
     teta = i * 2 * Math.PI / tessCount
     x = this.core[0] + r * Math.cos(teta)
     y = this.core[1] + r * Math.sin(teta)
@@ -47,22 +47,6 @@ var Cluster = function(opts) {
     allVertices.push(vertex)
     this.vertices.push(vertex)
   }
-
-  // Create SVG text element
-  this.text = svg.selectAll('text').data(clusters)
-    .enter()
-    .append('text')
-      .text(function(d, i) { return d.text })
-      .attr('class', 'menuItem')
-      .attr('id', function(d, i) { return d.id })
-      .on('click', function() {
-        var cluster = d3.select(this).data()[0]
-        window.location.hash = cluster.id
-        cluster.expand()
-      })
-
-  this._updateText()
-
 }
 
 _.extend(Cluster.prototype, {
@@ -94,23 +78,24 @@ _.extend(Cluster.prototype, {
       v[0] = v[0] + avg(v.vx)
       v[1] = v[1] + avg(v.vy)
     })
-    this._updateText()
   },
 
   // Function to make appear flower petals from the tesselation
   makeFlower: function(core, r, randomize) {
-    this.core[0] = core[0]
-    this.core[1] = core[1]
+    this.core = core
     var self = this
       , paths, corePath
       , isPetal
       , teta, j
 
+    this.vertices[0].gravityCenter = core
+    this.vertices[0].pathFill = 'white'
+
     // 'while' is because sometimes voronoi fails : https://github.com/mbostock/d3/issues/1578
     while(true) {
       
       // Move the vertices around the core on `r` and randomized.
-      _.forEach(this.vertices, function(vertex, i) {
+      _.forEach(this.vertices.slice(1), function(vertex, i) {
         teta = i * 2 * Math.PI / tessCount
         vertex.gravityCenter = [
           self.core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
@@ -120,7 +105,7 @@ _.extend(Cluster.prototype, {
 
       // Generate the tesselation paths for the gravity centers of all vertices 
       try {
-        paths = d3.geom.voronoi([this.core].concat(_.pluck(this.vertices, 'gravityCenter')))
+        paths = d3.geom.voronoi(_.pluck(this.vertices, 'gravityCenter'))
         break
       } catch (err) {
         console.warn(err)
@@ -132,63 +117,118 @@ _.extend(Cluster.prototype, {
     j = 0
     _.forEach(paths.slice(1), function(path, i) {
       isPetal = intersects(path, corePath)
-      if (isPetal) self.vertices[i].pathClass = ('q' + (j++ % 4) + ' q')
-      else self.vertices[i].pathClass = 'black'
+      if (isPetal) self.vertices[i + 1].pathFill = ['#F7C24C', '#F7C85E', '#F5B935', '#F5B335', '#F7C25E'][j++ % 5]
+      else self.vertices[i + 1].pathFill = '#111'
     })
-    this.core.pathClass = 'flowerCore'
   },
 
-  makeStar: function(core, randomize, rStep, rStepExp) {
-    this.core[0] = core[0]
-    this.core[1] = core[1]
+  makeCloud: function(core, randomize, rStep, rStepExp) {
+    this.core = core
     var self = this
-      , teta, r, c
+      , teta, r, x, y
+      , gradient = makeGradient([247, 194, 76], [255, 255, 255])
 
     // Move the vertices around the core in a spiral.
     _.forEach(this.vertices, function(vertex, i) {
-      teta = (i + Math.random() * randomize * 2 - randomize) * 2 * Math.PI / 8
-      r = (i + Math.random() * randomize * 2 - randomize) * Math.pow(rStep, rStepExp)
-      vertex.gravityCenter = [
-        self.core[0] + r * Math.cos(teta),
-        self.core[1] + r * Math.sin(teta)
-      ]
-      c = Math.round((tessCount - i) / tessCount * 255)
-      vertex.pathFill = rgbToHex(c, c, c)
-    })
-    this.core.pathClass = 'starCore'
-  },
+      teta = (i + Math.random() * randomize * 2 - randomize) * 2 * Math.PI / 10
+      r = (i + Math.random() * randomize * 2 - randomize) * Math.pow(rStep, rStepExp) * ((1 + Math.cos(2 * teta + Math.PI)) / 1 + 1)
+      x = self.core[0] + r * Math.cos(teta)
+      y = self.core[1] + r * Math.sin(teta)
+      vertex.gravityCenter = [x, y]
 
-  _updateText: function() {
-    var self = this
-    this.text
-      .attr('x', function(d) { return d.core[0] - this.textContent.length * 10 })
-      .attr('y', function(d) { return d.core[1] + 7 })
+      //c = Math.round(Math.pow(i / tessCount * Math.pow(255, 1/1.6), 1.6))
+      vertex.pathFill = gradient(i / tessCount)//rgbToHex(c, c, c)
+    })
   }
 
 })
 
-contact = new Cluster({ id: 'contact', text: 'funktion.fm', core: [width/8, height/7] })
-news = new Cluster({ id: 'news', text: 'NEWS', core: [0.5 * width, 2 * height/5] })
-projects = new Cluster({ id: 'projects', text: 'PROJECTS', core: [7 * width/8, height/7] })
+var createText = function(val, id) {
+  var text = svg.append('text')
+    .text(val)
+    .attr('class', 'menuItem')
+    .attr('id', id)
+
+  text.moveToPosition = function(position) {
+    this
+      .attr('x', function(d) { return position[0] })
+      .attr('y', function(d) { return position[1] })
+  }
+
+  return text
+}
+
+contact = new Cluster({ core: [width/8, height/7] })
+news = new Cluster({ core: [0.5 * width, 2 * height/5] })
+projects = new Cluster({ core: [7 * width/8, height/7] })
+
+projectsText = createText('PROJECTS', 'projects')
+projectsText.on('click', function() { projects.expand() })
+newsText = createText('NEWS', 'news')
+newsText.on('click', function() { news.expand() })
+contactText = createText('funktion.fm', 'contact')
+contactText.on('click', function() { contact.expand() })
 
 news._expand = function() {
   var self = this
+  window.location.hash = 'news'
 
-  _.forEach(allVertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
   _.forEach(clusters, function(cluster) {
     cluster.perturbation = 0.5
   })
 
-  this.text.classed({hidden: true})
-  this.makeFlower([width/2, -10000], 200, 0)
+  projectsText.classed({hidden: false})
+  contactText.classed({hidden: false})
+  newsText.classed({hidden: false})
 
-  projects.text.classed({hidden: false})
-  projects.makeStar([7 * width/8, height/7], 0.2, 2, 1.2)
+  contactText.moveToPosition([0.01* width, 0.1 * height])
+  newsText.moveToPosition([0.01* width, 0.3 * height])
+  projectsText.moveToPosition([0.01* width, 0.5 * height])
 
-  contact.text.classed({hidden: false})
-  contact.makeStar([width/8, height/7], 0.2, 4, 1.2)
+  svg.selectAll('text').transition().attr('fill', 'white')
 
-  //$('#newsBody').slideDown()
+  projects.makeCloud([0.93*width, 0.1*height], 0, 2, 0.5)
+
+  var polygon = [
+      _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.2*width] }),
+      _.range(10).map(function() { return [0.1*height, 0.75*height] })
+    ]
+    , dims = [polygon[1].length, polygon[0].length]
+    , i = 0, j = 0
+    , x, y, xRange, yRange
+    , gradient = makeGradient([0, 0, 0], [100, 100, 100])
+  _.forEach(contact.vertices, function(vertex) {
+    xRange = polygon[0][j]
+    yRange = polygon[1][i]
+    x = xRange[0] + i/dims[0] * (xRange[1] - xRange[0])
+    y = yRange[0] + j/dims[1] * (yRange[1] - yRange[0])
+    vertex.gravityCenter = [x + (Math.random() * 2 - 1) * 5, y + (Math.random() * 2 - 1) * 20]
+    if (i === dims[0] - 1) vertex.pathFill = 'white'
+    else vertex.pathFill = gradient(i/dims[0])
+    i = (i + 1) % dims[0]
+    if (i === 0) j++    
+  })
+  contact.perturbation = 0
+
+  var yOffset = 3 * height/4
+    , dims = [6, 10], xStep = width/dims[0], yStep = (height - yOffset)/dims[1]
+    , i = 0, j = 0
+    , x, y
+    , avoid = [boundingBox(contact.vertices), boundingBox(projects.vertices)]
+    , gradient = makeGradient([255, 255, 255], [60, 60, 75])
+  _.forEach(this.vertices, function(vertex) {
+    x = xStep / 2 + i * xStep
+    y = yOffset + j * yStep
+    vertex.gravityCenter = [x, y]
+    vertex.pathFill = gradient((j === 0) ? 0 : Math.pow(1.3, j) / Math.pow(1.3, dims[1] - 1))
+    i = (i + 1) % dims[0]
+    if (i === 0) j++
+  })
+  this.perturbation = 0.25
+
+  $('#newsBody').slideDown()
+  $('#newsTitle').css('top', height/9)
+  $('#newsTitle').fadeIn()
   $('#contactBody').fadeOut()
 }
 
@@ -200,23 +240,43 @@ projects._expand = function() {
 contact._expand = function() {
   var self = this
 
-  _.forEach(allVertices.slice(clusters.length), function(vertex) { delete vertex.pathClass })
+  window.location.hash = 'contact'
+
   _.forEach(clusters, function(cluster) {
     cluster.perturbation = 0.3
   })
-
-  this.text.classed({hidden: true})
-  this.makeFlower([width/10, height/15], 600, 0.1)
-  
-  news.text.classed({hidden: false})
+  this.makeFlower([width/10, height/15], 600, 0.1)  
   news.makeFlower([0.8 * width, 4 * height/5], 200, 0.1)
-
-  projects.text.classed({hidden: false})
   projects.makeFlower([7 * width/8, height/7], 200, 0.1)
 
+  contactText.classed({hidden: true})
+  newsText.classed({hidden: false})
+  projectsText.classed({hidden: false})
+
+  newsText.moveToPosition([news.core[0] - newsText.text().length * 9, news.core[1] + 7])
+  projectsText.moveToPosition([projects.core[0] - projectsText.text().length * 9, projects.core[1] + 7])
+
+  svg.selectAll('text').transition().attr('fill', 'black')
+
   $('#newsBody').slideUp()
+  $('#newsTitle').fadeOut()
   $('#contactBody').fadeIn()
 }
+
+$(function() {
+
+  $('.postTitle a').click(function(event) {
+    event.preventDefault()
+    $.get($(this).attr('href'), function(postHtml) {
+      $('newsBody').css('height', '100%')
+      $('#postViewer')
+        .html(postHtml)
+        .slideDown()
+      $('#newsContainer').fadeOut()
+      $('#newsTitle').fadeOut()
+    })
+  })
+})
 
 // ---------- MISC ---------- //
 
@@ -255,9 +315,14 @@ var drawTesselations = function() {
   path.enter()
     .append('path')
   path
-    .attr('class', function(d, i) { return allVertices[i].pathClass })
     .attr('d', function(d) { return String(d.d) })
-    .attr('fill', function(d, i) { return allVertices[i].pathFill })
+    .each(function(d, i) {
+      if (allVertices[i].pathFill) {
+        d3.select(this).transition().attr('fill', allVertices[i].pathFill).duration(1500)
+        d3.select(this).attr('stroke', allVertices[i].pathFill)
+        delete allVertices[i].pathFill
+      }
+    })
   path.order()
 }
 
@@ -272,6 +337,7 @@ var avg = function(array) {
 
 var sign = function (x) { return x > 0 ? 1 : x < 0 ? -1 : 0 }
 
+// Finds if two path of the tesselation are adjacent
 var intersects = function(path1, path2) {
   return _.any(path1, function(vertex1) {
     return _.any(path2, function(vertex2) {
@@ -280,13 +346,38 @@ var intersects = function(path1, path2) {
   })
 }
 
+var boundingBox = function(vertices) {
+  var xVals = _.pluck(vertices, 0)
+    , yVals = _.pluck(vertices, 1)
+    , xMax = _.max(xVals)
+    , xMin = _.min(xVals)
+    , yMax = _.max(yVals)
+    , yMin = _.min(yVals)
+  return [[yMin, yMin], [xMax, yMax]]
+}
+
 var componentToHex = function(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+  var hex = c.toString(16)
+  return hex.length == 1 ? "0" + hex : hex
 }
 
 var rgbToHex = function (r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
+}
+
+var makeGradient = function(col1, col2) {
+  var steps = 255
+    , j, gradient = []
+  for (j = 0; j < steps; j++) {
+    gradient.push(rgbToHex(
+      Math.round(col1[0] + (col2[0] - col1[0]) * j / steps),
+      Math.round(col1[1] + (col2[1] - col1[1]) * j / steps),
+      Math.round(col1[2] + (col2[2] - col1[2]) * j / steps)
+    ))
+  }
+  return function(ind) {
+    return gradient[Math.floor(Math.min(Math.max(ind, 0), 0.99999) * steps)]
+  }
 }
 
 // Animate the thing
