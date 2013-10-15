@@ -152,8 +152,8 @@ _.extend(Cluster.prototype, {
     _.forEach(this.vertices, function(vertex) {
       xRange = polygon[0][row]
       yRange = polygon[1][col]
-      x = xRange[0] + col/nCols * (xRange[1] - xRange[0])
-      y = yRange[0] + row/nRows * (yRange[1] - yRange[0])
+      x = xRange[0] + col/(nCols - 1) * (xRange[1] - xRange[0])
+      y = yRange[0] + row/(nRows - 1) * (yRange[1] - yRange[0])
       vertex.gravityCenter = [
         x + (Math.random() * 2 - 1) * opts.randX,
         y + (Math.random() * 2 - 1) * opts.randY
@@ -216,7 +216,7 @@ news._expand = function() {
   contact.makePolygon({
     polygon: [
       _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.2*width] }),
-      _.range(10).map(function() { return [0.1*height, 0.75*height] })
+      _.range(10).map(function() { return [0.1*height, 0.6*height] })
     ],
     randX: 5, randY: 20
   }, function(vertex, row, col) {
@@ -228,11 +228,11 @@ news._expand = function() {
   var seaGradient = makeGradient([255, 255, 255], [60, 60, 75])
   news.makePolygon({
     polygon: [
-      _.range(6).map(function(i) { return [0, width] }),
-      _.range(10).map(function() { return [3 * height/4, height] })    
+      _.range(10).map(function(i) { return [width/12, 11*width/12] }),
+      _.range(6).map(function() { return [3 * height/4, height] })    
     ]
   }, function(vertex, row, col) {
-    vertex.pathFill = seaGradient((row === 0) ? 0 : Math.pow(1.3, row) / Math.pow(1.3, 6 - 1))
+    vertex.pathFill = seaGradient((row === 0) ? 0 : Math.pow(1.35, row) / Math.pow(1.35, 10 - 1))
   })
   news.perturbation = 0.25
 
