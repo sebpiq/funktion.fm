@@ -17,7 +17,7 @@ html, body {
 
 a {
   text-decoration: none;
-  font-weight: bold;
+  font-weight: normal;
   color: LightGrey;
 }
 
@@ -52,6 +52,8 @@ a:visited {
 .postDate {
   width: 14%;
   display: inline;
+  font-size: 140%;
+  margin-right: 1em;
 }
 
 .postTitle {

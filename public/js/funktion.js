@@ -139,6 +139,29 @@ _.extend(Cluster.prototype, {
       //c = Math.round(Math.pow(i / tessCount * Math.pow(255, 1/1.6), 1.6))
       vertex.pathFill = gradient(i / tessCount)//rgbToHex(c, c, c)
     })
+  },
+
+  makePolygon: function(opts, forEach) {
+    var polygon = opts.polygon
+      , nCols = polygon[1].length
+      , nRows = polygon[0].length
+      , col = 0, row = 0
+      , x, y, xRange, yRange
+    _.defaults(opts, {randX: 0, randY: 0})
+
+    _.forEach(this.vertices, function(vertex) {
+      xRange = polygon[0][row]
+      yRange = polygon[1][col]
+      x = xRange[0] + col/nCols * (xRange[1] - xRange[0])
+      y = yRange[0] + row/nRows * (yRange[1] - yRange[0])
+      vertex.gravityCenter = [
+        x + (Math.random() * 2 - 1) * opts.randX,
+        y + (Math.random() * 2 - 1) * opts.randY
+      ]
+      if (forEach) forEach(vertex, row, col)
+      col = (col + 1) % nCols
+      if (col === 0) row++    
+    })
   }
 
 })
@@ -189,42 +212,29 @@ news._expand = function() {
 
   projects.makeCloud([0.93*width, 0.1*height], 0, 2, 0.5)
 
-  var polygon = [
+  var stoneGradient = gradient = makeGradient([0, 0, 0], [100, 100, 100])
+  contact.makePolygon({
+    polygon: [
       _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.2*width] }),
       _.range(10).map(function() { return [0.1*height, 0.75*height] })
-    ]
-    , dims = [polygon[1].length, polygon[0].length]
-    , i = 0, j = 0
-    , x, y, xRange, yRange
-    , gradient = makeGradient([0, 0, 0], [100, 100, 100])
-  _.forEach(contact.vertices, function(vertex) {
-    xRange = polygon[0][j]
-    yRange = polygon[1][i]
-    x = xRange[0] + i/dims[0] * (xRange[1] - xRange[0])
-    y = yRange[0] + j/dims[1] * (yRange[1] - yRange[0])
-    vertex.gravityCenter = [x + (Math.random() * 2 - 1) * 5, y + (Math.random() * 2 - 1) * 20]
-    if (i === dims[0] - 1) vertex.pathFill = 'white'
-    else vertex.pathFill = gradient(i/dims[0])
-    i = (i + 1) % dims[0]
-    if (i === 0) j++    
+    ],
+    randX: 5, randY: 20
+  }, function(vertex, row, col) {
+    if (col === 10 - 1) vertex.pathFill = 'white'
+    else vertex.pathFill = stoneGradient(col/10)
   })
   contact.perturbation = 0
 
-  var yOffset = 3 * height/4
-    , dims = [6, 10], xStep = width/dims[0], yStep = (height - yOffset)/dims[1]
-    , i = 0, j = 0
-    , x, y
-    , avoid = [boundingBox(contact.vertices), boundingBox(projects.vertices)]
-    , gradient = makeGradient([255, 255, 255], [60, 60, 75])
-  _.forEach(this.vertices, function(vertex) {
-    x = xStep / 2 + i * xStep
-    y = yOffset + j * yStep
-    vertex.gravityCenter = [x, y]
-    vertex.pathFill = gradient((j === 0) ? 0 : Math.pow(1.3, j) / Math.pow(1.3, dims[1] - 1))
-    i = (i + 1) % dims[0]
-    if (i === 0) j++
+  var seaGradient = makeGradient([255, 255, 255], [60, 60, 75])
+  news.makePolygon({
+    polygon: [
+      _.range(6).map(function(i) { return [0, width] }),
+      _.range(10).map(function() { return [3 * height/4, height] })    
+    ]
+  }, function(vertex, row, col) {
+    vertex.pathFill = seaGradient((row === 0) ? 0 : Math.pow(1.3, row) / Math.pow(1.3, 6 - 1))
   })
-  this.perturbation = 0.25
+  news.perturbation = 0.25
 
   $('#newsBody').slideDown()
   $('#newsTitle').css('top', height/9)
