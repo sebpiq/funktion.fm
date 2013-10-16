@@ -100,7 +100,7 @@ a:visited {
   margin-top: 0.8em;
 }
 
-#contact {
+#contactText {
   font-weight: bold;
   font-size: 250%; 
 }
@@ -122,5 +122,4 @@ svg {
 
 path {
   stroke-width: 1;
-  fill-opacity: 0.9;
 }

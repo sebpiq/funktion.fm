@@ -1,10 +1,11 @@
 var width = $(window).width(), height = $(window).height(), lineHeight = 20
   , i, allVertices = [], clusters = []
   , tessCount = 60
+  , transitionTime = 1500
   , winSize = 10
   , debugTesselations = false
   , r = height/30
-  , contact, news, projects
+  , cluster1, cluster2, cluster3
   , projectsText, newsText, contactText
 
 // d3 variables
@@ -89,7 +90,7 @@ _.extend(Cluster.prototype, {
       , teta, j
 
     this.vertices[0].gravityCenter = core
-    this.vertices[0].pathFill = 'white'
+    this.vertices[0].style = {fill: 'white', 'fill-opacity': 1}
 
     // 'while' is because sometimes voronoi fails : https://github.com/mbostock/d3/issues/1578
     while(true) {
@@ -117,27 +118,40 @@ _.extend(Cluster.prototype, {
     j = 0
     _.forEach(paths.slice(1), function(path, i) {
       isPetal = intersects(path, corePath)
-      if (isPetal) self.vertices[i + 1].pathFill = ['#F7C24C', '#F7C85E', '#F5B935', '#F5B335', '#F7C25E'][j++ % 5]
-      else self.vertices[i + 1].pathFill = '#111'
+      if (isPetal) {
+        self.vertices[i + 1].style = {
+          fill: ['#F7C24C', '#F7C85E', '#F5B935', '#F5B335', '#F7C25E'][j++ % 5],
+          'fill-opacity': 0.9
+        }
+      } else {
+        var c = Math.round(20 + (Math.random() * 2 - 1) * 5)
+        console.log(rgbToHex(c, c, c))
+        self.vertices[i + 1].style = {
+          fill: rgbToHex(c, c, c),
+          'fill-opacity': 0.9
+        }
+      }
     })
   },
 
-  makeCloud: function(core, randomize, rStep, rStepExp) {
-    this.core = core
+  makeSpiral: function(opts, forEach) {
+    _.defaults(opts, {
+      radiusFnOfTeta: function(teta) { return 1 },
+      slices: 10,
+      vertices: this.vertices
+    })
+    this.core = opts.core
     var self = this
       , teta, r, x, y
-      , gradient = makeGradient([247, 194, 76], [255, 255, 255])
 
     // Move the vertices around the core in a spiral.
-    _.forEach(this.vertices, function(vertex, i) {
-      teta = (i + Math.random() * randomize * 2 - randomize) * 2 * Math.PI / 10
-      r = (i + Math.random() * randomize * 2 - randomize) * Math.pow(rStep, rStepExp) * ((1 + Math.cos(2 * teta + Math.PI)) / 1 + 1)
+    _.forEach(opts.vertices, function(vertex, i) {
+      teta = (i + Math.random() * opts.randomize * 2 - opts.randomize) * 2 * Math.PI / opts.slices
+      r = (i + Math.random() * opts.randomize * 2 - opts.randomize) * opts.rStep * opts.radiusFnOfTeta(teta)
       x = self.core[0] + r * Math.cos(teta)
       y = self.core[1] + r * Math.sin(teta)
       vertex.gravityCenter = [x, y]
-
-      //c = Math.round(Math.pow(i / tessCount * Math.pow(255, 1/1.6), 1.6))
-      vertex.pathFill = gradient(i / tessCount)//rgbToHex(c, c, c)
+      if (forEach) forEach(vertex, i, r, teta)
     })
   },
 
@@ -147,9 +161,9 @@ _.extend(Cluster.prototype, {
       , nRows = polygon[0].length
       , col = 0, row = 0
       , x, y, xRange, yRange
-    _.defaults(opts, {randX: 0, randY: 0})
+    _.defaults(opts, {randX: 0, randY: 0, vertices: this.vertices})
 
-    _.forEach(this.vertices, function(vertex) {
+    _.forEach(opts.vertices, function(vertex) {
       xRange = polygon[0][row]
       yRange = polygon[1][col]
       x = xRange[0] + col/(nCols - 1) * (xRange[1] - xRange[0])
@@ -181,19 +195,18 @@ var createText = function(val, id) {
   return text
 }
 
-contact = new Cluster({ core: [width/8, height/7] })
-news = new Cluster({ core: [0.5 * width, 2 * height/5] })
-projects = new Cluster({ core: [7 * width/8, height/7] })
+cluster1 = new Cluster({ core: [width/8, height/7] })
+cluster2 = new Cluster({ core: [0.5 * width, 2 * height/5] })
+cluster3 = new Cluster({ core: [7 * width/8, height/7] })
 
-projectsText = createText('PROJECTS', 'projects')
-projectsText.on('click', function() { projects.expand() })
-newsText = createText('NEWS', 'news')
-newsText.on('click', function() { news.expand() })
-contactText = createText('funktion.fm', 'contact')
-contactText.on('click', function() { contact.expand() })
+projectsText = createText('PROJECTS', 'projectsText')
+projectsText.on('click', function() { cluster3.expand() })
+newsText = createText('NEWS', 'newsText')
+newsText.on('click', function() { cluster2.expand() })
+contactText = createText('funktion.fm', 'contactText')
+contactText.on('click', function() { cluster1.expand() })
 
-news._expand = function() {
-  var self = this
+cluster2._expand = function() {
   window.location.hash = 'news'
 
   _.forEach(clusters, function(cluster) {
@@ -210,66 +223,164 @@ news._expand = function() {
 
   svg.selectAll('text').transition().attr('fill', 'white')
 
-  projects.makeCloud([0.93*width, 0.1*height], 0, 2, 0.5)
+  var sunGradient = makeGradient([247, 194, 76], [255, 255, 255])
+  cluster3.makeSpiral({
+    core: [0.93*width, 0.1*height],
+    randomize: 0,
+    rStep: width/930,
+    slices: 10,
+    radiusFnOfTeta: function(teta) {
+      return 2 + Math.cos(2 * teta + Math.PI) / 1
+    }
+  }, function(vertex, i) {
+    vertex.style = {fill: sunGradient(i / tessCount), 'fill-opacity': 1}
+  })
 
   var stoneGradient = gradient = makeGradient([0, 0, 0], [100, 100, 100])
-  contact.makePolygon({
+  cluster1.makePolygon({
     polygon: [
       _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.2*width] }),
       _.range(10).map(function() { return [0.1*height, 0.6*height] })
     ],
     randX: 5, randY: 20
   }, function(vertex, row, col) {
-    if (col === 10 - 1) vertex.pathFill = 'white'
-    else vertex.pathFill = stoneGradient(col/10)
+    if (col === 10 - 1) vertex.style = {fill: 'white', 'fill-opacity': 1}
+    else vertex.style = {fill: stoneGradient(col/10), 'fill-opacity': 0.9}
   })
-  contact.perturbation = 0
+  cluster1.perturbation = 0
 
   var seaGradient = makeGradient([255, 255, 255], [60, 60, 75])
-  news.makePolygon({
+  cluster2.makePolygon({
     polygon: [
       _.range(10).map(function(i) { return [width/12, 11*width/12] }),
       _.range(6).map(function() { return [3 * height/4, height] })    
     ]
   }, function(vertex, row, col) {
-    vertex.pathFill = seaGradient((row === 0) ? 0 : Math.pow(1.35, row) / Math.pow(1.35, 10 - 1))
+    vertex.style = {
+      fill: seaGradient((row === 0) ? 0 : Math.pow(1.35, row) / Math.pow(1.35, 10 - 1)),
+      'fill-opacity': 1
+    }
   })
-  news.perturbation = 0.25
+  cluster2.perturbation = 0.25
 
   $('#newsBody').slideDown()
-  $('#newsTitle').css('top', height/9)
-  $('#newsTitle').fadeIn()
   $('#contactBody').fadeOut()
 }
 
-projects._expand = function() {
-  var self = this, teta
+cluster3._expand = function() {
+
+  window.location.hash = 'projects'
+
+  projectsText.classed({hidden: false})
+  contactText.classed({hidden: false})
+  newsText.classed({hidden: false})
+
+  projectsText.transition().attr({fill: 'white'}).duration(transitionTime)
+  contactText.transition().attr({fill: 'black'}).duration(transitionTime)
+  newsText.transition().attr({fill: 'white'}).duration(transitionTime)
+
+  contactText.moveToPosition([0.01* width, 0.1 * height])
+  newsText.moveToPosition([0.01* width, 0.3 * height])
+  projectsText.moveToPosition([0.01* width, 0.5 * height])
+
+  var cloudGradient = makeGradient([255, 255, 255], [150, 150, 150])
+    , gradientCloudMountain = makeGradient([150, 150, 150], [83, 102, 83])
+
+  cluster1.makeSpiral({
+    vertices: cluster1.vertices.concat(cluster3.vertices),
+    core: [0.8*width, 0.1*height],
+    randomize: 0.3,
+    rStep: width/800,
+    slices: 10,
+    radiusFnOfTeta: function(teta) {
+      return 1 + Math.abs(Math.cos(teta))
+    }
+  }, function(vertex, i, r, teta) {
+    teta = (teta % (2*Math.PI))
+    if (Math.PI*0.2 < teta && teta < Math.PI*0.8)
+      vertex.style = {fill: gradientCloudMountain(i / (2*tessCount)), 'fill-opacity': 1}
+    else if (Math.PI < teta && teta < 2*Math.PI)
+      vertex.style = {fill: cloudGradient(0.5 * 1 - i / (2*tessCount)), 'fill-opacity': 1}
+    else
+      vertex.style = {fill: cloudGradient(0.5 + 0.5 * i / (2*tessCount)), 'fill-opacity': 1}
+  })
+  cluster3.perturbation = 0.4
+  
+
+  var treeWidth = width/25
+    , forrestOffset = width/6
+    , treeByRow = 10, forestRows = 3, row = 0
+    , treeBase = 0.92 * height
+    , treeHeight = 0.03 * height
+    , treeCount = 0
+    , randX, randY
+    // each row has one less tree than the previous, and there is an extra last raw to shape the forrest
+    , finalTreeCount = _.reduce(_.range(forestRows+1), function(total, row) { return total + treeByRow - row }, 0)
+
+  _.forEach(cluster2.vertices.slice(0, finalTreeCount), function(vertex, i) {
+    if (row < forestRows) {
+      randX = (Math.random() * 2 - 1) * 10
+      randY = (Math.random() * 2 - 1) * 10
+      vertex.style = {
+        fill: ['#364729', '#2C3624', '#1B2E0D', '#254125', '#213121', '#0C2A0C'][Math.floor(Math.random() * 6)],
+        stroke: ['#364729', '#2C3624', '#1B2E0D', '#254125', '#213121', '#0C2A0C'][Math.floor(Math.random() * 6)]
+      }
+    } else {
+      randX = 0
+      randY = 0
+      vertex.style = { fill: '#536653' }
+    }
+    vertex.gravityCenter = [
+      forrestOffset + (i-treeCount + 0.5*row) * treeWidth + randX,
+      treeBase - row * treeHeight + randY
+    ]
+    //} else vertex.gravityCenter = [0, 0]
+    if ((i+1-treeCount) % treeByRow === 0) {
+      row++
+      treeCount += treeByRow
+      treeByRow--
+    }
+  })
+  cluster2.perturbation = 0.05
+
+  var fogCenter = 0.5*width
+    , moutainSlope = 0.05*width
+  cluster2.makePolygon({
+    polygon: [
+      _.map(_.range(13), function(i) { return [fogCenter, fogCenter+width/1200] }),
+      _.map(_.range(2), function(i) { return [0.05*height + i*0.008*width, 0.3*height + i*0.008*width] })
+    ],
+    vertices: cluster2.vertices.slice(finalTreeCount),
+    randX: 5
+  }, function(vertex, row, col) {
+    vertex.style = {fill: cloudGradient(row/13)}
+  })
+  
+  $('#newsBody').slideUp()
+  $('#contactBody').fadeOut()
   
 }
 
-contact._expand = function() {
-  var self = this
-
+cluster1._expand = function() {
   window.location.hash = 'contact'
 
   _.forEach(clusters, function(cluster) {
     cluster.perturbation = 0.3
   })
-  this.makeFlower([width/10, height/15], 600, 0.1)  
-  news.makeFlower([0.8 * width, 4 * height/5], 200, 0.1)
-  projects.makeFlower([7 * width/8, height/7], 200, 0.1)
+  cluster1.makeFlower([width/10, height/15], 600, 0.1)  
+  cluster2.makeFlower([0.8 * width, 4 * height/5], 200, 0.1)
+  cluster3.makeFlower([7 * width/8, height/7], 200, 0.1)
 
   contactText.classed({hidden: true})
   newsText.classed({hidden: false})
   projectsText.classed({hidden: false})
 
-  newsText.moveToPosition([news.core[0] - newsText.text().length * 9, news.core[1] + 7])
-  projectsText.moveToPosition([projects.core[0] - projectsText.text().length * 9, projects.core[1] + 7])
+  newsText.moveToPosition([cluster2.core[0] - newsText.text().length * 9, cluster2.core[1] + 7])
+  projectsText.moveToPosition([cluster3.core[0] - projectsText.text().length * 9, cluster3.core[1] + 7])
 
   svg.selectAll('text').transition().attr('fill', 'black')
 
   $('#newsBody').slideUp()
-  $('#newsTitle').fadeOut()
   $('#contactBody').fadeIn()
 }
 
@@ -304,13 +415,13 @@ var drawTesselations = function() {
       .attr('r', function (d) { return 5 })
       .attr('fill', function(d) {
       switch (d.cluster){
-        case news:
+        case cluster2:
           return 'red'
           break
-        case contact:
+        case cluster1:
           return 'blue'
           break
-        case projects:
+        case cluster3:
           return 'green'
           break
       }
@@ -327,10 +438,20 @@ var drawTesselations = function() {
   path
     .attr('d', function(d) { return String(d.d) })
     .each(function(d, i) {
-      if (allVertices[i].pathFill) {
-        d3.select(this).transition().attr('fill', allVertices[i].pathFill).duration(1500)
-        d3.select(this).attr('stroke', allVertices[i].pathFill)
-        delete allVertices[i].pathFill
+      var self = this
+      if (allVertices[i].style) {
+        var transition = d3.select(self).transition()
+
+        if (allVertices[i].style.fill && !allVertices[i].style.stroke)
+          allVertices[i].style.stroke = allVertices[i].style.fill
+
+        _.chain(allVertices[i].style).pairs().forEach(function(pair) {
+          var propName = pair[0]
+            , propValue = pair[1]
+          transition.attr(propName, propValue)
+        }).value()
+        transition.duration(transitionTime)
+        delete allVertices[i].style
       }
     })
   path.order()
@@ -400,13 +521,13 @@ setInterval(function() {
 $(function() {
   switch (window.location.hash) {
     case '#news':
-      news.expand()
+      cluster2.expand()
       break
     case '#contact':
-      contact.expand()
+      cluster1.expand()
       break
     case '#projects':
-      projects.expand()
+      cluster3.expand()
       break
   }
 
