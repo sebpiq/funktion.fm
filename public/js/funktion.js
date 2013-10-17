@@ -91,8 +91,18 @@ var expandNews = function() {
 
 var expandProjects = function() {
 
-  var cluster1 = allVertices.slice(0, 120)
-    , cluster2, cluster3
+  var treeWidth = width/25
+    , forrestOffset = width/6
+    , treeByRow = 10, forestRows = 3, row = 0
+    , treeBase = 0.92 * height
+    , treeHeight = 0.03 * height
+    , treeCount = 0
+    , randX, randY
+    // each row has one less tree than the previous, and there is an extra last raw to shape the forrest
+    , finalTreeCount = _.reduce(_.range(forestRows+1), function(total, row) { return total + treeByRow - row }, 0)
+    , cluster1 = allVertices.slice(0, 80)  // foggy mountain
+    , cluster2 = allVertices.slice(80, 80 + 70) // foggy moutain 2
+    , cluster3 = allVertices.slice(80 + 70) // fog1
 
   window.location.hash = 'projects'
 
@@ -100,17 +110,18 @@ var expandProjects = function() {
   contactText.classed({hidden: false})
   newsText.classed({hidden: false})
 
-  projectsText.transition().attr({fill: 'white'}).duration(transitionTime)
+  projectsText.transition().attr({fill: 'black'}).duration(transitionTime)
   contactText.transition().attr({fill: 'black'}).duration(transitionTime)
-  newsText.transition().attr({fill: 'white'}).duration(transitionTime)
+  newsText.transition().attr({fill: 'black'}).duration(transitionTime)
 
   contactText.moveToPosition([0.01* width, 0.1 * height])
   newsText.moveToPosition([0.01* width, 0.3 * height])
   projectsText.moveToPosition([0.01* width, 0.5 * height])
 
-  // Foggy mountain
+  // Foggy mountain1
   var cloudGradient = makeGradient([255, 255, 255], [150, 150, 150])
-    , gradientCloudMountain = makeGradient([150, 150, 150], [83, 102, 83])
+    , gradientCloudMountain1 = makeGradient([150, 150, 150], [83, 102, 83])
+    , gradientCloudMountain2 = makeGradient([150, 150, 150], [47, 94, 47])
   makeSpiral(cluster1, {
     core: [0.75*width, 0.1*height],
     randomize: 0.2,
@@ -127,63 +138,49 @@ var expandProjects = function() {
   }, function(vertex, i, r, teta) {
     teta = (teta % (2*Math.PI))
     if (Math.PI*0.2 < teta && teta < Math.PI*0.8)
-      vertex.style = {fill: gradientCloudMountain(i / (2*tessCount)), 'fill-opacity': 1}
+      vertex.style = {fill: gradientCloudMountain1(i / (2*tessCount)), 'fill-opacity': 1}
     else if (Math.PI < teta && teta < 2*Math.PI)
       vertex.style = {fill: cloudGradient(0.5 * 1 - i / (2*tessCount)), 'fill-opacity': 1}
     else
       vertex.style = {fill: cloudGradient(0.5 + 0.5 * i / (2*tessCount)), 'fill-opacity': 1}
   })
-  _.forEach(cluster1, function(v) { v.perturbation = 0.5 })
-  
+  _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
 
-  var treeWidth = width/25
-    , forrestOffset = width/6
-    , treeByRow = 10, forestRows = 3, row = 0
-    , treeBase = 0.92 * height
-    , treeHeight = 0.03 * height
-    , treeCount = 0
-    , randX, randY
-    // each row has one less tree than the previous, and there is an extra last raw to shape the forrest
-    , finalTreeCount = _.reduce(_.range(forestRows+1), function(total, row) { return total + treeByRow - row }, 0)
-  cluster2 = allVertices.slice(120, 120 + finalTreeCount)
-
-  _.forEach(cluster2, function(vertex, i) {
-    if (row < forestRows) {
-      randX = (Math.random() * 2 - 1) * 5
-      randY = (Math.random() * 2 - 1) * 5
-      vertex.style = {
-        fill: ['#254125', '#335233', '#385738'][Math.floor(Math.random() * 3)]//['#364729', '#2C3624', '#1B2E0D', '#254125', '#213121', '#0C2A0C'][Math.floor(Math.random() * 6)],
-      }
-    } else {
-      randX = 0
-      randY = 0
-      vertex.style = { fill: '#536653' }
+  // Foggy mountain2
+  makeSpiral(cluster2, {
+    core: [0.2*width, 0.5*height],
+    randomize: 0.2,
+    rStep: width/800,
+    slices: 13,
+    computeTeta: function(rand, context) {
+      var teta = (context.teta % (2*Math.PI))
+      if ((Math.PI*0.9 < teta && teta < Math.PI*2) || teta < Math.PI*0.1) context.teta = Math.PI*0.1
+      return rand + context.teta
+    },
+    computeR: function(rand, context) {
+      return (rand + context.r) * (1 + Math.abs(Math.cos(context.teta)) * 3)
     }
-    vertex.gravityCenter = [
-      forrestOffset + (i-treeCount + 0.5*row) * treeWidth + randX,
-      treeBase - row * treeHeight + randY
-    ]
-    //} else vertex.gravityCenter = [0, 0]
-    if ((i+1-treeCount) % treeByRow === 0) {
-      row++
-      treeCount += treeByRow
-      treeByRow--
-    }
+  }, function(vertex, i, r, teta) {
+    teta = (teta % (2*Math.PI))
+    if (Math.PI*0.2 < teta && teta < Math.PI*0.8)
+      vertex.style = {fill: gradientCloudMountain2(i / (2*tessCount)), 'fill-opacity': 1}
+    else
+      vertex.style = {fill: '#393f39', 'fill-opacity': 1}
   })
-  _.forEach(cluster2, function(v) { v.perturbation = 0.05 })
+  _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
 
+  // Fog1
   var fogCenter = 0.3*width
-    , moutainSlope = 0.05*width
-  cluster3 = allVertices.slice(120 + finalTreeCount)
   makePolygon(cluster3, {
     polygon: [
-      _.map(_.range(13), function(i) { return [fogCenter, fogCenter+width/1200] }),
+      _.map(_.range(15), function(i) { return [fogCenter, fogCenter+width/1200] }),
       _.map(_.range(2), function(i) { return [0.05*height + i*0.008*width, 0.3*height + i*0.008*width] })
     ],
     randX: 5
   }, function(vertex, row, col) {
-    vertex.style = {fill: cloudGradient(row/13)}
+    vertex.style = {fill: cloudGradient(row/13), 'fill-opacity': 1}
   })
+  _.forEach(cluster3, function(v) { v.perturbation = 0.02 })
   
   $('#newsBody').slideUp()
   $('#contactBody').fadeOut()
@@ -246,22 +243,10 @@ var drawTesselations = function() {
   if (debugTesselations) {
     svg.selectAll('circle').data(allVertices).enter().append('circle')
       .attr('r', function (d) { return 5 })
-      .attr('fill', function(d) {
-      switch (d.cluster){
-        case cluster2:
-          return 'red'
-          break
-        case cluster1:
-          return 'blue'
-          break
-        case cluster3:
-          return 'green'
-          break
-      }
-    })
     svg.selectAll('circle').data(allVertices)
       .attr('cx', function (d) { return d[0] })
       .attr('cy', function (d) { return d[1] })
+      .attr('fill', function(d) { return d.debugColor })
   }
 
   path = path.data(calculateTesselation())

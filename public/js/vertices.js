@@ -1,32 +1,26 @@
 // Function to make appear flower petals from the tesselation
 var makeFlower = function(vertices, core, r, randomize) {
-  var paths, corePath
+  var debugColor = getRandomColor()
+    , paths, corePath
     , isPetal
     , teta, j
 
   vertices[0].gravityCenter = core
   vertices[0].style = {fill: 'white', 'fill-opacity': 1}
-
-  // 'while' is because sometimes voronoi fails : https://github.com/mbostock/d3/issues/1578
-  while(true) {
     
-    // Move the vertices around the core on `r` and randomized.
-    _.forEach(vertices.slice(1), function(vertex, i) {
-      teta = i * 2 * Math.PI / tessCount
-      vertex.gravityCenter = [
-        core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
-        core[1] + r * Math.sin(teta) * (1 - randomize + Math.random() * randomize * 2)
-      ]
-    })
+  // Move the vertices around the core on `r` and randomized.
+  _.forEach(vertices.slice(1), function(vertex, i) {
+    teta = i * 2 * Math.PI / tessCount
+    vertex.gravityCenter = [
+      core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
+      core[1] + r * Math.sin(teta) * (1 - randomize + Math.random() * randomize * 2)
+    ]
 
-    // Generate the tesselation paths for the gravity centers of all vertices 
-    try {
-      paths = d3.geom.voronoi(_.pluck(vertices, 'gravityCenter'))
-      break
-    } catch (err) {
-      console.warn(err)
-    }
-  }
+    vertex.debugColor = debugColor
+  })
+
+  // Generate the tesselation paths for the gravity centers of all vertices 
+  paths = d3.geom.voronoi(_.pluck(vertices, 'gravityCenter'))
 
   // Find all paths that have a common edge with the core, and make them a petal
   corePath = paths[0]
@@ -55,8 +49,9 @@ var makeSpiral = function(vertices, opts, forEach) {
     slices: 10
   })
   var core = opts.core
-  var teta, r, x, y
+    , teta, r, x, y
     , context = { teta: 0, r: 0 }
+    , debugColor = getRandomColor()
 
   // Move the vertices around the core in a spiral.
   _.forEach(vertices, function(vertex, i) {
@@ -70,6 +65,8 @@ var makeSpiral = function(vertices, opts, forEach) {
     if (forEach) forEach(vertex, i, r, teta)
     context.teta += 2 * Math.PI / opts.slices
     context.r += opts.rStep
+
+    vertex.debugColor = debugColor
   })
 }
 
@@ -79,6 +76,8 @@ var makePolygon = function(vertices, opts, forEach) {
     , nRows = polygon[0].length
     , col = 0, row = 0
     , x, y, xRange, yRange
+    , debugColor = getRandomColor()
+
   _.defaults(opts, {randX: 0, randY: 0})
 
   _.forEach(vertices, function(vertex) {
@@ -92,7 +91,8 @@ var makePolygon = function(vertices, opts, forEach) {
     ]
     if (forEach) forEach(vertex, row, col)
     col = (col + 1) % nCols
-    if (col === 0) row++    
+    if (col === 0) row++
+    vertex.debugColor = debugColor
   })
 }
 
@@ -199,4 +199,8 @@ var makeGradient = function(col1, col2) {
   return function(ind) {
     return gradient[Math.floor(Math.min(Math.max(ind, 0), 0.99999) * steps)]
   }
+}
+
+var getRandomColor = function() {
+  return rgbToHex(Math.round(255 * Math.random()), Math.round(255 * Math.random()), Math.round(255 * Math.random()))
 }
