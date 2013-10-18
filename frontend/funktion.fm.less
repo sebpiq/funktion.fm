@@ -1,3 +1,6 @@
+/* header space */
+@top: 7%;
+
 @font-face {
   font-family: 'Source Code Pro';
   font-style: normal;
@@ -25,16 +28,42 @@ a:visited {
   color: LightGrey;
 }
 
+.menuItem {
+  cursor: pointer;
+  font-size: 200%;
+}
+
+#menu {
+  color: white;
+  position: absolute;
+  top: @top - 2%;
+  left: 2%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    .menuItem;
+    margin-bottom: 40%;
+
+    &:first-child {
+      font-weight: bold;
+      font-size: 250%;
+    }
+  }
+}
+
 #newsBody {
   color: black;
   display: none;
   position: absolute;
   font-size: 14px;
   z-index: 1;
-  width: 65%;
-  height: 100%;
-  top: 0;
+  width: 70%;
   left: 30%;
+  height: 80%;
+  top: @top;
+  overflow: auto;
 }
 
 #newsBody {
@@ -69,13 +98,11 @@ a:visited {
 
 #postDetail {
 
+  width: 96%;
+
   .postTitle {
     font-size: 150%;
     font-weight: bold;
-  }
-  
-  .postDate {
-    
   }
 
   .postTags {
@@ -112,16 +139,6 @@ a:visited {
 
 #contactSocial {
   margin-top: 0.8em;
-}
-
-#contactText {
-  font-weight: bold;
-  font-size: 250%; 
-}
-
-.menuItem {
-  cursor: pointer;
-  font-size: 200%;
 }
 
 .hidden {

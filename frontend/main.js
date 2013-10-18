@@ -6,7 +6,6 @@ var _ = require('underscore')
   , transitionTime = 1500
   , debugTesselations = false
   , r = height/30
-  , projectsText, newsText, contactText
   , svg, path
 
 var expandNews = function() {
@@ -16,19 +15,13 @@ var expandNews = function() {
     , cluster3 = allVertices.slice(120, 180)
   _.forEach(allVertices, function(v) { v.perturbation = 0.5 })
 
-  projectsText.classed({hidden: false})
-  contactText.classed({hidden: false})
-  newsText.classed({hidden: false})
-
-  contactText.moveToPosition([0.01* width, 0.1 * height])
-  newsText.moveToPosition([0.01* width, 0.3 * height])
-  projectsText.moveToPosition([0.01* width, 0.5 * height])
+  hideSvgMenuItems()
 
   svg.selectAll('text').transition().attr('fill', 'white')
 
   var sunGradient = vert.makeGradient([247, 194, 76], [255, 255, 255])
   vert.makeSpiral(cluster1, {
-    core: [0.93*width, 0.1*height],
+    core: [0.93*width, 0.12*height],
     randomize: 0,
     rStep: width/930,
     slices: 10,
@@ -75,22 +68,12 @@ var expandProjects = function() {
   var cluster1 = allVertices.slice(0, 80)  // foggy mountain
     , cluster2 = allVertices.slice(80, 80 + 70) // foggy moutain 2
     , cluster3 = allVertices.slice(80 + 70) // fog1
-    , cloudGradient = vert.makeGradient([255, 255, 255], [150, 150, 150])
+    , cloudGradient = vert.makeGradient([255, 245, 160], [150, 150, 150])
     , gradientCloudMountain1 = vert.makeGradient([150, 150, 150], [83, 102, 83])
     , gradientCloudMountain2 = vert.makeGradient([150, 150, 150], [47, 94, 47])
     , fogCenter = 0.3*width
 
-  projectsText.classed({hidden: false})
-  contactText.classed({hidden: false})
-  newsText.classed({hidden: false})
-
-  projectsText.transition().attr({fill: 'black'}).duration(transitionTime)
-  contactText.transition().attr({fill: 'black'}).duration(transitionTime)
-  newsText.transition().attr({fill: 'black'}).duration(transitionTime)
-
-  contactText.moveToPosition([0.01* width, 0.1 * height])
-  newsText.moveToPosition([0.01* width, 0.3 * height])
-  projectsText.moveToPosition([0.01* width, 0.5 * height])
+  hideSvgMenuItems()
 
   // Foggy mountain1
   vert.makeSpiral(cluster1, {
@@ -138,7 +121,7 @@ var expandProjects = function() {
     else
       vertex.style = {fill: '#393f39', 'fill-opacity': 1}
   })
-  _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
+  _.forEach(cluster1, function(v) { v.perturbation = 0 })
 
   // Fog1
   vert.makePolygon(cluster3, {
@@ -169,10 +152,6 @@ var expandContact = function() {
   vert.makeFlower(cluster1, core1, 600, 0.1)
   vert.makeFlower(cluster2, core2, 200, 0.1)
   vert.makeFlower(cluster3, core3, 200, 0.1)
-
-  contactText.classed({hidden: true})
-  newsText.classed({hidden: false})
-  projectsText.classed({hidden: false})
 
   newsText.moveToPosition([core2[0] - newsText.text().length * 9, core2[1] + 7])
   projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
@@ -230,11 +209,14 @@ var drawTesselations = function() {
   path.order()
 }
 
-var createText = function(val, id) {
-  var text = svg.append('text')
+var createSvgMenuItem = function(val, extraClass) {
+  var classed = {'menuItem': true}
+    , text = svg.append('text')
+
+  classed[extraClass] = true
+  text    
     .text(val)
-    .attr('class', 'menuItem')
-    .attr('id', id)
+    .classed(classed)
 
   text.moveToPosition = function(position) {
     this
@@ -243,6 +225,14 @@ var createText = function(val, id) {
   }
 
   return text
+}
+
+var hideSvgMenuItems = function() {
+  d3.selectAll('text.menuItem').transition().style('opacity', 0)  
+}
+
+var showSvgMenuItems = function() {
+  d3.selectAll('text.menuItem').transition().style('opacity', 1)
 }
 
 $(function() {
@@ -260,12 +250,16 @@ $(function() {
     allVertices.push(new vert.Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
   })
 
-  projectsText = createText('PROJECTS', 'projectsText')
+  projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
   projectsText.on('click', function() { window.location.hash = 'projects' })
-  newsText = createText('NEWS', 'newsText')
+  newsText = createSvgMenuItem('NEWS', 'newsText')
   newsText.on('click', function() { window.location.hash = 'news' })
-  contactText = createText('funktion.fm', 'contactText')
+  contactText = createSvgMenuItem('funktion.fm', 'contactText')
   contactText.on('click', function() { window.location.hash = 'contact' })
+
+  $('#menu .newsMenuItem').click(function() { window.location.hash = 'news' })
+  $('#menu .contactMenuItem').click(function() { window.location.hash = 'contact' })
+  $('#menu .projectsMenuItem').click(function() { window.location.hash = 'projects' })
 
   // Animate the thing
   drawTesselations()
