@@ -1,5 +1,7 @@
+var _ = require('underscore')
+
 // Function to make appear flower petals from the tesselation
-var makeFlower = function(vertices, core, r, randomize) {
+module.exports.makeFlower = function(vertices, core, r, randomize) {
   var debugColor = getRandomColor()
     , paths, corePath
     , isPetal
@@ -10,7 +12,7 @@ var makeFlower = function(vertices, core, r, randomize) {
     
   // Move the vertices around the core on `r` and randomized.
   _.forEach(vertices.slice(1), function(vertex, i) {
-    teta = i * 2 * Math.PI / tessCount
+    teta = i * 2 * Math.PI / vertices.length
     vertex.gravityCenter = [
       core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
       core[1] + r * Math.sin(teta) * (1 - randomize + Math.random() * randomize * 2)
@@ -42,7 +44,7 @@ var makeFlower = function(vertices, core, r, randomize) {
   })
 }
 
-var makeSpiral = function(vertices, opts, forEach) {
+module.exports.makeSpiral = function(vertices, opts, forEach) {
   _.defaults(opts, {
     computeTeta: function(rand, context) { return context.teta + rand },
     computeR: function(rand, context) { return context.r + rand },
@@ -70,7 +72,7 @@ var makeSpiral = function(vertices, opts, forEach) {
   })
 }
 
-var makePolygon = function(vertices, opts, forEach) {
+module.exports.makePolygon = function(vertices, opts, forEach) {
   var polygon = opts.polygon
     , nCols = polygon[1].length
     , nRows = polygon[0].length
@@ -97,22 +99,7 @@ var makePolygon = function(vertices, opts, forEach) {
 }
 
 
-var createText = function(val, id) {
-  var text = svg.append('text')
-    .text(val)
-    .attr('class', 'menuItem')
-    .attr('id', id)
-
-  text.moveToPosition = function(position) {
-    this
-      .attr('x', function(d) { return position[0] })
-      .attr('y', function(d) { return position[1] })
-  }
-
-  return text
-}
-
-var Vertex = function(x, y) {
+var Vertex = module.exports.Vertex = function(x, y) {
   this[0] = x
   this[1] = y
   this.gravity = 10
@@ -133,8 +120,8 @@ _.extend(Vertex.prototype, {
     this.vy.push(Math.random() * yDist / this.gravity + randTolerance(this.perturbation))
 
     // to smooth out, we compute the average from last positions
-    if (this.vy.length > winSize) this.vy.shift()
-    if (this.vx.length > winSize) this.vx.shift()
+    if (this.vy.length > 10) this.vy.shift()
+    if (this.vx.length > 10) this.vx.shift()
     this[0] = this[0] + avg(this.vx)
     this[1] = this[1] + avg(this.vy)
   }
@@ -186,7 +173,7 @@ var rgbToHex = function (r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
 
-var makeGradient = function(col1, col2) {
+var makeGradient = module.exports.makeGradient = function(col1, col2) {
   var steps = 255
     , j, gradient = []
   for (j = 0; j < steps; j++) {

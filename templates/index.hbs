@@ -3,17 +3,13 @@
 <head>
   <title>funktion.fm</title>
   <meta charset="utf-8">
-  <link href="{{static.root}}css/funktion.css" rel="stylesheet" type="text/css">
-  <script src="{{static.root}}js/jquery-2.0.3.min.js"></script>
-  <script src="{{static.root}}js/d3.js"></script>
-  <script src="{{static.root}}js/underscore-min.js"></script>
-  <script src="{{static.root}}js/vertices.js"></script>
+  <link href="{{static.root}}css/funktion.fm.css" rel="stylesheet" type="text/css">
+  <script src="{{static.root}}js/funktion.fm.js"></script>
 </head>
 
 <body>
   <svg>
   </svg>
-  <script src="{{static.root}}js/funktion.js"></script>
 
   <div id="contactBody">
     <div id="contactTitle">funktion.fm</div>
@@ -28,15 +24,20 @@
   </div>
 
   <div id="newsBody">
+    <div id="postSummary">
     {{#each getPosts}}
       <div class="post">
         <div class="postDate">{{prettifyDate date}}</div>
-        <div class="postTitle"><a href="{{url}}">{{title}}</a></div>
+        <div class="postTitle"><a href="#post/{{slug}}">{{title}}</a></div>
         <div class="clearfix"></div>
         <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
         <div class="clearfix"></div>
       </div>
     {{/each}}
+    </div>
+    <div id="postDetail">
+      
+    </div>
   </div>
 
 </body>

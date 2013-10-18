@@ -1,34 +1,15 @@
-var width = $(window).width(), height = $(window).height(), lineHeight = 20
+var _ = require('underscore')
+  , vert = require('./vertices')
+  , width, height
   , i, allVertices = []
   , tessCount = 60
   , transitionTime = 1500
-  , winSize = 10
   , debugTesselations = false
   , r = height/30
   , projectsText, newsText, contactText
-
-// d3 variables
-var svg = d3.select('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('class', 'PiYG')
-  , path = svg.append('g').selectAll('path')
-
-
-var cols = 10, rows = 18
-_.forEach(_.range(180), function(i) {
-  allVertices.push(new Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
-})
-
-projectsText = createText('PROJECTS', 'projectsText')
-projectsText.on('click', function() { expandProjects() })
-newsText = createText('NEWS', 'newsText')
-newsText.on('click', function() { expandNews() })
-contactText = createText('funktion.fm', 'contactText')
-contactText.on('click', function() { expandContact() })
+  , svg, path
 
 var expandNews = function() {
-  window.location.hash = 'news'
 
   var cluster1 = allVertices.slice(0, 60)
     , cluster2 = allVertices.slice(60, 120)
@@ -45,8 +26,8 @@ var expandNews = function() {
 
   svg.selectAll('text').transition().attr('fill', 'white')
 
-  var sunGradient = makeGradient([247, 194, 76], [255, 255, 255])
-  makeSpiral(cluster1, {
+  var sunGradient = vert.makeGradient([247, 194, 76], [255, 255, 255])
+  vert.makeSpiral(cluster1, {
     core: [0.93*width, 0.1*height],
     randomize: 0,
     rStep: width/930,
@@ -58,10 +39,10 @@ var expandNews = function() {
     vertex.style = {fill: sunGradient(i / tessCount), 'fill-opacity': 1}
   })
 
-  var stoneGradient = gradient = makeGradient([0, 0, 0], [100, 100, 100])
-  makePolygon(cluster2, {
+  var stoneGradient = gradient = vert.makeGradient([0, 0, 0], [100, 100, 100])
+  vert.makePolygon(cluster2, {
     polygon: [
-      _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.2*width] }),
+      _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.16*width] }),
       _.range(10).map(function() { return [0.1*height, 0.6*height] })
     ],
     randX: 5, randY: 20
@@ -71,8 +52,8 @@ var expandNews = function() {
   })
   _.forEach(cluster2, function(v) { v.perturbation = 0 })
 
-  var seaGradient = makeGradient([255, 255, 255], [60, 60, 75])
-  makePolygon(cluster3, {
+  var seaGradient = vert.makeGradient([255, 255, 255], [60, 60, 75])
+  vert.makePolygon(cluster3, {
     polygon: [
       _.range(10).map(function(i) { return [width/12, 11*width/12] }),
       _.range(6).map(function() { return [3 * height/4, height] })    
@@ -91,20 +72,13 @@ var expandNews = function() {
 
 var expandProjects = function() {
 
-  var treeWidth = width/25
-    , forrestOffset = width/6
-    , treeByRow = 10, forestRows = 3, row = 0
-    , treeBase = 0.92 * height
-    , treeHeight = 0.03 * height
-    , treeCount = 0
-    , randX, randY
-    // each row has one less tree than the previous, and there is an extra last raw to shape the forrest
-    , finalTreeCount = _.reduce(_.range(forestRows+1), function(total, row) { return total + treeByRow - row }, 0)
-    , cluster1 = allVertices.slice(0, 80)  // foggy mountain
+  var cluster1 = allVertices.slice(0, 80)  // foggy mountain
     , cluster2 = allVertices.slice(80, 80 + 70) // foggy moutain 2
     , cluster3 = allVertices.slice(80 + 70) // fog1
-
-  window.location.hash = 'projects'
+    , cloudGradient = vert.makeGradient([255, 255, 255], [150, 150, 150])
+    , gradientCloudMountain1 = vert.makeGradient([150, 150, 150], [83, 102, 83])
+    , gradientCloudMountain2 = vert.makeGradient([150, 150, 150], [47, 94, 47])
+    , fogCenter = 0.3*width
 
   projectsText.classed({hidden: false})
   contactText.classed({hidden: false})
@@ -119,10 +93,7 @@ var expandProjects = function() {
   projectsText.moveToPosition([0.01* width, 0.5 * height])
 
   // Foggy mountain1
-  var cloudGradient = makeGradient([255, 255, 255], [150, 150, 150])
-    , gradientCloudMountain1 = makeGradient([150, 150, 150], [83, 102, 83])
-    , gradientCloudMountain2 = makeGradient([150, 150, 150], [47, 94, 47])
-  makeSpiral(cluster1, {
+  vert.makeSpiral(cluster1, {
     core: [0.75*width, 0.1*height],
     randomize: 0.2,
     rStep: width/800,
@@ -147,7 +118,7 @@ var expandProjects = function() {
   _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
 
   // Foggy mountain2
-  makeSpiral(cluster2, {
+  vert.makeSpiral(cluster2, {
     core: [0.2*width, 0.5*height],
     randomize: 0.2,
     rStep: width/800,
@@ -170,8 +141,7 @@ var expandProjects = function() {
   _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
 
   // Fog1
-  var fogCenter = 0.3*width
-  makePolygon(cluster3, {
+  vert.makePolygon(cluster3, {
     polygon: [
       _.map(_.range(15), function(i) { return [fogCenter, fogCenter+width/1200] }),
       _.map(_.range(2), function(i) { return [0.05*height + i*0.008*width, 0.3*height + i*0.008*width] })
@@ -188,7 +158,6 @@ var expandProjects = function() {
 }
 
 var expandContact = function() {
-  window.location.hash = 'contact'
   var cluster1 = allVertices.slice(0, 60)
     , cluster2 = allVertices.slice(60, 120)
     , cluster3 = allVertices.slice(120, 180)
@@ -197,9 +166,9 @@ var expandContact = function() {
     , core3 = [7 * width/8, height/7]
 
   _.forEach(allVertices, function(v) { v.perturbation = 0.3 })
-  makeFlower(cluster1, core1, 600, 0.1)
-  makeFlower(cluster2, core2, 200, 0.1)
-  makeFlower(cluster3, core3, 200, 0.1)
+  vert.makeFlower(cluster1, core1, 600, 0.1)
+  vert.makeFlower(cluster2, core2, 200, 0.1)
+  vert.makeFlower(cluster3, core3, 200, 0.1)
 
   contactText.classed({hidden: true})
   newsText.classed({hidden: false})
@@ -214,20 +183,6 @@ var expandContact = function() {
   $('#contactBody').fadeIn()
 }
 
-$(function() {
-
-  $('.postTitle a').click(function(event) {
-    event.preventDefault()
-    $.get($(this).attr('href'), function(postHtml) {
-      $('newsBody').css('height', '100%')
-      $('#postViewer')
-        .html(postHtml)
-        .slideDown()
-      $('#newsContainer').fadeOut()
-      $('#newsTitle').fadeOut()
-    })
-  })
-})
 
 // ---------- MISC ---------- //
 
@@ -275,24 +230,87 @@ var drawTesselations = function() {
   path.order()
 }
 
-// Animate the thing
-drawTesselations()
-setInterval(function() {
-  _.forEach(allVertices, function(v) { v.nextFrame() })
-  drawTesselations()
-}, 20)
+var createText = function(val, id) {
+  var text = svg.append('text')
+    .text(val)
+    .attr('class', 'menuItem')
+    .attr('id', id)
+
+  text.moveToPosition = function(position) {
+    this
+      .attr('x', function(d) { return position[0] })
+      .attr('y', function(d) { return position[1] })
+  }
+
+  return text
+}
 
 $(function() {
-  switch (window.location.hash) {
-    case '#news':
-      expandNews()
-      break
+  svg = d3.select('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('class', 'PiYG')
+  path = svg.append('g').selectAll('path')
+
+  width = $(window).width()
+  height = $(window).height()
+
+  var cols = 10, rows = 18
+  _.forEach(_.range(180), function(i) {
+    allVertices.push(new vert.Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
+  })
+
+  projectsText = createText('PROJECTS', 'projectsText')
+  projectsText.on('click', function() { window.location.hash = 'projects' })
+  newsText = createText('NEWS', 'newsText')
+  newsText.on('click', function() { window.location.hash = 'news' })
+  contactText = createText('funktion.fm', 'contactText')
+  contactText.on('click', function() { window.location.hash = 'contact' })
+
+  // Animate the thing
+  drawTesselations()
+  setInterval(function() {
+    _.forEach(allVertices, function(v) { v.nextFrame() })
+    drawTesselations()
+  }, 20)
+})
+
+
+// Routing
+
+var doRouting = function() {
+ 
+  var route = window.location.hash
+    , routeElems = route.split('/')
+
+  switch (routeElems[0]) {
+
     case '#contact':
       expandContact()
       break
     case '#projects':
       expandProjects()
       break
+    case '#news':
+      expandNews()
+        $('#postDetail').fadeOut(function() { $('#postSummary').fadeIn() })
+      break
+    case '#post':
+      expandNews()
+      $.get(route.substr(1), function(postHtml) {
+        $('#postDetail').html(postHtml)
+        $('#postSummary').fadeOut(function() { $('#postDetail').fadeIn() })
+      })
+      break
+    default:
+      expandContact()
+      break
   }
 
+}
+
+$(function() { 
+  window.location.hash = window.location.hash || '#contact'
+  doRouting()
+  $(window).on('hashchange', doRouting)
 })
