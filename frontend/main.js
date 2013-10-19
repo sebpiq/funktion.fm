@@ -15,8 +15,6 @@ var expandNews = function() {
     , cluster3 = allVertices.slice(120, 180)
   _.forEach(allVertices, function(v) { v.perturbation = 0.5 })
 
-  hideSvgMenuItems()
-
   svg.selectAll('text').transition().attr('fill', 'white')
 
   var sunGradient = vert.makeGradient([247, 194, 76], [255, 255, 255])
@@ -59,8 +57,11 @@ var expandNews = function() {
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.25 })
 
-  $('#newsBody').slideDown()
+  d3.selectAll('text.menuItem').transition().style('opacity', 0)
+  $('#menu').fadeIn()
   $('#contactBody').fadeOut()
+  $('#projectsBody').fadeOut()
+  $('#newsBody').fadeIn()
 }
 
 var expandProjects = function() {
@@ -72,8 +73,6 @@ var expandProjects = function() {
     , gradientCloudMountain1 = vert.makeGradient([150, 150, 150], [83, 102, 83])
     , gradientCloudMountain2 = vert.makeGradient([150, 150, 150], [47, 94, 47])
     , fogCenter = 0.3*width
-
-  hideSvgMenuItems()
 
   // Foggy mountain1
   vert.makeSpiral(cluster1, {
@@ -121,7 +120,7 @@ var expandProjects = function() {
     else
       vertex.style = {fill: '#393f39', 'fill-opacity': 1}
   })
-  _.forEach(cluster1, function(v) { v.perturbation = 0 })
+  _.forEach(cluster2, function(v) { v.perturbation = 0 })
 
   // Fog1
   vert.makePolygon(cluster3, {
@@ -135,7 +134,10 @@ var expandProjects = function() {
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.02 })
   
-  $('#newsBody').slideUp()
+  d3.selectAll('text.menuItem').transition().style('opacity', 0)
+  $('#menu').fadeIn()
+  $('#projectsBody').fadeIn()
+  $('#newsBody').fadeOut()
   $('#contactBody').fadeOut()
 
 }
@@ -158,7 +160,10 @@ var expandContact = function() {
 
   svg.selectAll('text').transition().attr('fill', 'black')
 
-  $('#newsBody').slideUp()
+  d3.selectAll('text.menuItem').transition().style('opacity', 1)
+  $('#menu').fadeOut()
+  $('#projectsBody').fadeOut()
+  $('#newsBody').fadeOut()
   $('#contactBody').fadeIn()
 }
 
@@ -225,14 +230,6 @@ var createSvgMenuItem = function(val, extraClass) {
   }
 
   return text
-}
-
-var hideSvgMenuItems = function() {
-  d3.selectAll('text.menuItem').transition().style('opacity', 0)  
-}
-
-var showSvgMenuItems = function() {
-  d3.selectAll('text.menuItem').transition().style('opacity', 1)
 }
 
 $(function() {
