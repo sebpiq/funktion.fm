@@ -13,6 +13,7 @@
   "author": "Sébastien Piquemal",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "underscore": "1.5.x",
     "express": "3.4.x",
     "poet": "1.0.x",
     "hbs": "2.4.x",
@@ -21,7 +22,8 @@
     "grunt-contrib-concat": "0.3.x",
     "grunt-contrib-less": "0.7.x",
     "grunt-contrib-watch": "0.5.x",
-    "grunt-browserify": "2.34.x"
+    "grunt-contrib-copy": "0.4.x",
+    "grunt-browserify": "1.2.x"
   },
   "bugs": {
     "url": "https://github.com/sebpiq/funktion.fm/issues"
