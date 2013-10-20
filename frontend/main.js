@@ -59,6 +59,7 @@ var expandNews = function() {
 
   d3.selectAll('text.menuItem').transition().style('opacity', 0)
   $('#menu').fadeIn()
+  $('#menu li:first-child').css({color: 'white'})
   $('#contactBody').fadeOut()
   $('#projectsBody').fadeOut()
   $('#newsBody').fadeIn()
@@ -101,7 +102,7 @@ var expandProjects = function() {
 
   // Foggy mountain2
   vert.makeSpiral(cluster2, {
-    core: [0.2*width, 0.5*height],
+    core: [0.25*width, 0.5*height],
     randomize: 0.2,
     rStep: width/800,
     slices: 13,
@@ -136,6 +137,7 @@ var expandProjects = function() {
   
   d3.selectAll('text.menuItem').transition().style('opacity', 0)
   $('#menu').fadeIn()
+  $('#menu li:first-child').css({color: 'black'})
   $('#projectsBody').fadeIn()
   $('#newsBody').fadeOut()
   $('#contactBody').fadeOut()
@@ -159,7 +161,6 @@ var expandContact = function() {
   projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
 
   svg.selectAll('text').transition().attr('fill', 'black')
-
   d3.selectAll('text.menuItem').transition().style('opacity', 1)
   $('#menu').fadeOut()
   $('#projectsBody').fadeOut()
@@ -233,14 +234,14 @@ var createSvgMenuItem = function(val, extraClass) {
 }
 
 $(function() {
+  width = $(window).width()
+  height = $(window).height()
+
   svg = d3.select('svg')
     .attr('width', width)
     .attr('height', height)
     .attr('class', 'PiYG')
   path = svg.append('g').selectAll('path')
-
-  width = $(window).width()
-  height = $(window).height()
 
   var cols = 10, rows = 18
   _.forEach(_.range(180), function(i) {
