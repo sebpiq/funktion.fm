@@ -57,11 +57,10 @@ var expandNews = function() {
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.25 })
 
-  d3.selectAll('text.menuItem').transition().style('opacity', 0)
-  $('#menu').fadeIn()
-  $('#menu li:first-child').css({color: 'white'})
-  $('#contactBody').fadeOut()
-  $('#projectsBody').fadeOut()
+  initMainPageLayout()
+  showMainPageMenu()
+  $('#mainPage .menu li').css({color: 'white'})
+  $('#mainPage .menu .news').css({'text-decoration': 'underline'})
   $('#newsBody').fadeIn()
 }
 
@@ -102,7 +101,7 @@ var expandProjects = function() {
 
   // Foggy mountain2
   vert.makeSpiral(cluster2, {
-    core: [0.25*width, 0.5*height],
+    core: [0.3*width, 0.5*height],
     randomize: 0.2,
     rStep: width/800,
     slices: 13,
@@ -116,7 +115,7 @@ var expandProjects = function() {
     }
   }, function(vertex, i, r, teta) {
     teta = (teta % (2*Math.PI))
-    if (Math.PI*0.2 < teta && teta < Math.PI*0.8)
+    if ((Math.PI*0.2 < teta && teta < Math.PI*0.8) || (Math.PI*0.2 < teta && teta < Math.PI*0.85 && r > 0.2*width))
       vertex.style = {fill: gradientCloudMountain2(i / (2*tessCount)), 'fill-opacity': 1}
     else
       vertex.style = {fill: '#393f39', 'fill-opacity': 1}
@@ -135,13 +134,12 @@ var expandProjects = function() {
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.02 })
   
-  d3.selectAll('text.menuItem').transition().style('opacity', 0)
-  $('#menu').fadeIn()
-  $('#menu li:first-child').css({color: 'black'})
+  initMainPageLayout()
+  showMainPageMenu()
+  $('#mainPage .menu li').css({color: 'white'})
+  $('#mainPage .menu .contact').css({color: 'black'})
+  $('#mainPage .menu .projects').css({'text-decoration': 'underline'})
   $('#projectsBody').fadeIn()
-  $('#newsBody').fadeOut()
-  $('#contactBody').fadeOut()
-
 }
 
 var expandContact = function() {
@@ -153,21 +151,39 @@ var expandContact = function() {
     , core3 = [7 * width/8, height/7]
 
   _.forEach(allVertices, function(v) { v.perturbation = 0.3 })
-  vert.makeFlower(cluster1, core1, 600, 0.1)
-  vert.makeFlower(cluster2, core2, 200, 0.1)
-  vert.makeFlower(cluster3, core3, 200, 0.1)
+  vert.makeFlower(cluster1, core1, width/2.2, 0.1)
+  vert.makeFlower(cluster2, core2, width/6.5, 0.1)
+  vert.makeFlower(cluster3, core3, width/6.5, 0.1)
 
   newsText.moveToPosition([core2[0] - newsText.text().length * 9, core2[1] + 7])
   projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
 
-  svg.selectAll('text').transition().attr('fill', 'black')
+  initMainPageLayout()
   d3.selectAll('text.menuItem').transition().style('opacity', 1)
-  $('#menu').fadeOut()
-  $('#projectsBody').fadeOut()
-  $('#newsBody').fadeOut()
+  $('#mainPage .menu').fadeOut()
   $('#contactBody').fadeIn()
 }
 
+var expandProjectDetail = function() {
+  $('#projectDetail').fadeIn()
+  $('#mainPage').fadeOut()
+}
+
+var initMainPageLayout = function() {
+  $('#projectDetail').fadeOut()
+  $('#mainPage').fadeIn()
+  $('#mainPage .menu li').css({'text-decoration': 'none'})
+  $('#contactBody').fadeOut()
+  $('#projectsBody').fadeOut()
+  $('#newsBody').fadeOut()
+  $('#projectDetail').fadeOut()
+  $('#bgSvg').fadeIn(200)
+}
+
+var showMainPageMenu = function() {
+  d3.selectAll('text.menuItem').transition().style('opacity', 0)
+  $('#mainPage .menu').fadeIn()
+}
 
 // ---------- MISC ---------- //
 
@@ -237,7 +253,7 @@ $(function() {
   width = $(window).width()
   height = $(window).height()
 
-  svg = d3.select('svg')
+  svg = d3.select('#bgSvg')
     .attr('width', width)
     .attr('height', height)
     .attr('class', 'PiYG')
@@ -255,9 +271,9 @@ $(function() {
   contactText = createSvgMenuItem('funktion.fm', 'contactText')
   contactText.on('click', function() { window.location.hash = 'contact' })
 
-  $('#menu .newsMenuItem').click(function() { window.location.hash = 'news' })
-  $('#menu .contactMenuItem').click(function() { window.location.hash = 'contact' })
-  $('#menu .projectsMenuItem').click(function() { window.location.hash = 'projects' })
+  $('.menu .news').click(function() { window.location.hash = 'news' })
+  $('.menu .contact').click(function() { window.location.hash = 'contact' })
+  $('.menu .projects').click(function() { window.location.hash = 'projects' })
 
   // Animate the thing
   drawTesselations()
@@ -269,7 +285,6 @@ $(function() {
 
 
 // Routing
-
 var doRouting = function() {
  
   var route = window.location.hash
@@ -280,13 +295,16 @@ var doRouting = function() {
     case '#contact':
       expandContact()
       break
+
     case '#projects':
       expandProjects()
       break
+
     case '#news':
       expandNews()
         $('#postDetail').fadeOut(function() { $('#postSummary').fadeIn() })
       break
+
     case '#post':
       expandNews()
       $.get(route.substr(1), function(postHtml) {
@@ -294,6 +312,14 @@ var doRouting = function() {
         $('#postSummary').fadeOut(function() { $('#postDetail').fadeIn() })
       })
       break
+
+    case '#project':
+      expandProjectDetail()
+      $.get(route.substr(1), function(postHtml) {
+        $('#projectDetail .container').html(postHtml)        
+      })      
+      break
+
     default:
       expandContact()
       break
@@ -301,7 +327,7 @@ var doRouting = function() {
 
 }
 
-$(function() { 
+$(function() {
   window.location.hash = window.location.hash || '#contact'
   doRouting()
   $(window).on('hashchange', doRouting)

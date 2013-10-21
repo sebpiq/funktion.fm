@@ -31,7 +31,13 @@ module.exports = function(grunt) {
         separator: ';',
       },
       dist: {
-        src: ['frontend/vendor/jquery-2.0.3.js', 'frontend/vendor/d3.js', '/tmp/browserified.js'],
+        src: [
+          'frontend/vendor/jquery-2.0.3.js',
+          'frontend/vendor/carouFredSel-helpers/*',
+          'frontend/vendor/jquery.carouFredSel-6.2.1.js',
+          'frontend/vendor/d3.js',
+          '/tmp/browserified.js'
+        ],
         dest: '/tmp/concatenated.js',
       },
     },

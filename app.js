@@ -2,6 +2,8 @@ var express = require('express')
   , app = express()
   , Poet = require('poet')
   , hbs = require('hbs')
+  , fs = require('fs')
+  , _ = require('underscore')
   , poet = Poet(app, {
     posts: __dirname + '/_posts/',
     postsPerPage: 5,
@@ -23,6 +25,26 @@ app.listen(3000, function() {
 })
 
 app.get('/', function (req, res) { res.render('index') })
+
+app.get('/project/:name', function(req, res) {
+  var projectName = req.params.name
+  if (projectNames.indexOf(projectName) !== -1) res.render('projects/' + projectName)
+  else {
+    res.status(404)
+    res.send(projectName)
+  }
+})
+
+// Automatically generate the list of project names
+var projectNames
+fs.readdir(__dirname + '/templates/projects', function(err, files) {
+  if (err) throw err
+  projectNames = _.filter(files, function(fileName) { return /\w+\.hbs$/.exec(fileName) })
+    .map(function(tmplName) {
+      return tmplName.substr(0, tmplName.length - ('.hbs'.length))
+    })
+  console.log('projects found : ', projectNames)
+})
 
 hbs.registerHelper('prettifyDate', function(date) {
   return '' + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()

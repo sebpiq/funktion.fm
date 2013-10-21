@@ -8,42 +8,82 @@
 </head>
 
 <body>
-  <svg>
-  </svg>
 
-  <ul id="menu">
-    <li class="contactMenuItem">funktion.fm</li>
-    <li class="newsMenuItem">NEWS</li>
-    <li class="projectsMenuItem">PROJECTS</li>
-  </ul>
+  <div id="mainPage">
+    <svg id="bgSvg"></svg>
 
-  <div id="contactBody">
-    <div id="contactTitle">funktion.fm</div>
-    <div id="contactName">Sébastien Piquemal</div>
-    <div id="contactMail">sebpiq@gmail.com</div>
-    <div id="contactSocial">
-      <a href="https://twitter.com/sebpiq"><img src="images/twitter.png" /></a>
-      <a href="https://github.com/sebpiq"><img src="images/github.png" /></a>
-      <a href="https://soundcloud.com/sebpiq"><img src="images/soundcloud.png" /></a>
-      <a href="https://vimeo.com/sebpiq"><img src="images/vimeo.png" /></a>
+    <ul class="menu">
+      <li class="contact">funktion.fm</li>
+      <li class="news">NEWS</li>
+      <li class="projects">PROJECTS</li>
+    </ul>
+
+    <div id="contactBody">
+      <div id="contactTitle">funktion.fm</div>
+      <div id="contactName">Sébastien Piquemal</div>
+      <div id="contactMail">sebpiq@gmail.com</div>
+      <div id="contactSocial">
+        <a href="https://twitter.com/sebpiq"><img src="images/twitter.png" /></a>
+        <a href="https://github.com/sebpiq"><img src="images/github.png" /></a>
+        <a href="https://soundcloud.com/sebpiq"><img src="images/soundcloud.png" /></a>
+        <a href="https://vimeo.com/sebpiq"><img src="images/vimeo.png" /></a>
+      </div>
+    </div>
+
+    <div id="newsBody">
+      <div id="postSummary">
+      {{#each getPosts}}
+        <div class="post">
+          <div class="postDate">{{prettifyDate date}}</div>
+          <div class="postTitle"><a href="#post/{{slug}}">{{title}}</a></div>
+          <div class="clearfix"></div>
+          <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
+          <div class="clearfix"></div>
+        </div>
+      {{/each}}
+      </div>
+      <div id="postDetail">
+        
+      </div>
+    </div>
+
+    <div id="projectsBody">
+      <div id="projectCarousel">
+	      <a class="project" href="#project/tonuglawo">
+          <div class="projectTitle">Tonuglawo</div>
+          <div class="projectSummary">
+            An experimental performance based on wireless microphones and a playful audience.
+          </div>
+        </a>
+	      <a class="project" href="#project/versificator.fm">
+          <div class="projectTitle">versificator.fm</div>
+          <div class="projectSummary">
+            A computer program which generates an infinite stream of music by using collage techniques.
+          </div>
+        </a>
+	      <a class="project" href="#project/webpd">
+          <div class="projectTitle">WebPd</div>
+          <div class="projectSummary">
+            Run your Pure Data patches in the browser, 100% pure JavaScript.
+          </div>
+        </a>
+	      <a class="project" href="#project/pd-and-rpi">
+          <div class="projectTitle">Pure Data and Raspberry Pi workshops</div>
+          <div class="projectSummary">
+            Building portable instruments with Pure Data and Raspberry Pi.
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 
-  <div id="newsBody">
-    <div id="postSummary">
-    {{#each getPosts}}
-      <div class="post">
-        <div class="postDate">{{prettifyDate date}}</div>
-        <div class="postTitle"><a href="#post/{{slug}}">{{title}}</a></div>
-        <div class="clearfix"></div>
-        <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
-        <div class="clearfix"></div>
-      </div>
-    {{/each}}
-    </div>
-    <div id="postDetail">
-      
-    </div>
+  <div id="projectDetail">
+    <ul class="menu">
+      <li class="contact">funktion.fm</li>
+      <li class="news">NEWS</li>
+      <li class="projects">PROJECTS</li>
+    </ul>
+    <div class="container"></div>
   </div>
 
 </body>
