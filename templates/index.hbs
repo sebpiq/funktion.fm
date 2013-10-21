@@ -9,8 +9,8 @@
 
 <body>
 
+  <svg id="bgSvg"></svg>
   <div id="mainPage">
-    <svg id="bgSvg"></svg>
 
     <ul class="menu">
       <li class="contact">funktion.fm</li>
@@ -31,20 +31,18 @@
     </div>
 
     <div id="newsBody">
-      <div id="postSummary">
+      <div class="posts">
       {{#each getPosts}}
         <div class="post">
           <div class="postDate">{{prettifyDate date}}</div>
+          {{#if category}}<div class="postProject"><a href="#project/{{category}}">{{category}}</a></div>{{/if}}
           <div class="postTitle"><a href="#post/{{slug}}">{{title}}</a></div>
-          <div class="clearfix"></div>
           <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
           <div class="clearfix"></div>
         </div>
       {{/each}}
       </div>
-      <div id="postDetail">
-        
-      </div>
+      <div id="postDetail"></div>
     </div>
 
     <div id="projectsBody">

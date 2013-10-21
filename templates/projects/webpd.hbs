@@ -2,6 +2,18 @@
 
 <a href="https://github.com/sebpiq/webpd"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
+<div class="posts">
+{{#each posts}}
+  <div class="post">
+    <div class="postDate">{{prettifyDate date}}</div>
+    <div class="postTitle">{{title}}</div>
+    <div class="postContent">{{{content}}}</div>
+    <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
+    <div class="clearfix"></div>
+  </div>
+{{/each}}
+</div>
+
 <script>
-    
+
 </script>

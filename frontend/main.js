@@ -165,6 +165,18 @@ var expandContact = function() {
 }
 
 var expandProjectDetail = function() {
+  vert.makePolygon(allVertices, {
+    polygon: [
+      _.map(_.range(12), function(i) { return [0, width] }),
+      _.map(_.range(15), function(i) { return [0.04*height, height] })
+    ],
+    randX: 15,
+    randY: 15,
+  }, function(vertex, row, col) {
+    if (row === 0) vertex.style = {fill: '#444', 'fill-opacity': 1}
+    else vertex.style = {fill: 'white', stroke: '#ddd'}
+  })
+
   $('#projectDetail').fadeIn()
   $('#mainPage').fadeOut()
 }
@@ -302,14 +314,14 @@ var doRouting = function() {
 
     case '#news':
       expandNews()
-        $('#postDetail').fadeOut(function() { $('#postSummary').fadeIn() })
+        $('#postDetail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
       break
 
     case '#post':
       expandNews()
       $.get(route.substr(1), function(postHtml) {
         $('#postDetail').html(postHtml)
-        $('#postSummary').fadeOut(function() { $('#postDetail').fadeIn() })
+        $('#newsBody .posts').fadeOut(function() { $('#postDetail').fadeIn() })
       })
       break
 

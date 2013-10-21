@@ -106,16 +106,16 @@ path {
   a {
     color: #333;
   }
-}
-
-#postSummary {
-
-  .post {
-    margin-bottom: 2em;
-  }
 
   .post:first-child{
     margin-top: 5%;
+  }
+}
+
+.posts {
+
+  .post {
+    margin-bottom: 2em;
   }
 
   .postDate {
@@ -128,6 +128,13 @@ path {
   .postTitle {
     display: inline;
     font-size: 130%;
+  }
+
+  .postProject {
+    display: inline;
+    margin-right: 1em;
+    background-color: lightgrey;
+    padding: 0.1em 0.3em;
   }
 
 }
@@ -227,28 +234,54 @@ path {
 
 #projectDetail {
   .fullWindow-mixin;
+  @menuHeight: 8%;
 
   .menu {
-    height: 4em;
+    height: @menuHeight;
     padding: 0.5em;
     color: #ccc;
-    background-color: #333;
 
     li {
       float: left;
       margin-right: 1em;
+      min-width: 6em;
+      text-align: center;
 
       &:first-child {
-        font-size: 220%;
+        font-size: 180%;
       }
     }
 
     .projects, .news {
       position: relative;
-      top: 0.4em;
-      font-size: 150%;
+      top: 0.5em;
+      font-size: 120%;
     }
 
+  }
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+  
+    h1 {
+      padding-left: 1em;
+    }
+  }
+
+  .container {
+    height: 80%;
+    color: black;
+    padding: 0 2em 2em 2em;
+  }
+
+  .posts {
+    height: 85%;
+    overflow: auto;
+    .postTitle {
+      color: black;
+    }
   }
 
 }

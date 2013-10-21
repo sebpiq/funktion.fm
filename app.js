@@ -10,10 +10,6 @@ var express = require('express')
     metaFormat: 'json'
   })
 
-poet.init().then(function () {
-  console.log('poet running')
-})
-
 app.locals.static = {static: {root: '/'}}
 app.set('views', __dirname + '/templates')
 app.set('view engine', 'hbs')
@@ -26,13 +22,18 @@ app.listen(3000, function() {
 
 app.get('/', function (req, res) { res.render('index') })
 
-app.get('/project/:name', function(req, res) {
+poet.addRoute('/project/:name', function (req, res, next) {
   var projectName = req.params.name
-  if (projectNames.indexOf(projectName) !== -1) res.render('projects/' + projectName)
-  else {
+
+  if (projectNames.indexOf(projectName) !== -1) {
+    res.render('projects/' + projectName, {posts: poet.helpers.postsWithCategory(projectName)})
+  } else {
     res.status(404)
     res.send(projectName)
   }
+
+}).init().then(function () {
+  console.log('poet running')
 })
 
 // Automatically generate the list of project names
