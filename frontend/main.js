@@ -8,7 +8,7 @@ var _ = require('underscore')
   , r = height/30
   , svg, path
 
-var expandNews = function() {
+var newsDrawings = function() {
 
   var cluster1 = allVertices.slice(0, 60)
     , cluster2 = allVertices.slice(60, 120)
@@ -56,15 +56,9 @@ var expandNews = function() {
     }
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.25 })
-
-  initMainPageLayout()
-  showMainPageMenu()
-  $('#mainPage .menu li').css({color: 'white'})
-  $('#mainPage .menu .news').css({'text-decoration': 'underline'})
-  $('#newsBody').fadeIn()
 }
 
-var expandProjects = function() {
+var projectsDrawings = function() {
 
   var cluster1 = allVertices.slice(0, 80)  // foggy mountain
     , cluster2 = allVertices.slice(80, 80 + 70) // foggy moutain 2
@@ -133,16 +127,9 @@ var expandProjects = function() {
     vertex.style = {fill: cloudGradient(row/13), 'fill-opacity': 1}
   })
   _.forEach(cluster3, function(v) { v.perturbation = 0.02 })
-  
-  initMainPageLayout()
-  showMainPageMenu()
-  $('#mainPage .menu li').css({color: 'white'})
-  $('#mainPage .menu .contact').css({color: 'black'})
-  $('#mainPage .menu .projects').css({'text-decoration': 'underline'})
-  $('#projectsBody').fadeIn()
 }
 
-var expandContact = function() {
+var contactDrawings = function() {
   var cluster1 = allVertices.slice(0, 60)
     , cluster2 = allVertices.slice(60, 120)
     , cluster3 = allVertices.slice(120, 180)
@@ -157,18 +144,13 @@ var expandContact = function() {
 
   newsText.moveToPosition([core2[0] - newsText.text().length * 9, core2[1] + 7])
   projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
-
-  initMainPageLayout()
-  d3.selectAll('text.menuItem').transition().style('opacity', 1)
-  $('#mainPage .menu').fadeOut()
-  $('#contactBody').fadeIn()
 }
 
-var expandProjectDetail = function() {
+var projectDetailDrawings = function() {
   vert.makePolygon(allVertices, {
     polygon: [
       _.map(_.range(12), function(i) { return [0, width] }),
-      _.map(_.range(15), function(i) { return [0.04*height, height] })
+      _.map(_.range(15), function(i) { return [0.06*height, height] })
     ],
     randX: 15,
     randY: 15,
@@ -176,9 +158,6 @@ var expandProjectDetail = function() {
     if (row === 0) vertex.style = {fill: '#444', 'fill-opacity': 1}
     else vertex.style = {fill: 'white', stroke: '#ddd'}
   })
-
-  $('#projectDetail').fadeIn()
-  $('#mainPage').fadeOut()
 }
 
 var initMainPageLayout = function() {
@@ -283,9 +262,9 @@ $(function() {
   contactText = createSvgMenuItem('funktion.fm', 'contactText')
   contactText.on('click', function() { window.location.hash = 'contact' })
 
-  $('.menu .news').click(function() { window.location.hash = 'news' })
-  $('.menu .contact').click(function() { window.location.hash = 'contact' })
-  $('.menu .projects').click(function() { window.location.hash = 'projects' })
+  $('#mainPage .menu .news').click(function() { window.location.hash = 'news' })
+  $('#mainPage .menu .contact').click(function() { window.location.hash = 'contact' })
+  $('#mainPage .menu .projects').click(function() { window.location.hash = 'projects' })
 
   // Animate the thing
   drawTesselations()
@@ -297,7 +276,9 @@ $(function() {
 
 
 // Routing
-var doRouting = function() {
+window.projectDetailRouter = null
+
+var mainRouter = function() {
  
   var route = window.location.hash
     , routeElems = route.split('/')
@@ -305,20 +286,41 @@ var doRouting = function() {
   switch (routeElems[0]) {
 
     case '#contact':
-      expandContact()
+      contactDrawings()
+      initMainPageLayout()
+      d3.selectAll('text.menuItem').transition().style('opacity', 1)
+      $('#mainPage .menu').fadeOut()
+      $('#contactBody').fadeIn()
       break
 
     case '#projects':
-      expandProjects()
+      projectsDrawings()
+      initMainPageLayout()
+      showMainPageMenu()
+      $('#mainPage .menu li').css({color: 'white'})
+      $('#mainPage .menu .contact').css({color: 'black'})
+      $('#mainPage .menu .projects').css({'text-decoration': 'underline'})
+      $('#projectsBody').fadeIn()
       break
 
     case '#news':
-      expandNews()
-        $('#postDetail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
+      newsDrawings()
+      initMainPageLayout()
+      showMainPageMenu()
+      $('#mainPage .menu li').css({color: 'white'})
+      $('#mainPage .menu .news').css({'text-decoration': 'underline'})
+      $('#newsBody').fadeIn()
+      $('#postDetail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
       break
 
     case '#post':
-      expandNews()
+      newsDrawings()
+      initMainPageLayout()
+      showMainPageMenu()
+      $('#mainPage .menu li').css({color: 'white'})
+      $('#mainPage .menu .news').css({'text-decoration': 'underline'})
+      $('#newsBody .posts').hide()
+      $('#newsBody').fadeIn()
       $.get(route.substr(1), function(postHtml) {
         $('#postDetail').html(postHtml)
         $('#newsBody .posts').fadeOut(function() { $('#postDetail').fadeIn() })
@@ -326,14 +328,17 @@ var doRouting = function() {
       break
 
     case '#project':
-      expandProjectDetail()
-      $.get(route.substr(1), function(postHtml) {
-        $('#projectDetail .container').html(postHtml)        
-      })      
+      projectDetailDrawings()
+      $('#projectDetail').fadeIn()
+      $('#mainPage').fadeOut()
+      $.get('/' + routeElems.slice(0, 2).join('/').substr(1), function(postHtml) {
+        $('#projectDetail').html(postHtml)
+        projectDetailRouter(routeElems.slice(2).join('/'))   
+      })
       break
 
     default:
-      expandContact()
+      alert('address not found')
       break
   }
 
@@ -341,6 +346,6 @@ var doRouting = function() {
 
 $(function() {
   window.location.hash = window.location.hash || '#contact'
-  doRouting()
-  $(window).on('hashchange', doRouting)
+  mainRouter()
+  $(window).on('hashchange', mainRouter)
 })

@@ -10,7 +10,7 @@ var express = require('express')
     metaFormat: 'json'
   })
 
-app.locals.static = {static: {root: '/'}}
+app.locals.static = {static: {root: '/'}, site: {root: '/'}}
 app.set('views', __dirname + '/templates')
 app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'))

@@ -1,19 +1,70 @@
-<h1>WebPd - Run your Pure Data patches in the browser</h1>
+<div class="header">
+  <ul class="menu">
+    <li class="contact">funktion.fm</li>
+    <li class="news">NEWS</li>
+    <li class="projects">PROJECTS</li>
+  </ul>
+  <h1><a href="#project/webpd">WebPd</a></h1>
+</div>
 
-<a href="https://github.com/sebpiq/webpd"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+<div class="body">
 
-<div class="posts">
-{{#each posts}}
-  <div class="post">
-    <div class="postDate">{{prettifyDate date}}</div>
-    <div class="postTitle">{{title}}</div>
-    <div class="postContent">{{{content}}}</div>
-    <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
-    <div class="clearfix"></div>
+  <div class="summary">
+    <div class="pitch">
+      <p>
+      WebPd is a 100% JavaScript Pure Data runtime. It aims at allowing a subset of Pure Data audio patches to run in the browser without plugins.
+      </p>
+
+      <p>
+      WebPd is also a standalone DSP library. Every object as you know it in Pure Data exposes a complete API, allowing developers to control everything with JavaScript.
+      </p>
+
+      <p>
+        <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=watch&count=true&size=large"
+          allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=fork&count=true&size=large"
+          allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+      </p>
+    </div>
+
+    <div class="posts">
+    {{#each posts}}
+      <div class="post">
+        <div class="postDate">{{prettifyDate date}}</div>
+        <div class="postTitle"><a href="#project/webpd/post/{{slug}}">{{title}}</a></div>
+        <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
+        <div class="clearfix"></div>
+      </div>
+    {{/each}}
+    </div>
   </div>
-{{/each}}
+
+  <div class="detail"></div>
+
 </div>
 
 <script>
+  (function() {
 
+    var $root = $('#projectDetail')
+    $root.find('.menu .news').click(function() { window.location.hash = 'news' })
+    $root.find('.menu .contact').click(function() { window.location.hash = 'contact' })
+    $root.find('.menu .projects').click(function() { window.location.hash = 'projects' })
+
+    window.projectDetailRouter = function(route) {
+
+      var routeElems = route.split('/')
+
+      switch(routeElems[0]) {
+
+        case 'post':
+          $.get('{{site.root}}' + route, function(postHtml) {
+            $root.find('.detail').html(postHtml)
+            $root.find('.summary').fadeOut(function() { $root.find('.detail').fadeIn() })
+          })
+          break
+      }
+    }
+
+  })()
 </script>
