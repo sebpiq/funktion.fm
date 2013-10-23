@@ -1,20 +1,31 @@
-<div class="postTitle">{{post.title}}</div>
-<div class="postDate">posted the {{prettifyDate post.date}}</div>
-<div class="postShare">
+<div class="post">
+  <div class="title">{{post.title}}</div>
+  <div class="date">posted the {{prettifyDate post.date}}</div>
+  <div class="social">
 
-  <a class="facebook" href="#" 
-    onclick="
-      window.open(
-        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 
-        'facebook-share-dialog',
-        'width=626,height=436'); 
-      return false;">
-    <img src="{{static.root}}images/fb-share.png" />
-    <span>Share</span>
-  </a>
-  <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://funktion.fm#post/{{post.slug}}" data-text="{{post.title}} http://funktion.fm#post/{{post.slug}}" data-via="sebpiq">Tweet</a>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <a class="facebook" href="#" 
+      onclick="
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 
+          'facebook-share-dialog',
+          'width=626,height=436'); 
+        return false;">
+      <img src="{{static.root}}images/fb-share.png" />
+      <span>Share</span>
+    </a>
 
+    <a href="https://twitter.com/share" 
+      class="twitter-share-button" 
+      data-url="http://funktion.fm#post/{{post.slug}}" 
+      data-text="{{post.title}} http://funktion.fm#post/{{post.slug}}" 
+      data-via="sebpiq">
+      Tweet
+    </a>
+    <script>
+      twttr.widgets.load()
+    </script>
+
+  </div>
+
+  <div class="content">{{{post.content}}}</div>
 </div>
-
-<div class="postContent">{{{post.content}}}</div>

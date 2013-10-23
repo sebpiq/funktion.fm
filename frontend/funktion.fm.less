@@ -74,66 +74,111 @@ path {
 
 }
 
-.postShare {
-  margin-top: 0.2em;
+.post {
 
-  /* copy the layout for the twitter button */
-  .facebook {
-    display: inline-block;
-    float: left;
-    margin-right: 4px;
-    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
-    color: #333;
-    border: 1px solid #ccc;
+  .title {
+    font-size: 150%;
     font-weight: bold;
-    text-shadow: 0 1px 0 rgba(255,255,255,.5);
-    cursor: pointer;
-    padding: 0 3px 0 2px;
-    white-space: nowrap;
-    background-color:#f8f8f8;
-    background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#dedede));
-    background-image:-moz-linear-gradient(top,#fff,#dedede);
-    background-image:-o-linear-gradient(top,#fff,#dedede);
-    background-image:-ms-linear-gradient(top,#fff,#dedede);
-    background-image:linear-gradient(top,#fff,#dedede);
-    border:#ccc solid 1px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    border-radius:3px;
-    text-shadow:0 1px 0 rgba(255,255,255,.5);
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -o-user-select:none;
-    user-select:none;
-    height:18px;
-    max-width:98%;
-    overflow:hidden;
+  }
 
-    img {
-      width: 15px;
-      position: relative;
-      top: 1px;
-    }
-    
-    span {
-      position: relative;
-      bottom: 2px;
+  .date {
+    color: grey;
+  }
+
+  .social {
+    margin-top: 0.2em;
+
+    /* copy the layout for the twitter button */
+    .facebook {
+      display: inline-block;
+      float: left;
+      margin-right: 4px;
+      font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+      color: #333;
+      border: 1px solid #ccc;
+      font-weight: bold;
+      text-shadow: 0 1px 0 rgba(255,255,255,.5);
+      cursor: pointer;
+      padding: 0 3px 0 2px;
+      white-space: nowrap;
+      background-color:#f8f8f8;
+      background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#dedede));
+      background-image:-moz-linear-gradient(top,#fff,#dedede);
+      background-image:-o-linear-gradient(top,#fff,#dedede);
+      background-image:-ms-linear-gradient(top,#fff,#dedede);
+      background-image:linear-gradient(top,#fff,#dedede);
+      border:#ccc solid 1px;
+      -moz-border-radius:3px;
+      -webkit-border-radius:3px;
+      border-radius:3px;
+      text-shadow:0 1px 0 rgba(255,255,255,.5);
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -o-user-select:none;
+      user-select:none;
+      height:18px;
+      max-width:98%;
+      overflow:hidden;
+
+      img {
+        width: 15px;
+        position: relative;
+        top: 1px;
+      }
+      
+      span {
+        position: relative;
+        bottom: 2px;
+      }
     }
   }
+
 }
 
-#mainPage .menu {
-  display: none;
-  color: white;
-  position: absolute;
-  top: @top - 2%;
-  left: 2.5%;
+.posts {
 
-  li {
-    margin-bottom: 40%;
+  padding-right: 1em;
 
-    &:first-child {
-      font-size: 250%;
+  .summary {
+    margin-bottom: 2em;
+
+    .date {
+      width: 14%;
+      display: inline;
+      font-size: 140%;
+      margin-right: 1em;
+    }
+
+    .title {
+      display: inline;
+      font-size: 130%;
+    }
+
+    .project {
+      display: inline;
+      margin-right: 1em;
+      background-color: lightgrey;
+      padding: 0.1em 0.3em;
+    }
+  }
+
+}
+
+#mainPage {
+
+  .menu {
+    display: none;
+    color: white;
+    position: absolute;
+    top: @top - 2%;
+    left: 2.5%;
+
+    li {
+      margin-bottom: 40%;
+
+      &:first-child {
+        font-size: 250%;
+      }
     }
   }
 
@@ -151,51 +196,9 @@ path {
   top: @top;
   overflow: auto;
 
-  .post:first-child{
-    margin-top: 5%;
-  }
-}
-
-.posts {
-
-  padding-right: 1em;
-
-  .post {
-    margin-bottom: 2em;
-  }
-
-  .postDate {
-    width: 14%;
-    display: inline;
-    font-size: 140%;
-    margin-right: 1em;
-  }
-
-  .postTitle {
-    display: inline;
-    font-size: 130%;
-  }
-
-  .postProject {
-    display: inline;
-    margin-right: 1em;
-    background-color: lightgrey;
-    padding: 0.1em 0.3em;
-  }
-
-}
-
-#postDetail {
-
-  width: 96%;
-
-  .postTitle {
-    font-size: 150%;
-    font-weight: bold;
-  }
-
-  .postDate {
-    color: grey;
+  .detail {
+    display: none;
+    width: 96%;
   }
 }
 
@@ -205,19 +208,20 @@ path {
   top: 0;
   left: 0;
   padding: 1.5em 1.5em;
-  font-size: 120%
-}
+  font-size: 120%;
 
-#contactBody > div {
-  margin-bottom: 0.4em;
-}
+  > div {
+    margin-bottom: 0.4em;
+  }
 
-#contactTitle {
-  font-size: 200%;
-}
+  .title {
+    font-size: 200%;
+  }
 
-#contactSocial {
-  margin-top: 0.8em;
+  .social {
+    margin-top: 0.8em;
+  }
+
 }
 
 #projectsBody {
@@ -226,15 +230,6 @@ path {
   bottom: 0;
   right: 0;
   width: 50%;
-  
-}
-
-#projectCarousel {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  float: right;
   text-align: right;
 
   .project {
@@ -251,30 +246,27 @@ path {
       color: black;
       cursor: pointer;
 
-      .projectTitle {
-        display: none;
-      }
-      .projectSummary {
-        display: block;
-      }
+      .title { display: none; }
+      .description { display: block; }
     }
 
-    .projectTitle {
+    .title {
       margin-top: 0.1em;
       margin-right: 0.1em;
     }
 
-    .projectSummary {
+    .description {
       display: none;
-      text-align: left;
       margin-top: 0.1em;
       margin-left: 0.1em;
     }
 
   }
+
+ 
 }
 
-#projectDetail {
+#projectMiniSite {
   display: none;
   .fullWindow-mixin;
   @menuHeight: 8%;
@@ -322,40 +314,37 @@ path {
 
   }
 
-  .body {
+  .index {
+    height: 100%;
 
-    padding: 0 2em;
-    height: 80%;
+    .pitch {
+      color: white;
+      padding: 0.5em;
+      border: 1px solid #eaeaea;
+      background-color: rgba(5, 5, 5, 0.6);
 
-    .summary {
-      height: 100%;
-
-      .pitch {
-        color: white;
-        padding: 0.5em;
-        border: 1px solid #eaeaea;
-        background-color: rgba(5, 5, 5, 0.6);
-
-        p:last-child {
-          margin-bottom: 0;
-        }
-      }
-
-      .posts {
-        margin-top: 1em;
-        height: 70%;
-        overflow: auto;
-        .postTitle {
-          color: black;
-        }
+      p:last-child {
+        margin-bottom: 0;
       }
     }
 
-    .detail {
-      height: 100%;
+    .posts {
+      margin-top: 1em;
+      height: 70%;
       overflow: auto;
+      .postTitle {
+        color: black;
+      }
     }
+  }
 
+  .detail {
+    height: 80%;
+    overflow: auto;
+  }
+
+  .index, .detail {
+    padding-left: 2em;
   }
 
 }

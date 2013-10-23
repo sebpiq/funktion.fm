@@ -1,5 +1,5 @@
 {{{
-  "title" : "WebPd refactor, bye bye Web Audio API",
+  "title" : "WebPd refactor, status update",
   "tags" : [],
   "category": "webpd",
   "date" : "10-12-2013"

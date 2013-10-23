@@ -7,51 +7,46 @@
   <h1><a href="#project/webpd">WebPd</a></h1>
 </div>
 
-<div class="body">
+<div class="index">
+  <div class="pitch">
+    <p>
+    WebPd is a 100% JavaScript Pure Data runtime. It aims at allowing a subset of Pure Data audio patches to run in the browser without plugins.
+    </p>
 
-  <div class="summary">
-    <div class="pitch">
-      <p>
-      WebPd is a 100% JavaScript Pure Data runtime. It aims at allowing a subset of Pure Data audio patches to run in the browser without plugins.
-      </p>
+    <p>
+    WebPd is also a standalone DSP library. Every object as you know it in Pure Data exposes a complete API, allowing developers to control everything with JavaScript.
+    </p>
 
-      <p>
-      WebPd is also a standalone DSP library. Every object as you know it in Pure Data exposes a complete API, allowing developers to control everything with JavaScript.
-      </p>
-
-      <p>
-        <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=watch&count=true&size=large"
-          allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
-        <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=fork&count=true&size=large"
-          allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
-      </p>
-    </div>
-
-    <div class="posts">
-    {{#each posts}}
-      <div class="post">
-        <div class="postDate">{{prettifyDate date}}</div>
-        <div class="postTitle"><a href="#project/webpd/post/{{slug}}">{{title}}</a></div>
-        <!--<div class="postTags"><span></span> {{#each tags}}<a href="">{{this}}</a><span class="separator">, </span> {{/each}}</div>-->
-        <div class="clearfix"></div>
-      </div>
-    {{/each}}
-    </div>
+    <p>
+      <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=watch&count=true&size=large"
+        allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+      <iframe src="http://ghbtns.com/github-btn.html?user=sebpiq&repo=webpd&type=fork&count=true&size=large"
+        allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+    </p>
   </div>
 
-  <div class="detail"></div>
-
+  <div class="posts">
+  {{#each posts}}
+    <div class="summary">
+      <div class="date">{{prettifyDate date}}</div>
+      <div class="title"><a href="#project/webpd/post/{{slug}}">{{title}}</a></div>
+      <div class="clearfix"></div>
+    </div>
+  {{/each}}
+  </div>
 </div>
+
+<div class="detail"></div>
 
 <script>
   (function() {
 
-    var $root = $('#projectDetail')
+    var $root = $('#projectMiniSite')
     $root.find('.menu .news').click(function() { window.location.hash = 'news' })
     $root.find('.menu .contact').click(function() { window.location.hash = 'contact' })
     $root.find('.menu .projects').click(function() { window.location.hash = 'projects' })
 
-    window.projectDetailRouter = function(route) {
+    window.projectMiniSiteRouter = function(route) {
 
       var routeElems = route.split('/')
 
@@ -60,7 +55,7 @@
         case 'post':
           $.get('{{site.root}}' + route, function(postHtml) {
             $root.find('.detail').html(postHtml)
-            $root.find('.summary').fadeOut(function() { $root.find('.detail').fadeIn() })
+            $root.find('.index').fadeOut(function() { $root.find('.detail').fadeIn() })
           })
           break
       }

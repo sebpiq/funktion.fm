@@ -146,7 +146,7 @@ var contactDrawings = function() {
   projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
 }
 
-var projectDetailDrawings = function() {
+var projectMiniSiteDrawings = function() {
   vert.makePolygon(allVertices, {
     polygon: [
       _.map(_.range(12), function(i) { return [0, width] }),
@@ -161,13 +161,13 @@ var projectDetailDrawings = function() {
 }
 
 var initMainPageLayout = function() {
-  $('#projectDetail').fadeOut()
+  $('#projectMiniSite').fadeOut()
   $('#mainPage').fadeIn()
   $('#mainPage .menu li').css({'text-decoration': 'none'})
   $('#contactBody').fadeOut()
   $('#projectsBody').fadeOut()
   $('#newsBody').fadeOut()
-  $('#projectDetail').fadeOut()
+  $('#projectMiniSite').fadeOut()
   $('#bgSvg').fadeIn(200)
 }
 
@@ -276,7 +276,7 @@ $(function() {
 
 
 // Routing
-window.projectDetailRouter = null
+window.projectMiniSiteRouter = null
 
 var mainRouter = function() {
  
@@ -310,7 +310,7 @@ var mainRouter = function() {
       $('#mainPage .menu li').css({color: 'white'})
       $('#mainPage .menu .news').css({'text-decoration': 'underline'})
       $('#newsBody').fadeIn()
-      $('#postDetail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
+      $('#newsBody .detail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
       break
 
     case '#post':
@@ -319,21 +319,20 @@ var mainRouter = function() {
       showMainPageMenu()
       $('#mainPage .menu li').css({color: 'white'})
       $('#mainPage .menu .news').css({'text-decoration': 'underline'})
-      $('#newsBody .posts').hide()
       $('#newsBody').fadeIn()
+      $('#newsBody .posts').fadeOut(function() { $('#newsBody .detail').fadeIn() })
       $.get(route.substr(1), function(postHtml) {
-        $('#postDetail').html(postHtml)
-        $('#newsBody .posts').fadeOut(function() { $('#postDetail').fadeIn() })
+        $('#newsBody .detail').html(postHtml)
       })
       break
 
     case '#project':
-      projectDetailDrawings()
-      $('#projectDetail').fadeIn()
+      projectMiniSiteDrawings()
+      $('#projectMiniSite').fadeIn()
       $('#mainPage').fadeOut()
       $.get('/' + routeElems.slice(0, 2).join('/').substr(1), function(postHtml) {
-        $('#projectDetail').html(postHtml)
-        projectDetailRouter(routeElems.slice(2).join('/'))   
+        $('#projectMiniSite').html(postHtml)
+        projectMiniSiteRouter(routeElems.slice(2).join('/'))   
       })
       break
 
