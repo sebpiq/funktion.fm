@@ -320,11 +320,17 @@ path {
     .pitch {
       color: white;
       padding: 0.5em;
+      margin: 0 2em;
       border: 1px solid #eaeaea;
       background-color: rgba(5, 5, 5, 0.6);
 
       p:last-child {
         margin-bottom: 0;
+      }
+
+      a {
+        color: white;
+        font-weight: bold;
       }
     }
 
@@ -332,8 +338,12 @@ path {
       margin-top: 1em;
       height: 70%;
       overflow: auto;
-      .postTitle {
-        color: black;
+
+      .summary {
+        margin: 0 2em;
+        .title {
+          color: black;
+        }
       }
     }
   }
@@ -341,10 +351,10 @@ path {
   .detail {
     height: 80%;
     overflow: auto;
-  }
-
-  .index, .detail {
-    padding-left: 2em;
+    
+    .post {
+      margin: 0 2em;
+    }
   }
 
 }
