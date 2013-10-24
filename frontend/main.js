@@ -240,41 +240,6 @@ var createSvgMenuItem = function(val, extraClass) {
   return text
 }
 
-$(function() {
-  width = $(window).width()
-  height = $(window).height()
-
-  svg = d3.select('#bgSvg')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('class', 'PiYG')
-  path = svg.append('g').selectAll('path')
-
-  var cols = 10, rows = 18
-  _.forEach(_.range(180), function(i) {
-    allVertices.push(new vert.Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
-  })
-
-  projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
-  projectsText.on('click', function() { window.location.hash = 'projects' })
-  newsText = createSvgMenuItem('NEWS', 'newsText')
-  newsText.on('click', function() { window.location.hash = 'news' })
-  contactText = createSvgMenuItem('funktion.fm', 'contactText')
-  contactText.on('click', function() { window.location.hash = 'contact' })
-
-  $('#mainPage .menu .news').click(function() { window.location.hash = 'news' })
-  $('#mainPage .menu .contact').click(function() { window.location.hash = 'contact' })
-  $('#mainPage .menu .projects').click(function() { window.location.hash = 'projects' })
-
-  // Animate the thing
-  drawTesselations()
-  setInterval(function() {
-    _.forEach(allVertices, function(v) { v.nextFrame() })
-    drawTesselations()
-  }, 20)
-})
-
-
 // Routing
 window.projectMiniSiteRouter = null
 
@@ -343,8 +308,51 @@ var mainRouter = function() {
 
 }
 
+// onload
 $(function() {
+
+  // Test for mobile devices
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+  $('body').html('Unfortunately this site doesn\'t support mobile devices yet.')
+
+  } else {
+
+  width = $(window).width()
+  height = $(window).height()
+
+  svg = d3.select('#bgSvg')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('class', 'PiYG')
+  path = svg.append('g').selectAll('path')
+
+  var cols = 10, rows = 18
+  _.forEach(_.range(180), function(i) {
+    allVertices.push(new vert.Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
+  })
+
+  projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
+  projectsText.on('click', function() { window.location.hash = 'projects' })
+  newsText = createSvgMenuItem('NEWS', 'newsText')
+  newsText.on('click', function() { window.location.hash = 'news' })
+  contactText = createSvgMenuItem('funktion.fm', 'contactText')
+  contactText.on('click', function() { window.location.hash = 'contact' })
+
+  $('#mainPage .menu .news').click(function() { window.location.hash = 'news' })
+  $('#mainPage .menu .contact').click(function() { window.location.hash = 'contact' })
+  $('#mainPage .menu .projects').click(function() { window.location.hash = 'projects' })
+
+  // Animate the thing
+  drawTesselations()
+  setInterval(function() {
+    _.forEach(allVertices, function(v) { v.nextFrame() })
+    drawTesselations()
+  }, 20)
+
   window.location.hash = window.location.hash || '#contact'
   mainRouter()
   $(window).on('hashchange', mainRouter)
+
+  }
 })
