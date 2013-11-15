@@ -48,5 +48,11 @@ fs.readdir(__dirname + '/templates/projects', function(err, files) {
 })
 
 hbs.registerHelper('prettifyDate', function(date) {
-  return '' + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+  return '' + normalizeDateElem(date.getDate()) 
+    + '/' + normalizeDateElem((date.getMonth() + 1))
+    + '/' + date.getFullYear()
 })
+var normalizeDateElem = function(elem) {
+  elem = elem.toString()
+  return (elem.length === 1) ? '0' + elem : elem
+}

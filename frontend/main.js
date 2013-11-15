@@ -142,8 +142,8 @@ var contactDrawings = function() {
   vert.makeFlower(cluster2, core2, width/6.5, 0.1)
   vert.makeFlower(cluster3, core3, width/6.5, 0.1)
 
-  newsText.moveToPosition([core2[0] - newsText.text().length * 9, core2[1] + 7])
-  projectsText.moveToPosition([core3[0] - projectsText.text().length * 9, core3[1] + 7])
+  newsText.moveToPosition([core2[0] - newsText.text().length * 11, core2[1] + 7])
+  projectsText.moveToPosition([core3[0] - projectsText.text().length * 7, core3[1] + 7])
 }
 
 var projectMiniSiteDrawings = function() {

@@ -36,9 +36,9 @@
       <div class="posts">
       {{#each getPosts}}
         <div class="summary">
+          <div class="title"><a href="#post/{{slug}}">{{title}}</a></div>
           <div class="date">{{prettifyDate date}}</div>
           {{#if category}}<div class="project"><a href="#project/{{category}}">{{category}}</a></div>{{/if}}
-          <div class="title"><a href="#post/{{slug}}">{{title}}</a></div>
           <div class="clearfix"></div>
         </div>
       {{/each}}

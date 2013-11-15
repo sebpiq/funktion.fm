@@ -1,17 +1,27 @@
 @top: 6.5%; /* top padding in normal pages */
+@linkColor: #226;
 
 @font-face {
-  font-family: 'Source Code Pro';
+  font-family: 'Futura';
   font-style: normal;
   font-weight: 400;
-  src: local('Source Code Pro'), local('SourceCodePro'), url('sourcecodepro/sourcecodepro-light-webfont.woff') format('woff');
+  src: local('Futura'), url('sebastienFonts/FuturaStd-Light.woff') format('woff');
 }
+
+@font-face {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Helvetica'), url('sebastienFonts/HelveticaNeueLTStd-Th.woff') format('woff');
+}
+
+
 
 html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: 'Source Code Pro', sans-serif;
+  font-family: 'Helvetica', courier;
   font-size: 14px;
   width: 100%;
   height: 100%;
@@ -20,16 +30,20 @@ html, body {
 a {
   text-decoration: none;
   font-weight: normal;
-  color: #33d;
+  color: @linkColor;
 }
 
 a:visited {
-  color: #33d;
+  color: @linkColor;
 }
 
 .menuItem {
   cursor: pointer;
   font-size: 200%;
+}
+
+#contactBody, .menuItem, .project {
+  font-family: 'Futura', courier;
 }
 
 .fullWindow-mixin {
@@ -67,14 +81,14 @@ path {
   li {
     .menuItem;
 
-    &:first-child {
-      font-weight: bold;
-    }
+    &:first-child {}
   }
 
 }
 
 .post {
+
+  font-size: 112%;
 
   .title {
     font-size: 150%;
@@ -142,22 +156,23 @@ path {
   .summary {
     margin-bottom: 2em;
 
-    .date {
-      width: 14%;
-      display: inline;
-      font-size: 140%;
-      margin-right: 1em;
+    .title {
+      display: block;
+      font-size: 130%;
     }
 
-    .title {
+    .date {
       display: inline;
-      font-size: 130%;
+      color: grey;
+      width: 14%;
+      font-size: 85%;
+      margin-right: 1em;
     }
 
     .project {
       display: inline;
       margin-right: 1em;
-      background-color: lightgrey;
+      background-color: #eee;
       padding: 0.1em 0.3em;
     }
   }
@@ -177,7 +192,7 @@ path {
       margin-bottom: 40%;
 
       &:first-child {
-        font-size: 250%;
+        font-size: 300%;
       }
     }
   }
@@ -188,9 +203,8 @@ path {
   color: black;
   display: none;
   position: absolute;
-  font-size: 14px;
   z-index: 1;
-  width: 72%;
+  width: 68%;
   right: 0%;
   height: 80%;
   top: @top;
@@ -215,7 +229,7 @@ path {
   }
 
   .title {
-    font-size: 200%;
+    font-size: 280%;
   }
 
   .social {
