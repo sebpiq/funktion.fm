@@ -1,5 +1,6 @@
 node_modules
 npm-debug.log
-public/js
+public/js/funktion.fm.js
 public/css
 *~
+.DS_Store
