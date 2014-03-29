@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <script src="{{static.root}}/js/jquery-2.1.0.min.js"></script>
+    <script src="{{static.root}}/js/underscore-min.js"></script>
+    <style>
+      body {
+        font-size: 50px
+      }
+
+      #answer .yes {
+        color: green;
+      }
+
+      #answer .no {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="answer"></div>
+
+    <script>
+      var isSupported = function() {
+        if ((!_.isUndefined(WebSocket)) && WebSocket.prototype.CLOSING === 2) {
+          if (window.AudioContext || window.webkitAudioContext) return true
+          else return false
+        } else return false
+      }
+
+      if (isSupported()) {
+        $('#answer').html('<div class="yes">This web browser is supported :)</div>')
+      } else $('#answer').html('<div class="no">This web browser is not supported. You can try to install Firefox or Chrome.</div>')
+    </script>
+
+  </body>
+
+</html>

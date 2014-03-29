@@ -21,6 +21,7 @@ app.listen(80, function() {
 })
 
 app.get('/', function (req, res) { res.render('index') })
+app.get('/fields/is_supported', function (req, res) { res.render('fields/is_supported') })
 
 poet.addRoute('/project/:name', function (req, res, next) {
   var projectName = req.params.name
