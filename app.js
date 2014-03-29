@@ -16,8 +16,8 @@ app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'))
 app.use(app.routes)
 
-app.listen(3000, function() {
-  console.log('listening on port ' + 3000)
+app.listen(80, function() {
+  console.log('listening on port ' + 80)
 })
 
 app.get('/', function (req, res) { res.render('index') })
