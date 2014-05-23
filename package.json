@@ -23,7 +23,9 @@
     "grunt-contrib-less": "0.7.x",
     "grunt-contrib-watch": "0.5.x",
     "grunt-contrib-copy": "0.4.x",
-    "grunt-browserify": "1.2.x"
+    "grunt-browserify": "1.2.x",
+
+    "director": "1.2.x"
   },
   "bugs": {
     "url": "https://github.com/sebpiq/funktion.fm/issues"

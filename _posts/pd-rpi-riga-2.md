@@ -5,6 +5,8 @@
   "date" : "11-01-2013"
 }}}
 
-<iframe src="//player.vimeo.com/video/76642179" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+A longer, more raw video of the jam session in Riga. 
 
-Above is a longer, more raw video of the jam session in Riga. 
+<!--more-->
+
+<iframe src="//player.vimeo.com/video/76642179" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>

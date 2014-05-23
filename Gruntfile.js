@@ -33,8 +33,8 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'frontend/vendor/jquery-2.0.3.js',
-          'frontend/vendor/carouFredSel-helpers/*',
-          'frontend/vendor/jquery.carouFredSel-6.2.1.js',
+          'frontend/vendor/jquery.mousewheel.js',
+          'frontend/vendor/jquery.jscrollpane.js',
           'frontend/vendor/d3.js',
           '/tmp/browserified.js'
         ],
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 
     watch: {
       scripts: {
-        files: ['frontend/*', 'Gruntfile.js'],
+        files: ['frontend/**/*.js', 'frontend/*.js', 'frontend/funktion.fm.less', 'Gruntfile.js'],
         tasks: ['devBuild'],
         options: {
           spawn: false,

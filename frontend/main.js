@@ -1,173 +1,17 @@
 var _ = require('underscore')
-  , vert = require('./vertices')
-  , width, height
-  , i, allVertices = []
-  , tessCount = 60
-  , transitionTime = 1500
-  , debugTesselations = false
-  , r = height/30
-  , svg, path
-
-var newsDrawings = function() {
-
-  var cluster1 = allVertices.slice(0, 60)
-    , cluster2 = allVertices.slice(60, 120)
-    , cluster3 = allVertices.slice(120, 180)
-  _.forEach(allVertices, function(v) { v.perturbation = 0.5 })
-
-  svg.selectAll('text').transition().attr('fill', 'white')
-
-  var sunGradient = vert.makeGradient([247, 194, 76], [255, 255, 255])
-  vert.makeSpiral(cluster1, {
-    core: [0.93*width, 0.12*height],
-    randomize: 0,
-    rStep: width/930,
-    slices: 10,
-    computeR: function(rand, context) {
-      return (context.r + rand) * (2 + Math.cos(2 * context.teta + Math.PI))
-    }
-  }, function(vertex, i) {
-    vertex.style = {fill: sunGradient(i / tessCount), 'fill-opacity': 1}
-  })
-
-  var stoneGradient = gradient = vert.makeGradient([0, 0, 0], [100, 100, 100])
-  vert.makePolygon(cluster2, {
-    polygon: [
-      _.range(6).map(function(i) { return [0, 0.1*width + (6 - i + 1)/6 * 0.16*width] }),
-      _.range(10).map(function() { return [0.1*height, 0.6*height] })
-    ],
-    randX: 5, randY: 20
-  }, function(vertex, row, col) {
-    if (col === 10 - 1) vertex.style = {fill: 'white', 'fill-opacity': 1}
-    else vertex.style = {fill: stoneGradient(col/10), 'fill-opacity': 0.9}
-  })
-  _.forEach(cluster2, function(v) { v.perturbation = 0 })
-
-  var seaGradient = vert.makeGradient([255, 255, 255], [60, 60, 75])
-  vert.makePolygon(cluster3, {
-    polygon: [
-      _.range(10).map(function(i) { return [width/12, 11*width/12] }),
-      _.range(6).map(function() { return [3 * height/4, height] })    
-    ]
-  }, function(vertex, row, col) {
-    vertex.style = {
-      fill: seaGradient((row === 0) ? 0 : Math.pow(1.35, row) / Math.pow(1.35, 10 - 1)),
-      'fill-opacity': 1
-    }
-  })
-  _.forEach(cluster3, function(v) { v.perturbation = 0.25 })
-}
-
-var projectsDrawings = function() {
-
-  var cluster1 = allVertices.slice(0, 80)  // foggy mountain
-    , cluster2 = allVertices.slice(80, 80 + 70) // foggy moutain 2
-    , cluster3 = allVertices.slice(80 + 70) // fog1
-    , cloudGradient = vert.makeGradient([255, 245, 160], [150, 150, 150])
-    , gradientCloudMountain1 = vert.makeGradient([150, 150, 150], [83, 102, 83])
-    , gradientCloudMountain2 = vert.makeGradient([150, 150, 150], [47, 94, 47])
-    , fogCenter = 0.3*width
-
-  // Foggy mountain1
-  vert.makeSpiral(cluster1, {
-    core: [0.75*width, 0.1*height],
-    randomize: 0.2,
-    rStep: width/800,
-    slices: 10,
-    computeTeta: function(rand, context) {
-      var teta = (context.teta % (2*Math.PI))
-      if (Math.PI*0.9 < teta && teta < Math.PI*1.5) context.teta = Math.PI*1.5
-      return rand + context.teta
-    },
-    computeR: function(rand, context) {
-      return (rand + context.r) * (1 + Math.abs(Math.cos(context.teta)))
-    }
-  }, function(vertex, i, r, teta) {
-    teta = (teta % (2*Math.PI))
-    if (Math.PI*0.2 < teta && teta < Math.PI*0.8)
-      vertex.style = {fill: gradientCloudMountain1(i / (2*tessCount)), 'fill-opacity': 1}
-    else if (Math.PI < teta && teta < 2*Math.PI)
-      vertex.style = {fill: cloudGradient(0.5 * 1 - i / (2*tessCount)), 'fill-opacity': 1}
-    else
-      vertex.style = {fill: cloudGradient(0.5 + 0.5 * i / (2*tessCount)), 'fill-opacity': 1}
-  })
-  _.forEach(cluster1, function(v) { v.perturbation = 0.1 })
-
-  // Foggy mountain2
-  vert.makeSpiral(cluster2, {
-    core: [0.3*width, 0.5*height],
-    randomize: 0.2,
-    rStep: width/800,
-    slices: 13,
-    computeTeta: function(rand, context) {
-      var teta = (context.teta % (2*Math.PI))
-      if ((Math.PI*0.9 < teta && teta < Math.PI*2) || teta < Math.PI*0.1) context.teta = Math.PI*0.1
-      return rand + context.teta
-    },
-    computeR: function(rand, context) {
-      return (rand + context.r) * (1 + Math.abs(Math.cos(context.teta)) * 3)
-    }
-  }, function(vertex, i, r, teta) {
-    teta = (teta % (2*Math.PI))
-    if ((Math.PI*0.2 < teta && teta < Math.PI*0.8) || (Math.PI*0.2 < teta && teta < Math.PI*0.85 && r > 0.2*width))
-      vertex.style = {fill: gradientCloudMountain2(i / (2*tessCount)), 'fill-opacity': 1}
-    else
-      vertex.style = {fill: '#393f39', 'fill-opacity': 1}
-  })
-  _.forEach(cluster2, function(v) { v.perturbation = 0 })
-
-  // Fog1
-  vert.makePolygon(cluster3, {
-    polygon: [
-      _.map(_.range(15), function(i) { return [fogCenter, fogCenter+width/1200] }),
-      _.map(_.range(2), function(i) { return [0.05*height + i*0.008*width, 0.3*height + i*0.008*width] })
-    ],
-    randX: 5
-  }, function(vertex, row, col) {
-    vertex.style = {fill: cloudGradient(row/13), 'fill-opacity': 1}
-  })
-  _.forEach(cluster3, function(v) { v.perturbation = 0.02 })
-}
-
-var contactDrawings = function() {
-  var cluster1 = allVertices.slice(0, 60)
-    , cluster2 = allVertices.slice(60, 120)
-    , cluster3 = allVertices.slice(120, 180)
-    , core1 = [width/10, height/15]
-    , core2 = [0.8 * width, 4 * height/5]
-    , core3 = [7 * width/8, height/7]
-
-  _.forEach(allVertices, function(v) { v.perturbation = 0.3 })
-  vert.makeFlower(cluster1, core1, width/2.2, 0.1)
-  vert.makeFlower(cluster2, core2, width/6.5, 0.1)
-  vert.makeFlower(cluster3, core3, width/6.5, 0.1)
-
-  newsText.moveToPosition([core2[0] - newsText.text().length * 10, core2[1] + 7])
-  projectsText.moveToPosition([core3[0] - projectsText.text().length * 8, core3[1] + 7])
-}
-
-var projectMiniSiteDrawings = function() {
-  vert.makePolygon(allVertices, {
-    polygon: [
-      _.map(_.range(12), function(i) { return [0, width] }),
-      _.map(_.range(15), function(i) { return [0.06*height, height] })
-    ],
-    randX: 15,
-    randY: 15,
-  }, function(vertex, row, col) {
-    if (row === 0) vertex.style = {fill: '#444', 'fill-opacity': 1}
-    else vertex.style = {fill: 'white', stroke: '#ddd'}
-  })
-}
+  , Router = require('director').Router
+  , Vertex = require('./drawing-tools/Vertex')
+  , tessellations = require('./drawing-tools/tessellations')
+  , drawings = require('./drawings')
+  , context = require('./context')
+  , config = require('./config')
 
 var initMainPageLayout = function() {
-  $('#projectMiniSite').fadeOut()
   $('#mainPage').fadeIn()
   $('#mainPage .menu li').css({'text-decoration': 'none'})
   $('#contactBody').fadeOut()
   $('#projectsBody').fadeOut()
   $('#newsBody').fadeOut()
-  $('#projectMiniSite').fadeOut()
   $('#bgSvg').fadeIn(200)
 }
 
@@ -176,136 +20,20 @@ var showMainPageMenu = function() {
   $('#mainPage .menu').fadeIn()
 }
 
-// ---------- MISC ---------- //
-
-// Calculate Voronoi tesselation
-var calculateTesselation = function() {
-  return d3.geom.voronoi(allVertices).map(function(d, i) {
-    return { d: 'M' + d.join('L') + 'Z' }
-  })
-}
-
-// Draw tesselation
-var drawTesselations = function() {
-  if (debugTesselations) {
-    svg.selectAll('circle').data(allVertices).enter().append('circle')
-      .attr('r', function (d) { return 5 })
-    svg.selectAll('circle').data(allVertices)
-      .attr('cx', function (d) { return d[0] })
-      .attr('cy', function (d) { return d[1] })
-      .attr('fill', function(d) { return d.debugColor })
-  }
-
-  path = path.data(calculateTesselation())
-  path.exit().remove()
-  path.enter()
-    .append('path')
-  path
-    .attr('d', function(d) { return String(d.d) })
-    .each(function(d, i) {
-      var self = this
-      if (allVertices[i].style) {
-        var transition = d3.select(self).transition()
-
-        if (allVertices[i].style.fill && !allVertices[i].style.stroke)
-          allVertices[i].style.stroke = allVertices[i].style.fill
-
-        _.chain(allVertices[i].style).pairs().forEach(function(pair) {
-          var propName = pair[0]
-            , propValue = pair[1]
-          transition.attr(propName, propValue)
-        }).value()
-        transition.duration(transitionTime)
-        delete allVertices[i].style
-      }
-    })
-  path.order()
-}
-
 var createSvgMenuItem = function(val, extraClass) {
   var classed = {'menuItem': true}
-    , text = svg.append('text')
+    , text = context.svg.append('text')
 
   classed[extraClass] = true
-  text    
-    .text(val)
+  text.text(val)
     .classed(classed)
 
   text.moveToPosition = function(position) {
-    this
-      .attr('x', function(d) { return position[0] })
+    this.attr('x', function(d) { return position[0] })
       .attr('y', function(d) { return position[1] })
   }
 
   return text
-}
-
-// Routing
-window.projectMiniSiteRouter = null
-
-var mainRouter = function() {
- 
-  var route = window.location.hash
-    , routeElems = route.split('/')
-
-  switch (routeElems[0]) {
-
-    case '#contact':
-      contactDrawings()
-      initMainPageLayout()
-      d3.selectAll('text.menuItem').transition().style('opacity', 1)
-      $('#mainPage .menu').fadeOut()
-      $('#contactBody').fadeIn()
-      break
-
-    case '#projects':
-      projectsDrawings()
-      initMainPageLayout()
-      showMainPageMenu()
-      $('#mainPage .menu li').css({color: 'white'})
-      $('#mainPage .menu .contact').css({color: 'black'})
-      $('#mainPage .menu .projects').css({'text-decoration': 'underline'})
-      $('#projectsBody').fadeIn()
-      break
-
-    case '#news':
-      newsDrawings()
-      initMainPageLayout()
-      showMainPageMenu()
-      $('#mainPage .menu li').css({color: 'white'})
-      $('#mainPage .menu .news').css({'text-decoration': 'underline'})
-      $('#newsBody').fadeIn()
-      $('#newsBody .detail').fadeOut(function() { $('#newsBody .posts').fadeIn() })
-      break
-
-    case '#post':
-      newsDrawings()
-      initMainPageLayout()
-      showMainPageMenu()
-      $('#mainPage .menu li').css({color: 'white'})
-      $('#mainPage .menu .news').css({'text-decoration': 'underline'})
-      $('#newsBody').fadeIn()
-      $('#newsBody .posts').fadeOut(function() { $('#newsBody .detail').fadeIn() })
-      $.get(route.substr(1), function(postHtml) {
-        $('#newsBody .detail').html(postHtml)
-      })
-      break
-
-    case '#project':
-      projectMiniSiteDrawings()
-      $('#projectMiniSite').fadeIn()
-      $('#mainPage').fadeOut()
-      $.get('/' + routeElems.slice(0, 2).join('/').substr(1), function(postHtml) {
-        $('#projectMiniSite').html(postHtml)
-        projectMiniSiteRouter(routeElems.slice(2).join('/'))   
-      })
-      break
-
-    default:
-      alert('address not found')
-      break
-  }
-
 }
 
 // onload
@@ -314,45 +42,124 @@ $(function() {
   // Test for mobile devices
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
-  $('body').html('Unfortunately this site doesn\'t support mobile devices yet.')
+    $('body').html('Unfortunately this site doesn\'t support mobile devices yet.')
 
   } else {
 
-  width = $(window).width()
-  height = $(window).height()
+    // Add scroll bars
+    $('#projectsBody').jScrollPane({ hideFocus: true })
+    $('#newsBody').jScrollPane({ hideFocus: true })
 
-  svg = d3.select('#bgSvg')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('class', 'PiYG')
-  path = svg.append('g').selectAll('path')
+    // Move the read more links to the last paragraph
+    $('#newsBody .preview .readMore').each(function() {
+      $(this).prev('p').append(this)
+    })
 
-  var cols = 10, rows = 18
-  _.forEach(_.range(180), function(i) {
-    allVertices.push(new vert.Vertex((i%cols)*width/cols, Math.floor(i/cols)*width/rows))
-  })
+    // Window width and height
+    context.width = $(window).width()
+    context.height = $(window).height()
 
-  projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
-  projectsText.on('click', function() { window.location.hash = 'projects' })
-  newsText = createSvgMenuItem('NEWS', 'newsText')
-  newsText.on('click', function() { window.location.hash = 'news' })
-  contactText = createSvgMenuItem('funktion.fm', 'contactText')
-  contactText.on('click', function() { window.location.hash = 'contact' })
+    // Get d3 selections
+    context.svg = d3.select('#bgSvg')
+      .attr('width', context.width)
+      .attr('height', context.height)
+      .attr('class', 'PiYG')
+    context.path = context.svg.append('g').selectAll('path')
 
-  $('#mainPage .menu .news').click(function() { window.location.hash = 'news' })
-  $('#mainPage .menu .contact').click(function() { window.location.hash = 'contact' })
-  $('#mainPage .menu .projects').click(function() { window.location.hash = 'projects' })
+    // Create the vertices
+    _.forEach(_.range(config.vertexCount), function(i) {
+      context.vertices.push(new Vertex(
+        (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
+        Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
+      )
+    })
 
-  // Animate the thing
-  drawTesselations()
-  setInterval(function() {
-    _.forEach(allVertices, function(v) { v.nextFrame() })
-    drawTesselations()
-  }, 20)
+    // Creating menu items for contact page
+    projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
+    projectsText.on('click', function() { window.location.hash = 'projects' })
+    newsText = createSvgMenuItem('NEWS', 'newsText')
+    newsText.on('click', function() { window.location.hash = 'news' })
+    contactText = createSvgMenuItem('funktion.fm', 'contactText')
+    contactText.on('click', function() { window.location.hash = 'contact' })
 
-  window.location.hash = window.location.hash || '#contact'
-  mainRouter()
-  $(window).on('hashchange', mainRouter)
+    // Animate the thing
+    tessellations.draw()
+    setInterval(function() {
+      _.forEach(context.vertices, function(v) { v.nextFrame() })
+      tessellations.draw()
+    }, 20)
+
+    // Handler for when clicked on a project tile 
+    var projectFocused = null
+    $('#projectsBody .project').click(function() {
+      var project = $(this)
+
+      var focusToProject = function() {
+        projectFocused = project
+        project.find('.thumbnail').fadeOut(100, function() {
+          project.addClass('expanded')
+          project.find('.content').fadeIn(100)
+        })
+      }
+
+      if (projectFocused) {
+        if (project.is(projectFocused)) return
+        projectFocused.find('.content').fadeOut(100, function() {
+          projectFocused.removeClass('expanded')
+          projectFocused.find('.thumbnail').fadeIn(100)
+          focusToProject()
+        })
+      } else focusToProject()
+    })
+
+    var routes = {
+      '/contact': function() {
+        var cores = drawings.contact()
+        newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
+        projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
+        initMainPageLayout()
+        d3.selectAll('text.menuItem').transition().style('opacity', 1)
+        $('#mainPage .menu').fadeOut()
+        $('#contactBody').fadeIn()
+      },
+
+      '/news': function() {
+        drawings.news()
+        initMainPageLayout()
+        showMainPageMenu()
+        $('#mainPage .menu').addClass('news').removeClass('contact').removeClass('projects')
+        $('#postBody').fadeOut(function() { $('#newsBody').fadeIn() })
+      },
+
+      '/post/:postId': function() {
+        drawings.news()
+        initMainPageLayout()
+        showMainPageMenu()
+        $('#mainPage .menu').addClass('news').removeClass('contact').removeClass('projects')
+        $('#newsBody').fadeOut(function() {
+          $.get(window.location.hash.substr(1), function(postHtml) {
+            $('#postBody').fadeIn()
+            $('#postBody').html(postHtml)
+            $('#postBody .post').jScrollPane({ hideFocus: true })
+          })
+        })
+      },
+
+      '/projects': function() {
+        drawings.projects()
+        initMainPageLayout()
+        showMainPageMenu()
+        $('#mainPage .menu').addClass('projects').removeClass('contact').removeClass('news')
+        $('#projectsBody').fadeIn()
+      },
+
+      '/projects/:projectName': function() {
+
+      }
+    }
+    var router = Router(routes)
+    router.init()
+    window.location.hash = window.location.hash || '#contact'
 
   }
 })

@@ -5,48 +5,32 @@ var express = require('express')
   , fs = require('fs')
   , _ = require('underscore')
   , poet = Poet(app, {
-    posts: __dirname + '/_posts/',
+    posts: './_posts/',
     postsPerPage: 5,
+    readMoreLink: function(post) {
+      return '<a href="#' + post.url + '" class="readMore">&gt;</a>'
+    },
     metaFormat: 'json'
   })
 
-app.locals.static = {static: {root: '/'}, site: {root: '/'}}
+app.locals.static = { static: { root: '/' }, site: { root: '/' } }
 app.set('views', __dirname + '/templates')
 app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'))
 app.use(app.routes)
 
-app.listen(80, function() {
-  console.log('listening on port ' + 80)
+app.listen(3000, function() {
+  console.log('listening on port ' + 3000)
 })
 
-app.get('/', function (req, res) { res.render('index') })
+app.get('/', function (req, res) {
+  res.render('index', {
+    projectPosts: poet.helpers.postsWithTag('project')
+  })
+})
+
+// Test if Fields is supported
 app.get('/fields/is_supported', function (req, res) { res.render('fields/is_supported') })
-
-poet.addRoute('/project/:name', function (req, res, next) {
-  var projectName = req.params.name
-
-  if (projectNames.indexOf(projectName) !== -1) {
-    res.render('projects/' + projectName, {posts: poet.helpers.postsWithCategory(projectName)})
-  } else {
-    res.status(404)
-    res.send(projectName)
-  }
-
-}).init().then(function () {
-  console.log('poet running')
-})
-
-// Automatically generate the list of project names
-var projectNames
-fs.readdir(__dirname + '/templates/projects', function(err, files) {
-  if (err) throw err
-  projectNames = _.filter(files, function(fileName) { return /\w+\.hbs$/.exec(fileName) })
-    .map(function(tmplName) {
-      return tmplName.substr(0, tmplName.length - ('.hbs'.length))
-    })
-  console.log('projects found : ', projectNames)
-})
 
 hbs.registerHelper('prettifyDate', function(date) {
   return '' + normalizeDateElem(date.getDate()) 
@@ -57,3 +41,7 @@ var normalizeDateElem = function(elem) {
   elem = elem.toString()
   return (elem.length === 1) ? '0' + elem : elem
 }
+
+poet.init().then(function () {
+  console.log('poet ready')
+})

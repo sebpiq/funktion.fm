@@ -1,7 +1,7 @@
 {{{
   "title" : "WebPd refactor, status update",
-  "tags" : [],
-  "category": "webpd",
+  "tags" : ["project"],
+  "project": "webpd",
   "date" : "10-12-2013"
 }}}
 

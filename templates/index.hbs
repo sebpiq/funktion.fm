@@ -4,20 +4,21 @@
   <title>funktion.fm</title>
   <meta charset="utf-8">
   <link href="{{static.root}}css/webfontkit/stylesheet.css" rel="stylesheet" type="text/css">
+  <link href="{{static.root}}css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
   <link href="{{static.root}}css/funktion.fm.css" rel="stylesheet" type="text/css">
   <script src="{{static.root}}js/funktion.fm.js"></script>
   <script src="http://platform.twitter.com/widgets.js"></script>
 </head>
 
 <body>
-
   <svg id="bgSvg"></svg>
   <div id="mainPage">
 
     <ul class="menu">
-      <li class="contact">funktion.fm</li>
-      <li class="news">NEWS</li>
-      <li class="projects">PROJECTS</li>
+      <li class="contact"><a href="#/contact">funktion.fm</a></li>
+      <li class="news"><a href="#/news">NEWS</a></li>
+      <li class="projects"><a href="#/projects">PROJECTS</a></li>
+      <li class="clearfix"></li>
     </ul>
 
     <div id="contactBody">
@@ -33,51 +34,91 @@
     </div>
 
     <div id="newsBody">
-
-      <div class="posts">
       {{#each getPosts}}
-        <div class="summary">
-          <div class="title"><a href="#post/{{slug}}">{{title}}</a></div>
+      <div class="summary">
+        <div class="title">
           <div class="date">{{prettifyDate date}}</div>
-          {{#if category}}<div class="project"><a href="#project/{{category}}">{{category}}</a></div>{{/if}}
-          <div class="clearfix"></div>
+          <a href="#post/{{slug}}">{{title}}</a>
         </div>
-      {{/each}}
+        <div class="preview">{{{preview}}}</div>
+        <div class="clearfix"></div>
       </div>
-
-      <div class="detail"></div>
-
+      {{/each}}
     </div>
+
+    <div id="postBody"></div>
 
     <div id="projectsBody">
-      <a class="project" href="#project/tonuglawo">
-        <div class="title">Tonuglawo</div>
-        <div class="description">
-          An experimental performance based on wireless microphones and a playful audience.
-        </div>
-      </a>
-      <a class="project" href="#project/versificatorfm">
-        <div class="title">versificator.fm</div>
-        <div class="description">
-          A computer program which generates an infinite stream of music by using collage techniques.
-        </div>
-      </a>
-      <a class="project" href="#project/webpd">
-        <div class="title">WebPd</div>
-        <div class="description">
-          Run your Pure Data patches in the browser, 100% pure JavaScript.
-        </div>
-      </a>
-      <a class="project" href="#project/rpi-workshops">
-        <div class="title">Pure Data and Raspberry Pi workshops</div>
-        <div class="description">
-          Building portable instruments with Pure Data and Raspberry Pi.
-        </div>
-      </a>
-    </div>
-  </div>
 
-  <div id="projectMiniSite"></div>
+      <div class="project tile1" data-href="#projects/fields">
+        <div class="thumbnail">
+          <img src="images/projects/fields-video-1.jpg" style="margin-top:65px" />
+        </div>
+        <div class="content">
+          <iframe src="//player.vimeo.com/video/92586493?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="margin-top:65px"></iframe>
+        </div>
+      </div>
+
+      <div class="project tile1" data-href="#projects/pd-rpi-workshop">
+        <div class="thumbnail">
+          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+        </div>
+        <div class="content">
+          <iframe src="//player.vimeo.com/video/76307579?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
+        <div class="thumbnail">
+          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+        </div>
+        <div class="content">
+          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+        </div>
+      </div>
+
+      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
+        <div class="thumbnail">
+          <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
+        </div>
+        <div class="content">
+          <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
+        </div>
+      </div>
+
+      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
+        <div class="thumbnail">
+          <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
+        </div>
+        <div class="content">
+          <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
+        </div>
+      </div>
+
+      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
+        <div class="thumbnail">
+          <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
+        </div>
+        <div class="content">
+          <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
+        </div>
+      </div>
+
+
+      {{#each projectPosts}}
+      <div class="project tile2" data-href="#projects/{{project}}">
+        <div class="thumbnail">
+          <div class="title">{{title}}</div>
+        </div>
+        <div class="content">
+          {{{preview}}}
+        </div>        
+      </div>
+      {{/each}}
+
+    </div>
+
+  </div>
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
