@@ -4,7 +4,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  /*overflow: hidden;*/
+  overflow: hidden;
   font-family: 'helvetica_neue_lt_std35_thin', courier;
   font-size: 14px;
   width: 100%;
@@ -15,6 +15,7 @@ a {
   text-decoration: none;
   outline : none;
   color: @linkColor;
+  cursor: pointer;
 
   img {
     outline : none;
@@ -29,14 +30,6 @@ img {
   border : 0;
 }
 
-.fullWindowMixin {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
 .unselectableMixin {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -44,6 +37,10 @@ img {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.jspane {
+  padding: 0;
 }
 
 .jspVerticalBar {
@@ -60,7 +57,6 @@ img {
 .menuItem {
   .unselectableMixin;
   cursor: pointer;
-  font-size: 500%;
 }
 
 #contactBody, .menuItem, .project {
@@ -78,14 +74,22 @@ img {
 }
 
 svg {
-  .fullWindowMixin;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  path {
+    stroke-width: 1;
+  }
+
+  text {
+    font-size: 200%;
+  }
 }
 
-path {
-  stroke-width: 1;
-}
-
-/* General options for landing menu and pages menus */
+/* Style for both landing menu and pages menus */
 .menu {
 
   list-style: none;
@@ -94,68 +98,104 @@ path {
 
   li {
     .menuItem;
-    &:first-child {}
-  }
-
-  &.projects {
-    li a { color: white; }
-    .contact a { color: black; }
-    .projects a { text-decoration: underline; }
-  }
-
-  &.news {
-    li a { color: white; }
-    .news a { text-decoration: underline; }
+    a {
+      text-decoration: none;
+      color: white;
+    }
   }
 
 }
 
 #mainPage {
-  .fullWindowMixin;
-  overflow: hidden;
+  height: 100%;
+  width: 100%;
 
-  .menu {
+  #nav {
     display: none;
-    color: white;
-    margin: 1em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    font-size: 280%;
 
-    li {
-      display: inline-block;
-      margin-right: 1em;
-      float: right;
-      a { color: black; }
+    &.expanded {
+      cursor: initial;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-bottom-right-radius: 0.5em;
+      border-top-right-radius: 0.5em;
 
-      &:first-child {
-        font-weight: bold;
-        float: none;
-        font-size: 280%;
-        position: relative;
-        top: 0.3em;
-      }
-
-    }
-
-    &.news {
-      li {
-        &:first-child {
-          a { color: white; }
+      &.projects {
+        .toggle {
+          img.white { display: block; }
+          img.black { display: none; }
         }
       }
     }
+
+    &.contact {
+      display: none;
+    }
+
+    &.projects {
+      .toggle {
+        img.black { display: block; }
+      }
+      .menu {
+        .projects a { text-decoration: underline; }
+      }
+    }
+
+    &.news {
+      .toggle {
+        img.white { display: block; }
+      }
+      .menu {
+        .news a { text-decoration: underline; }
+      }
+    }
+
+    .toggle {
+      padding: 1em;
+      display: block;
+
+      img {
+        display: none;
+        width: 2em;
+      }
+    }
+
+    .menu {
+      display: none;
+      padding: 0 0.8em;
+      margin-top: 1em;
+
+      li {
+        display: block;
+        margin-bottom: 1.5em;
+        a {
+          color: #bbb;
+        }
+        &:first-child {
+          a {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
   }
 
 }
 
 .newsMixin {
   height: 78%;
-  margin-left: 20%;
-  padding-top: 3em;
+  margin-left: 27%;
+  margin-top: 2.7%;
   overflow: auto;
   color: black;
 
   .title {
     font-size: 150%;
-    text-transform: uppercase;
     letter-spacing: -0.05em;
     color: @linkColor;
     font-family: 'source_code_proextralight', courier;
@@ -167,10 +207,11 @@ path {
 
   .summary {
     margin-bottom: 3em;
-    font-size: 120%;
+    font-size: 100%;
 
     .title {
       display: block;
+      text-transform: uppercase;
 
       a {
         display: block;
@@ -294,63 +335,52 @@ path {
   height: 100%;
   text-align: right;
 
-  @tileSize: 300px;
+  @tileSize: 150px;
   @tileMargin: 0px;
 
   .project {
-    opacity: 0.1;
-    color: white;
-    float: right;
-    margin-right: @tileMargin;
-    margin-bottom: @tileMargin;
-    background-color: #000;
 
-    cursor: pointer;
-
-    &.tile1 {
+    .tile {
       width: @tileSize;
       height: @tileSize;
-    }
+      opacity: 0.5;
+      color: white;
+      display: inline-block;
+      margin-right: @tileMargin;
+      margin-bottom: @tileMargin;
+      background-color: #000;
+      cursor: pointer;
 
-    &.tile2 {
-      width: @tileSize;
-      height: @tileSize/2 - @tileMargin/2;
-    }
+      &:hover {
+        opacity: 1;
+      }
 
-    &.tile3 {
-      width: @tileSize/2 - @tileMargin/2;
-      height: @tileSize/2 - @tileMargin/2;
-    }
-
-    &:hover {
-      opacity: 1;
-    }
-
-    .description {
-      display: none;
-      margin-top: 0.1em;
-      margin-left: 0.1em;
-    }
-
-    .content {
-      display: none;
-    }
-
-    &.expanded {
-
-      opacity: 1;
-
-      .thumbnail {
+      .description {
         display: none;
+        margin-top: 0.1em;
+        margin-left: 0.1em;
       }
 
       .content {
-        display: block;
+        display: none;
+      }
+
+      &.expanded {
+
+        opacity: 1;
+
+        .thumbnail {
+          display: none;
+        }
+
+        .content {
+          display: block;
+        }
+
       }
 
     }
 
   }
 
- 
 }

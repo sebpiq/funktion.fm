@@ -6,7 +6,6 @@
   <link href="{{static.root}}css/webfontkit/stylesheet.css" rel="stylesheet" type="text/css">
   <link href="{{static.root}}css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
   <link href="{{static.root}}css/funktion.fm.css" rel="stylesheet" type="text/css">
-  <script src="{{static.root}}js/funktion.fm.js"></script>
   <script src="http://platform.twitter.com/widgets.js"></script>
 </head>
 
@@ -14,12 +13,17 @@
   <svg id="bgSvg"></svg>
   <div id="mainPage">
 
-    <ul class="menu">
-      <li class="contact"><a href="#/contact">funktion.fm</a></li>
-      <li class="news"><a href="#/news">NEWS</a></li>
-      <li class="projects"><a href="#/projects">PROJECTS</a></li>
-      <li class="clearfix"></li>
-    </ul>
+    <div id="nav">
+      <a class="toggle">
+        <img class="white" src="{{static.root}}images/nav-white.svg" />
+        <img class="black" src="{{static.root}}images/nav-black.svg" />
+      </a>
+      <ul class="menu">
+        <li class="contact"><a href="#/contact">funktion.fm</a></li>
+        <li class="news"><a href="#/news">NEWS</a></li>
+        <li class="projects"><a href="#/projects">PROJECTS</a></li>
+      </ul>
+    </div>
 
     <div id="contactBody">
       <div class="title">funktion.fm</div>
@@ -50,71 +54,73 @@
 
     <div id="projectsBody">
 
-      <div class="project tile1" data-href="#projects/fields">
-        <div class="thumbnail">
-          <img src="images/projects/fields-video-1.jpg" style="margin-top:65px" />
+      <!-- FIELDS -->
+      <div class="project">
+
+        <div class="tile info">
+          
         </div>
-        <div class="content">
-          <iframe src="//player.vimeo.com/video/92586493?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="margin-top:65px"></iframe>
+
+        <div class="tile" data-href="#projects/fields">
+          <div class="thumbnail">
+            <img src="images/projects/fields-video-1.jpg" style="margin-top:65px" />
+          </div>
+          <div class="content">
+            <iframe src="//player.vimeo.com/video/92586493?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="margin-top:65px"></iframe>
+          </div>
         </div>
+
       </div>
 
-      <div class="project tile1" data-href="#projects/pd-rpi-workshop">
-        <div class="thumbnail">
-          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
-        </div>
-        <div class="content">
-          <iframe src="//player.vimeo.com/video/76307579?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-        </div>
-      </div>
+      <!-- Raspberry Pi workshops -->
+      <div class="project">
 
-      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
-        <div class="thumbnail">
-          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+        <div class="tile" data-href="#projects/pd-rpi-workshop">
+          <div class="thumbnail">
+            <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+          </div>
+          <div class="content">
+            <iframe src="//player.vimeo.com/video/76307579?title=0&amp;byline=0&amp;portrait=0" width="300" height="169" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
         </div>
-        <div class="content">
-          <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
-        </div>
-      </div>
 
-      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
-        <div class="thumbnail">
-          <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
+        <div class="tile" data-href="#projects/pd-rpi-workshop">
+          <div class="thumbnail">
+            <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+          </div>
+          <div class="content">
+            <img src="images/projects/pd-rpi-workshop-1.jpg" style="width:100%" />
+          </div>
         </div>
-        <div class="content">
-          <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
-        </div>
-      </div>
 
-      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
-        <div class="thumbnail">
-          <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
+        <div class="tile" data-href="#projects/pd-rpi-workshop">
+          <div class="thumbnail">
+            <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
+          </div>
+          <div class="content">
+            <img src="images/projects/pd-rpi-workshop-2.jpg" style="width:100%" />
+          </div>
         </div>
-        <div class="content">
-          <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
-        </div>
-      </div>
 
-      <div class="project tile3" data-href="#projects/pd-rpi-workshop">
-        <div class="thumbnail">
-          <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
+        <div class="tile" data-href="#projects/pd-rpi-workshop">
+          <div class="thumbnail">
+            <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
+          </div>
+          <div class="content">
+            <img src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" />
+          </div>
         </div>
-        <div class="content">
-          <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
-        </div>
-      </div>
 
-
-      {{#each projectPosts}}
-      <div class="project tile2" data-href="#projects/{{project}}">
-        <div class="thumbnail">
-          <div class="title">{{title}}</div>
+        <div class="tile" data-href="#projects/pd-rpi-workshop">
+          <div class="thumbnail">
+            <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
+          </div>
+          <div class="content">
+            <img src="images/projects/pd-rpi-workshop-4.jpg" style="width:100%" />
+          </div>
         </div>
-        <div class="content">
-          {{{preview}}}
-        </div>        
+
       </div>
-      {{/each}}
 
     </div>
 
@@ -129,6 +135,8 @@
     ga('create', 'UA-17637518-4', 'funktion.fm');
     ga('send', 'pageview');
   </script>
+
+  <script src="{{static.root}}js/funktion.fm.js"></script>
 
 </body>
 

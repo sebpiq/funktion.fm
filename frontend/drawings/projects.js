@@ -12,7 +12,7 @@ module.exports = function() {
     , cloudGradient = utils.makeGradient([255, 245, 160], [150, 150, 150])
     , gradientCloudMountain1 = utils.makeGradient([150, 150, 150], [83, 102, 83])
     , gradientCloudMountain2 = utils.makeGradient([150, 150, 150], [47, 94, 47])
-    , fogCenter = 0.3*context.width
+    , fogCenter = 0.25*context.width
 
   // Foggy mountain1
   shapes.makeSpiral(cluster1, {
@@ -41,7 +41,7 @@ module.exports = function() {
 
   // Foggy mountain2
   shapes.makeSpiral(cluster2, {
-    core: [0.3*context.width, 0.5*context.height],
+    core: [0.25*context.width, 0.5*context.height],
     randomize: 0.2,
     rStep: context.width/800,
     slices: 13,
@@ -71,7 +71,7 @@ module.exports = function() {
       _.map(_.range(2), function(i) {
         return [
           0.05*context.height + i*0.008*context.width,
-          0.3*context.height + i*0.008*context.width
+          0.3*context.height + i*0.01*context.width
         ]
       })
     ],

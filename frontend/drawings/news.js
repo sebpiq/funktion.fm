@@ -27,20 +27,21 @@ module.exports = function() {
     vertex.style = {fill: sunGradient(i / clusterSize), 'fill-opacity': 1}
   })
 
-  var stoneGradient = gradient = utils.makeGradient([0, 0, 0], [100, 100, 100])
+  var stoneGradient = gradient = utils.makeGradient([0, 0, 0], [150, 150, 150])
   shapes.makePolygon(cluster2, {
     polygon: [
-      _.range(6).map(function(i) { return [0, 0.1*context.width + 1 / Math.pow((i + 1.2)/6, 0.95) * 0.035*context.width] }),
+      _.range(6).map(function(i) { return [0, 0.2*context.width + Math.pow(i - 2.5, 2) * 0.008*context.width] }),
       _.range(10).map(function() { return [0.1*context.height, 0.6*context.height] })
     ],
-    randX: 5, randY: 5
+    randX: 10, randY: 20
   }, function(vertex, row, col) {
     if (col === 10 - 1) vertex.style = {fill: 'white', 'fill-opacity': 1}
     else vertex.style = {fill: stoneGradient(col/10), 'fill-opacity': 0.9}
   })
   _.forEach(cluster2, function(v) { v.perturbation = 0 })
   // Make sure that there is not a stone spike that covers the news text
-  cluster2[9].gravityCenter[1] = cluster2[8].gravityCenter[1] + 20
+  cluster2[9].gravityCenter[1] = cluster2[8].gravityCenter[1]
+  cluster2[59].gravityCenter[1] = cluster2[58].gravityCenter[1]
 
   var seaGradient = utils.makeGradient([255, 255, 255], [60, 60, 75])
   shapes.makePolygon(cluster3, {

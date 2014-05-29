@@ -52,7 +52,12 @@ module.exports = function(grunt) {
 
     watch: {
       scripts: {
-        files: ['frontend/**/*.js', 'frontend/*.js', 'frontend/funktion.fm.less', 'Gruntfile.js'],
+        files: [
+          'frontend/**/*.js',
+          'frontend/*.js',
+          'frontend/funktion.fm.less',
+          'Gruntfile.js'
+        ],
         tasks: ['devBuild'],
         options: {
           spawn: false,
