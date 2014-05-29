@@ -40,8 +40,8 @@ module.exports = function() {
   })
   _.forEach(cluster2, function(v) { v.perturbation = 0 })
   // Make sure that there is not a stone spike that covers the news text
-  cluster2[9].gravityCenter[1] = cluster2[8].gravityCenter[1]
-  cluster2[59].gravityCenter[1] = cluster2[58].gravityCenter[1]
+  cluster2[9].ideal[1] = cluster2[8].ideal[1]
+  cluster2[59].ideal[1] = cluster2[58].ideal[1]
 
   var seaGradient = utils.makeGradient([255, 255, 255], [60, 60, 75])
   shapes.makePolygon(cluster3, {

@@ -1,24 +1,21 @@
 var _ = require('underscore')
   , Router = require('director').Router
+  , raf = require('./raf')
   , Vertex = require('./drawing-tools/Vertex')
   , tessellations = require('./drawing-tools/tessellations')
   , drawings = require('./drawings')
   , context = require('./context')
   , config = require('./config')
 
-var initMainPageLayout = function() {
-  $('#mainPage').fadeIn()
-  $('#contactBody').fadeOut()
-  $('#projectsBody').fadeOut()
-  $('#newsBody').fadeOut()
-  $('#postBody').fadeOut()
+var initMainPageLayout = function(done) {
+  $('#contactBody').hide()
+  $('#projectsBody').hide()
+  $('#newsBody').hide()
+  $('#postBody').hide()
   $('#bgSvg').fadeIn(200)
-}
-
-var showMainPageNav = function() {
-  d3.selectAll('text.menuItem').transition().style('opacity', 0)
-  collapseMenu()
-  $('#nav').fadeIn()
+  $('#mainPage').fadeOut(function() {
+    $('#mainPage').fadeIn(done)
+  })
 }
 
 var createSvgMenuItem = function(val, extraClass) {
@@ -39,7 +36,7 @@ var createSvgMenuItem = function(val, extraClass) {
 
 
 // Test for mobile devices
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+if(/webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
   $('body').html('Unfortunately this site doesn\'t support mobile devices yet.')
 
@@ -99,12 +96,21 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
   contactText = createSvgMenuItem('funktion.fm', 'contactText')
   contactText.on('click', function() { window.location.hash = 'contact' })
 
-  // Animate the thing
-  tessellations.draw()
-  setInterval(function() {
-    _.forEach(context.vertices, function(v) { v.nextFrame() })
-    tessellations.draw()
-  }, 20)
+  // Function to start animation between a drawing and another
+  var startAnimation = function() {
+    var startTime = +(new Date)
+
+    var nextFrame = function() {
+      console.log(+(new Date))
+      var progress = (+(new Date) - startTime) / config.transitionTime
+      _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
+      tessellations.draw()
+      if (progress < 1) requestAnimationFrame(nextFrame)
+    }
+
+    requestAnimationFrame(nextFrame)
+
+  }
 
   // Handler for when clicked on a project tile 
   var projectFocused = null
@@ -132,30 +138,42 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
   var routes = {
     '/contact': function() {
       var cores = drawings.contact()
+      requestAnimationFrame(startAnimation)
+
       newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
       projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
-      initMainPageLayout()
-      d3.selectAll('text.menuItem').transition().style('opacity', 1)
       $('#nav').fadeOut()
-      $('#contactBody').fadeIn()
+      initMainPageLayout(function() {
+        d3.selectAll('text.menuItem').transition().style('opacity', 1)
+        $('#contactBody').show()
+      })
     },
 
     '/news': function() {
       drawings.news()
-      initMainPageLayout()
-      showMainPageNav()
-      $('#nav').attr('class', 'news')
-      $('#postBody').fadeOut(function() { $('#newsBody').fadeIn() })
+      requestAnimationFrame(startAnimation)
+
+      d3.selectAll('text.menuItem').transition().style('opacity', 0)
+      collapseMenu()
+
+      initMainPageLayout(function() {
+        $('#nav').attr('class', 'news').show()
+        $('#newsBody').show()
+      })
+
     },
 
     '/post/:postId': function() {
       drawings.news()
-      initMainPageLayout()
-      showMainPageNav()
-      $('#nav').attr('class', 'news')
-      $('#newsBody').fadeOut(function() {
+      requestAnimationFrame(startAnimation)
+
+      d3.selectAll('text.menuItem').transition().style('opacity', 0)
+      collapseMenu()
+
+      initMainPageLayout(function() {
+        $('#nav').attr('class', 'news').show()
+        $('#postBody').show()
         $.get(window.location.hash.substr(1), function(postHtml) {
-          $('#postBody').fadeIn()
           $('#postBody').html(postHtml)
           $('#postBody .post').jScrollPane({ hideFocus: true })
         })
@@ -164,10 +182,15 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 
     '/projects': function() {
       drawings.projects()
-      initMainPageLayout()
-      showMainPageNav()
-      $('#nav').attr('class', 'projects')
-      $('#projectsBody').fadeIn()
+      requestAnimationFrame(startAnimation)
+
+      d3.selectAll('text.menuItem').transition().style('opacity', 0)
+      collapseMenu()
+
+      initMainPageLayout(function() {
+        $('#nav').attr('class', 'projects').show()
+        $('#projectsBody').show()
+      })
     },
 
     '/projects/:projectName': function() {

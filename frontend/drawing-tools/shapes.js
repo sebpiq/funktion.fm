@@ -8,22 +8,22 @@ module.exports.makeFlower = function(vertices, core, r, randomize) {
     , isPetal
     , teta, j
 
-  vertices[0].gravityCenter = core
+  vertices[0].transitionTo(core)
   vertices[0].style = {fill: 'white', 'fill-opacity': 1}
     
   // Move the vertices around the core on `r` and randomized.
   _.forEach(vertices.slice(1), function(vertex, i) {
     teta = i * 2 * Math.PI / vertices.length
-    vertex.gravityCenter = [
+    vertex.transitionTo([
       core[0] + r * Math.cos(teta) * (1 - randomize + Math.random() * randomize * 2),
       core[1] + r * Math.sin(teta) * (1 - randomize + Math.random() * randomize * 2)
-    ]
+    ])
 
     vertex.debugColor = debugColor
   })
 
   // Generate the tesselation paths for the gravity centers of all vertices 
-  paths = d3.geom.voronoi(_.pluck(vertices, 'gravityCenter'))
+  paths = d3.geom.voronoi(_.pluck(vertices, 'ideal'))
 
   // Find all paths that have a common edge with the core, and make them a petal
   corePath = paths[0]
@@ -63,7 +63,7 @@ module.exports.makeSpiral = function(vertices, opts, forEach) {
 
     x = core[0] + r * Math.cos(teta)
     y = core[1] + r * Math.sin(teta)
-    vertex.gravityCenter = [x, y]
+    vertex.transitionTo([x, y])
 
     if (forEach) forEach(vertex, i, r, teta)
     context.teta += 2 * Math.PI / opts.slices
@@ -88,10 +88,10 @@ module.exports.makePolygon = function(vertices, opts, forEach) {
     yRange = polygon[1][col]
     x = xRange[0] + col/(nCols - 1) * (xRange[1] - xRange[0])
     y = yRange[0] + row/(nRows - 1) * (yRange[1] - yRange[0])
-    vertex.gravityCenter = [
+    vertex.transitionTo([
       x + (Math.random() * 2 - 1) * opts.randX,
       y + (Math.random() * 2 - 1) * opts.randY
-    ]
+    ])
     if (forEach) forEach(vertex, row, col)
     col = (col + 1) % nCols
     if (col === 0) row++

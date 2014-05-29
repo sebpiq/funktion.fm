@@ -1,8 +1,11 @@
 // Debugging tessetlations, also shows vertices. `true` or `false`.
 exports.debugTesselations = false
 
-// Duration of transition between 2 drawings
-exports.transitionTime = 1500
+// Duration of transition between 2 drawings, in milliseconds.
+exports.transitionTime = 800
+
+// Interval between 2 steps of the animation, in milliseconds.
+exports.animateInterval = 1000 / 60
 
 // Number of vertices
 exports.vertexCount = 180
