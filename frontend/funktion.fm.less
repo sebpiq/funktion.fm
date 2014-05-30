@@ -1,4 +1,5 @@
 @linkColor: #226;
+@fontSize: 14px;
 
 .unselectableMixin {
   -webkit-touch-callout: none;
@@ -9,12 +10,20 @@
   user-select: none;
 }
 
+.fullScreenMixin {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
   font-family: 'helvetica_neue_lt_std35_thin', courier;
-  font-size: 14px;
+  font-size: @fontSize;
   width: 100%;
   height: 100%;
 }
@@ -80,11 +89,7 @@ img {
 }
 
 svg {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
+  .fullScreenMixin;
 
   path {
     stroke-width: 1;
@@ -133,6 +138,7 @@ svg {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 10;
     max-height: 100%;
     cursor: pointer;
     font-size: 280%;
@@ -210,6 +216,31 @@ svg {
 
   }
 
+}
+
+#modal {
+  .fullScreenMixin;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: url('../images/close-cursor.png'), auto;
+
+  .content {
+    cursor: initial;
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    font-size: 150%;
+    color: white;
+
+    /* innerContent, to implement the custom scrollbar */
+    >div {
+      background-color: black;
+      padding: 2em;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .newsMixin {
@@ -356,52 +387,54 @@ svg {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 50%;
+  width: 90%;
   height: 100%;
-  text-align: right;
 
-  @tileSize: 150px;
-  @tileMargin: 0px;
+  @tileSize: 13em;
 
   .project {
+    width: 100%;
+    margin-bottom: 0.8em;
+    text-align: right;
 
     .tile {
+      text-align: left;
       width: @tileSize;
       height: @tileSize;
-      opacity: 0.5;
+      opacity: 0.35;
       color: white;
       display: inline-block;
-      margin-right: @tileMargin;
-      margin-bottom: @tileMargin;
       background-color: #000;
       cursor: pointer;
+      overflow: hidden;
 
-      &:hover {
-        opacity: 1;
+      &.info {
+        opacity: 0.7;
+
+        .thumbnail {
+          font-size: 150%;
+          height: 100%;
+          display: flex;
+          justify-content: center; /* align horizontal */
+          align-items: center; /* align vertical */
+        }
       }
 
-      .description {
-        display: none;
-        margin-top: 0.1em;
-        margin-left: 0.1em;
+      &.expanded {
+        opacity: 1;
+        overflow: auto;
+        .thumbnail { display: none; }
+        .content { display: block; }
+      }
+
+      &:hover { opacity: 1; }
+
+      .thumbnail {
+        text-align: center;
       }
 
       .content {
         display: none;
-      }
-
-      &.expanded {
-
-        opacity: 1;
-
-        .thumbnail {
-          display: none;
-        }
-
-        .content {
-          display: block;
-        }
-
       }
 
     }

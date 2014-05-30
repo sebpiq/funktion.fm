@@ -145,28 +145,30 @@ animations._redrawLoop = _.bind(animations._redrawLoop, animations)
 if (!context.isMobile) animations.startTransition()
 
 
-// Handler for when clicked on a project tile 
-var projectFocused = null
-$('#projectsBody .project').click(function() {
-  var project = $(this)
+// Modal to display project tiles
+var modal = {
 
-  var focusToProject = function() {
-    projectFocused = project
-    project.find('.thumbnail').fadeOut(100, function() {
-      project.addClass('expanded')
-      project.find('.content').fadeIn(100)
+  open: function(el) {
+    el = $(el)
+    var innerContent = $('<div>').appendTo('#modal .content')
+      .html(el.clone())
+    $('#modal').fadeIn(function() {
+      innerContent.css({ overflow: 'auto' })
+      innerContent.jScrollPane()
+    })
+  },
+
+  close: function() {
+    $('#modal').fadeOut(function() {
+      $('#modal .content').empty()
     })
   }
 
-  if (projectFocused) {
-    if (project.is(projectFocused)) return
-    projectFocused.find('.content').fadeOut(100, function() {
-      projectFocused.removeClass('expanded')
-      projectFocused.find('.thumbnail').fadeIn(100)
-      focusToProject()
-    })
-  } else focusToProject()
-})
+}
+$('#modal .content').click(function(event) { event.stopPropagation() })
+$('#modal').click(function(event) { modal.close() })
+$('#projectsBody .project .tile').click(function() { modal.open($(this).find('.content').html()) })
+
 
 var routes = {
   '/contact': function() {
