@@ -13,15 +13,20 @@ _.extend(Vertex.prototype, {
   
   // Calculate the position of vertices for the next frame in the animation
   nextFrame: function(progress) {
-    if (this.transition) {
-      if (progress < 1) {
-        this[0] = this.transition.origin[0] + (this.ideal[0] - this.transition.origin[0]) * progress
-        this[1] = this.transition.origin[1] + (this.ideal[1] - this.transition.origin[1]) * progress
-      } else {
-        this.transition = null
-        this[0] = this.ideal[0]
-        this[1] = this.ideal[1]
-      }
+    if (this.transition) this._nextTransitionFrame(progress)
+    else this._nextFrame()
+  },
+
+  _nextFrame: function() {},
+
+  _nextTransitionFrame: function(progress) {
+    if (progress < 1) {
+      this[0] = this.transition.origin[0] + (this.ideal[0] - this.transition.origin[0]) * progress
+      this[1] = this.transition.origin[1] + (this.ideal[1] - this.transition.origin[1]) * progress
+    } else {
+      this.transition = null
+      this[0] = this.ideal[0]
+      this[1] = this.ideal[1]
     }
   },
 

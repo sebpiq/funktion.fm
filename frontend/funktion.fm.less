@@ -1,5 +1,13 @@
 @linkColor: #226;
 
+.unselectableMixin {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 html, body {
   margin: 0;
@@ -26,17 +34,15 @@ a:visited {
   color: @linkColor;
 }
 
-img {
-  border : 0;
+button {
+  .unselectableMixin;
+  cursor: pointer;
+  outline : none;
+  font-family: 'source_code_proextralight', courier;
 }
 
-.unselectableMixin {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+img {
+  border : 0;
 }
 
 .jspane {
@@ -111,10 +117,23 @@ svg {
   width: 100%;
 
   #nav {
+
+    .navButtonMixin {
+      display: block;
+      background: none;
+      border: 2px solid transparent;
+      border-radius: 0.5em;
+
+      &:active {
+        border-color: grey;
+      }
+    }
+
     display: none;
     position: fixed;
     top: 0;
     left: 0;
+    max-height: 100%;
     cursor: pointer;
     font-size: 280%;
 
@@ -155,28 +174,34 @@ svg {
     }
 
     .toggle {
+      .navButtonMixin;
       padding: 1em;
-      display: block;
 
       img {
         display: none;
-        width: 2em;
+        width: 4em;
       }
     }
 
     .menu {
       display: none;
-      padding: 0 0.8em;
       margin-top: 1em;
 
       li {
         display: block;
-        margin-bottom: 1.5em;
-        a {
+        margin: 1.5em 0;
+
+        button {
+          .navButtonMixin;
+          width: 100%;
+          text-align: left;
+          font-size: 100%;
           color: #bbb;
+          padding: 0.8em;
         }
+
         &:first-child {
-          a {
+          button {
             font-weight: bold;
           }
         }

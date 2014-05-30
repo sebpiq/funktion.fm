@@ -1,7 +1,7 @@
 var _ = require('underscore')
   , Router = require('director').Router
-  , raf = require('./raf')
-  , Vertex = require('./drawing-tools/Vertex')
+  , raf = require('./shim/raf')
+  , FastButton = require('./shim/FastButton')
   , tessellations = require('./drawing-tools/tessellations')
   , drawings = require('./drawings')
   , context = require('./context')
@@ -36,169 +36,200 @@ var createSvgMenuItem = function(val, extraClass) {
 
 
 // Test for mobile devices
-if(/webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  var Vertex = require('./drawing-tools/Vertex')
+  context.isMobile = true
+} else var Vertex = require('./drawing-tools/GravitatingVertex')
 
-  $('body').html('Unfortunately this site doesn\'t support mobile devices yet.')
+// Add scroll bars
+$('#projectsBody').jScrollPane({ hideFocus: true })
+$('#newsBody').jScrollPane({ hideFocus: true })
 
-} else {
+// Move the read more links to the last paragraph
+$('#newsBody .preview .readMore').each(function() {
+  $(this).prev('p').append(this)
+})
 
-  // Add scroll bars
-  $('#projectsBody').jScrollPane({ hideFocus: true })
-  $('#newsBody').jScrollPane({ hideFocus: true })
+// Window width and height
+context.width = $(window).width()
+context.height = $(window).height()
 
-  // Move the read more links to the last paragraph
-  $('#newsBody .preview .readMore').each(function() {
-    $(this).prev('p').append(this)
+// Get d3 selections
+context.svg = d3.select('#bgSvg')
+  .attr('width', context.width)
+  .attr('height', context.height)
+  .attr('class', 'PiYG')
+context.path = context.svg.append('g').selectAll('path')
+
+// Create the vertices
+_.forEach(_.range(config.vertexCount), function(i) {
+  context.vertices.push(new Vertex(
+    (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
+    Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
+  )
+})
+
+// Expandable menu
+var toggleNav = new FastButton($('#nav .toggle').get(0), function(event) {
+  if ($('#nav').hasClass('expanded')) collapseMenu()
+  else expandMenu()
+})
+
+var expandMenu = function() {
+  $('#nav').addClass('expanded')
+  $('#nav .menu').slideDown({
+    duration: 200,
+    easing: 'linear'
   })
-
-  // Window width and height
-  context.width = $(window).width()
-  context.height = $(window).height()
-
-  // Get d3 selections
-  context.svg = d3.select('#bgSvg')
-    .attr('width', context.width)
-    .attr('height', context.height)
-    .attr('class', 'PiYG')
-  context.path = context.svg.append('g').selectAll('path')
-
-  // Create the vertices
-  _.forEach(_.range(config.vertexCount), function(i) {
-    context.vertices.push(new Vertex(
-      (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
-      Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
-    )
-  })
-
-  // Expandable menu
-  $('#nav .toggle').click(function(event) {
-    event.preventDefault()
-    if ($('#nav').hasClass('expanded')) collapseMenu()
-    else expandMenu()
-  })
-
-  var expandMenu = function() {
-    $('#nav').addClass('expanded')
-    $('#nav .menu').slideDown(200)
-  }
-
-  var collapseMenu = function() {
-    $('#nav .menu').slideUp(200, function() {
-      $('#nav').removeClass('expanded')
-    })    
-  }
-
-  // Creating menu items for contact page
-  projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
-  projectsText.on('click', function() { window.location.hash = 'projects' })
-  newsText = createSvgMenuItem('NEWS', 'newsText')
-  newsText.on('click', function() { window.location.hash = 'news' })
-  contactText = createSvgMenuItem('funktion.fm', 'contactText')
-  contactText.on('click', function() { window.location.hash = 'contact' })
-
-  // Function to start animation between a drawing and another
-  var startAnimation = function() {
-    var startTime = +(new Date)
-
-    var nextFrame = function() {
-      console.log(+(new Date))
-      var progress = (+(new Date) - startTime) / config.transitionTime
-      _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
-      tessellations.draw()
-      if (progress < 1) requestAnimationFrame(nextFrame)
-    }
-
-    requestAnimationFrame(nextFrame)
-
-  }
-
-  // Handler for when clicked on a project tile 
-  var projectFocused = null
-  $('#projectsBody .project').click(function() {
-    var project = $(this)
-
-    var focusToProject = function() {
-      projectFocused = project
-      project.find('.thumbnail').fadeOut(100, function() {
-        project.addClass('expanded')
-        project.find('.content').fadeIn(100)
-      })
-    }
-
-    if (projectFocused) {
-      if (project.is(projectFocused)) return
-      projectFocused.find('.content').fadeOut(100, function() {
-        projectFocused.removeClass('expanded')
-        projectFocused.find('.thumbnail').fadeIn(100)
-        focusToProject()
-      })
-    } else focusToProject()
-  })
-
-  var routes = {
-    '/contact': function() {
-      var cores = drawings.contact()
-      requestAnimationFrame(startAnimation)
-
-      newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
-      projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
-      $('#nav').fadeOut()
-      initMainPageLayout(function() {
-        d3.selectAll('text.menuItem').transition().style('opacity', 1)
-        $('#contactBody').show()
-      })
-    },
-
-    '/news': function() {
-      drawings.news()
-      requestAnimationFrame(startAnimation)
-
-      d3.selectAll('text.menuItem').transition().style('opacity', 0)
-      collapseMenu()
-
-      initMainPageLayout(function() {
-        $('#nav').attr('class', 'news').show()
-        $('#newsBody').show()
-      })
-
-    },
-
-    '/post/:postId': function() {
-      drawings.news()
-      requestAnimationFrame(startAnimation)
-
-      d3.selectAll('text.menuItem').transition().style('opacity', 0)
-      collapseMenu()
-
-      initMainPageLayout(function() {
-        $('#nav').attr('class', 'news').show()
-        $('#postBody').show()
-        $.get(window.location.hash.substr(1), function(postHtml) {
-          $('#postBody').html(postHtml)
-          $('#postBody .post').jScrollPane({ hideFocus: true })
-        })
-      })
-    },
-
-    '/projects': function() {
-      drawings.projects()
-      requestAnimationFrame(startAnimation)
-
-      d3.selectAll('text.menuItem').transition().style('opacity', 0)
-      collapseMenu()
-
-      initMainPageLayout(function() {
-        $('#nav').attr('class', 'projects').show()
-        $('#projectsBody').show()
-      })
-    },
-
-    '/projects/:projectName': function() {
-
-    }
-  }
-  var router = Router(routes)
-  router.init()
-  window.location.hash = window.location.hash || '#contact'
-
 }
+
+var collapseMenu = function() {
+  $('#nav .menu').slideUp({
+    duration: 200,
+    easing: 'linear',
+    complete : function() {
+      $('#nav').removeClass('expanded')
+    }
+  })    
+}
+
+$('#nav .menu li').each(function(i, li) {
+  new FastButton($(li).find('button').get(0), function() {
+    window.location.hash = '/' + $(li).attr('class')
+  })
+})
+
+// Creating menu items for contact page
+projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
+projectsText.on('click', function() { window.location.hash = '/projects' })
+newsText = createSvgMenuItem('NEWS', 'newsText')
+newsText.on('click', function() { window.location.hash = '/news' })
+contactText = createSvgMenuItem('funktion.fm', 'contactText')
+contactText.on('click', function() { window.location.hash = '/contact' })
+
+// Object to handle animations of the vertices positions,
+// transitions between one drawing and another, but also gravitation
+var animations = {
+
+  startTime: 0,
+  rafHandle: null, // handle to cancel an animation frame
+
+  startTransition: function() {
+    if (this.rafHandle) cancelAnimationFrame(this.rafHandle)
+    this.startTime = +(new Date)
+    this.rafHandle = requestAnimationFrame(this._transitionFrame)
+  },
+
+  _redraw: function(progress) {
+    _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
+    tessellations.draw()
+  },
+
+  _transitionFrame: function() {
+    var progress = (+(new Date) - this.startTime) / config.transitionTime
+    this._redraw(progress)
+    if (progress < 1)
+      this.rafHandle = requestAnimationFrame(this._transitionFrame)
+    // If the browser is desktop, we continue animating even when the transition is over
+    else if (!context.isMobile)
+      this.rafHandle = requestAnimationFrame(this._redrawLoop)
+  },
+
+  _redrawLoop: function() {
+    this._redraw()
+    this.rafHandle = requestAnimationFrame(this._redrawLoop)
+  }
+}
+animations._transitionFrame = _.bind(animations._transitionFrame, animations)
+animations._redrawLoop = _.bind(animations._redrawLoop, animations)
+if (!context.isMobile) animations.startTransition()
+
+
+// Handler for when clicked on a project tile 
+var projectFocused = null
+$('#projectsBody .project').click(function() {
+  var project = $(this)
+
+  var focusToProject = function() {
+    projectFocused = project
+    project.find('.thumbnail').fadeOut(100, function() {
+      project.addClass('expanded')
+      project.find('.content').fadeIn(100)
+    })
+  }
+
+  if (projectFocused) {
+    if (project.is(projectFocused)) return
+    projectFocused.find('.content').fadeOut(100, function() {
+      projectFocused.removeClass('expanded')
+      projectFocused.find('.thumbnail').fadeIn(100)
+      focusToProject()
+    })
+  } else focusToProject()
+})
+
+var routes = {
+  '/contact': function() {
+    var cores = drawings.contact()
+    animations.startTransition()
+
+    newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
+    projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
+    $('#nav').fadeOut()
+    initMainPageLayout(function() {
+      d3.selectAll('text.menuItem').transition().style('opacity', 1)
+      $('#contactBody').show()
+    })
+  },
+
+  '/news': function() {
+    drawings.news()
+    animations.startTransition()
+
+    d3.selectAll('text.menuItem').transition().style('opacity', 0)
+    collapseMenu()
+
+    initMainPageLayout(function() {
+      $('#nav').attr('class', 'news').show()
+      $('#newsBody').show()
+    })
+
+  },
+
+  '/post/:postId': function() {
+    drawings.news()
+    animations.startTransition()
+
+    d3.selectAll('text.menuItem').transition().style('opacity', 0)
+    collapseMenu()
+
+    initMainPageLayout(function() {
+      $('#nav').attr('class', 'news').show()
+      $('#postBody').show()
+      $.get(window.location.hash.substr(1), function(postHtml) {
+        $('#postBody').html(postHtml)
+        $('#postBody .post').jScrollPane({ hideFocus: true })
+      })
+    })
+  },
+
+  '/projects': function() {
+    drawings.projects()
+    animations.startTransition()
+
+    d3.selectAll('text.menuItem').transition().style('opacity', 0)
+    collapseMenu()
+
+    initMainPageLayout(function() {
+      $('#nav').attr('class', 'projects').show()
+      $('#projectsBody').show()
+    })
+  },
+
+  '/projects/:projectName': function() {
+
+  }
+}
+var router = Router(routes)
+router.init()
+window.location.hash = window.location.hash || '#contact'

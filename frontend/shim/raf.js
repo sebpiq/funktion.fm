@@ -5,7 +5,7 @@
 
 // MIT license
 
-var config = require('./config')
+var config = require('../config')
 
 var vendors = ['ms', 'moz', 'webkit', 'o'];
 for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
