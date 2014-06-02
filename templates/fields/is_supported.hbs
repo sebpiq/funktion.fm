@@ -6,7 +6,7 @@
     <script src="{{static.root}}/js/jquery-2.1.0.min.js"></script>
     <script src="{{static.root}}/js/underscore-min.js"></script>
     <style>
-      body {
+      #answer {
         font-size: 50px
       }
 
@@ -21,8 +21,9 @@
   </head>
 
   <body>
+    <div id="answer"><div class="no">This web browser is not supported :(. You can try to install Firefox or Chrome.</div></div>
 
-    <div id="answer"></div>
+    <div>Welcome. This page tests the support of web browsers for the performance <b>Fields</b>. Our system will play sounds through the cell phones from people in the audience. If you want to participate, please bring a phone or tablet that is supported by our system!</div>
 
     <script>
       var isSupported = function() {
