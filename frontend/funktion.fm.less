@@ -129,7 +129,6 @@ svg {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
     z-index: 10;
     cursor: pointer;
 
@@ -147,6 +146,7 @@ svg {
     &.expanded {
       cursor: initial;
       background-color: rgba(0, 0, 0, 0.85);
+      width: 100%;
 
       &.projects {
         .toggle {
@@ -156,9 +156,8 @@ svg {
       }
     }
 
-    &.contact {
-      display: none;
-    }
+    /* Set styles in the menu according to the currently active page */
+    &.contact { display: none; }
 
     &.projects {
       .toggle { img.black { display: block; } }
@@ -245,7 +244,7 @@ svg {
   color: black;
 
   .title {
-    font-size: 150%;
+    font-size: 180%;
     letter-spacing: -0.05em;
     color: @linkColor;
     font-family: 'source_code_proextralight', courier;
@@ -256,7 +255,7 @@ svg {
   .newsMixin;
 
   .summary {
-    margin-bottom: 3em;
+    margin-bottom: 4em;
     font-size: 100%;
 
     .title {
@@ -279,10 +278,7 @@ svg {
     .preview {
       font-size: 110%;
       p { margin: 0.5em 0; }
-      .readMore {
-        margin-left: 0.5em;
-        font-weight: bold;
-      }
+      .readMore { display: none; }
     }
   }
 
@@ -383,36 +379,25 @@ svg {
   right: 0;
   width: 90%;
   height: 100%;
+  padding-right: 0.5em;
 
   @tileSize: 13em;
 
   .project {
     width: 100%;
-    margin-bottom: 0.8em;
+    margin: 2em 0;
     text-align: right;
 
     .tile {
       text-align: left;
       width: @tileSize;
       height: @tileSize;
-      opacity: 0.35;
+      opacity: 0.7;
       color: white;
       display: inline-block;
       background-color: #000;
       cursor: pointer;
       overflow: hidden;
-
-      &.info {
-        opacity: 0.7;
-
-        .thumbnail {
-          font-size: 150%;
-          height: 100%;
-          display: flex;
-          justify-content: center; /* align horizontal */
-          align-items: center; /* align vertical */
-        }
-      }
 
       &.expanded {
         opacity: 1;
@@ -424,7 +409,28 @@ svg {
       &:hover { opacity: 1; }
 
       .thumbnail {
+        font-size: 150%;
+        height: 100%;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
         text-align: center;
+        background-size: 100%;
+
+        .subtitle {
+          background-color: rgba(0, 0, 0, 0.9);
+          font-size: 80%;
+
+          .play-icon {
+            float: left;
+            border: 1px solid white;
+            border-radius: 1.5em;
+            width: 1.5em;
+            height: 1.5em;
+            line-height: 1.4em;
+            letter-spacing: -0.1em;
+          }
+        }
       }
 
       .content {

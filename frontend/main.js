@@ -167,7 +167,19 @@ var modal = {
 }
 $('#modal .content').click(function(event) { event.stopPropagation() })
 $('#modal').click(function(event) { modal.close() })
-$('#projectsBody .project .tile').click(function() { modal.open($(this).find('.content').html()) })
+
+// Opening project tiles
+$('#projectsBody .project .tile').click(function() {
+  var content = $(this).find('.content')
+  content.find('img, iframe').each(function() {
+    var el = $(this)
+    if (el.data('src')) el.attr('src', el.data('src'))
+  })
+  modal.open(content.find('>*'))
+  $('#modal .content iframe').each(function() {
+    $(this).css({ 'min-height': $('#modal .content').width() * 0.57 })
+  })
+})
 
 
 var routes = {

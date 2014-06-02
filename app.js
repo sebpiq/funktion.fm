@@ -8,7 +8,7 @@ var express = require('express')
     posts: './_posts/',
     postsPerPage: 5,
     readMoreLink: function(post) {
-      return '<a href="#' + post.url + '" class="readMore">&gt;</a>'
+      return '<a href="#' + post.url + '" class="readMore">&gt;&gt;&gt;</a>'
     },
     metaFormat: 'json'
   })
@@ -23,11 +23,7 @@ app.listen(3000, function() {
   console.log('listening on port ' + 3000)
 })
 
-app.get('/', function (req, res) {
-  res.render('index', {
-    projectPosts: poet.helpers.postsWithTag('project')
-  })
-})
+app.get('/', function (req, res) { res.render('index') })
 
 // Test if Fields is supported
 app.get('/fields/is_supported', function (req, res) { res.render('fields/is_supported') })
