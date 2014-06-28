@@ -41,10 +41,6 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
   context.isMobile = true
 } else var Vertex = require('./drawing-tools/GravitatingVertex')
 
-// Add scroll bars
-$('#projectsBody').jScrollPane({ hideFocus: true })
-$('#newsBody').jScrollPane({ hideFocus: true })
-
 // Move the read more links to the last paragraph
 $('#newsBody .preview .readMore').each(function() {
   $(this).prev('p').append(this)
@@ -206,6 +202,9 @@ var routes = {
     initMainPageLayout(function() {
       $('#nav').attr('class', 'news').show()
       $('#newsBody').show()
+      // We need to wait for the div to show before initializing the scrollbars
+      if (!$('#newsBody').hasClass('jspScrollable'))
+        $('#newsBody').jScrollPane({ hideFocus: true })
     })
 
   },
@@ -237,12 +236,12 @@ var routes = {
     initMainPageLayout(function() {
       $('#nav').attr('class', 'projects').show()
       $('#projectsBody').show()
+      // We need to wait for the div to show before initializing the scrollbars
+      if (!$('#projectsBody').hasClass('jspScrollable'))
+        $('#projectsBody').jScrollPane({ hideFocus: true })
     })
-  },
-
-  '/projects/:projectName': function() {
-
   }
+
 }
 var router = Router(routes)
 router.init()

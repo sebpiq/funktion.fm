@@ -5,7 +5,7 @@ var express = require('express')
   , fs = require('fs')
   , _ = require('underscore')
   , poet = Poet(app, {
-    posts: './_posts/',
+    posts: __dirname + '/_posts',
     postsPerPage: 5,
     readMoreLink: function(post) {
       return '<a href="#' + post.url + '" class="readMore">&gt;&gt;&gt;</a>'
@@ -19,8 +19,8 @@ app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'))
 app.use(app.routes)
 
-app.listen(3000, function() {
-  console.log('listening on port ' + 3000)
+app.listen(80, function() {
+  console.log('listening on port ' + 80)
 })
 
 app.get('/', function (req, res) { res.render('index') })
