@@ -221,7 +221,7 @@ var routes = {
       $('#postBody').show()
       $.get(window.location.hash.substr(1), function(postHtml) {
         $('#postBody').html(postHtml)
-        $('#postBody .post').jScrollPane({ hideFocus: true })
+        $('#postBody .post').jScrollPane({ hideFocus: true, autoReinitialise: true })
       })
     })
   },
