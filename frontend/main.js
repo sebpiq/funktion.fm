@@ -167,7 +167,7 @@ $('#modal').click(function(event) { modal.close() })
 // Opening project tiles
 $('#projectsBody .project .tile').click(function() {
   var content = $(this).find('.content')
-  content.find('img, iframe').each(function() {
+  content.find('img, iframe, audio, source').each(function() {
     var el = $(this)
     if (el.data('src')) el.attr('src', el.data('src'))
   })
