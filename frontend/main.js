@@ -66,30 +66,20 @@ _.forEach(_.range(config.vertexCount), function(i) {
 })
 
 // Expandable menu
-var toggleNav = new FastButton($('#nav .toggle').get(0), function(event) {
-  if ($('#nav').hasClass('expanded')) collapseMenu()
+var toggleNav = new FastButton($('header .toggle').get(0), function(event) {
+  if ($('header').hasClass('expanded')) collapseMenu()
   else expandMenu()
 })
 
 var expandMenu = function() {
-  $('#nav').addClass('expanded')
-  $('#nav .menu').slideDown({
-    duration: 200,
-    easing: 'linear'
-  })
+  $('header').addClass('expanded')
 }
 
 var collapseMenu = function() {
-  $('#nav .menu').slideUp({
-    duration: 200,
-    easing: 'linear',
-    complete : function() {
-      $('#nav').removeClass('expanded')
-    }
-  })    
+  $('header').removeClass('expanded')
 }
 
-$('#nav .menu li').each(function(i, li) {
+$('nav .menu li').each(function(i, li) {
   new FastButton($(li).find('button').get(0), function() {
     window.location.hash = '/' + $(li).attr('class')
   })
@@ -185,7 +175,7 @@ var routes = {
 
     newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
     projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
-    $('#nav').fadeOut()
+    $('header').fadeOut()
     initMainPageLayout(function() {
       d3.selectAll('text.menuItem').transition().style('opacity', 1)
       $('#contactBody').show()
@@ -200,7 +190,7 @@ var routes = {
     collapseMenu()
 
     initMainPageLayout(function() {
-      $('#nav').attr('class', 'news').show()
+      $('header').attr('class', 'news').fadeIn()
       $('#newsBody').show()
       // We need to wait for the div to show before initializing the scrollbars
       if (!$('#newsBody').hasClass('jspScrollable'))
@@ -217,7 +207,7 @@ var routes = {
     collapseMenu()
 
     initMainPageLayout(function() {
-      $('#nav').attr('class', 'news').show()
+      $('header').attr('class', 'news').fadeIn()
       $('#postBody').show()
       $.get(window.location.hash.substr(1), function(postHtml) {
         $('#postBody').html(postHtml)
@@ -234,7 +224,7 @@ var routes = {
     collapseMenu()
 
     initMainPageLayout(function() {
-      $('#nav').attr('class', 'projects').show()
+      $('header').attr('class', 'projects').show()
       $('#projectsBody').show()
       // We need to wait for the div to show before initializing the scrollbars
       if (!$('#projectsBody').hasClass('jspScrollable'))

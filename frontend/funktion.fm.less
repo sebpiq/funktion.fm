@@ -1,6 +1,9 @@
 @linkColor: #226;
 @fontSize: 14px;
 
+.transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { -webkit-transition: @property @duration @style; -moz-transition: @property @duration @style; -ms-transition: @property @duration @style; transition: @property @duration @style; }
+.translateY (@y:0) { -webkit-transform: translateY(@y); -moz-transform: translateY(@y); -ms-transform: translateY(@y); transform: translateY(@y); }
+
 .unselectableMixin {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -124,68 +127,84 @@ svg {
 #mainPage {
   height: 100%;
   width: 100%;
+}
 
-  #nav {
-    @buttonPadding: 0.8em;
-    @fontSize: 250%;
+header {
+  display: none;
+  z-index: 10;
+  cursor: pointer;
 
-    display: none;
+  @buttonPadding: 0.8em;
+  @fontSize: 250%;
+
+  .navButtonMixin {
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 0.5em;
+    font-size: @fontSize;
+
+    &:active {
+      border-color: grey;
+    }
+  }
+
+  /* Set styles in the menu according to the currently active page */
+  &.contact { display: none; }
+
+  &.projects {
+    .toggle { img.black { display: block; } }
+    .menu { .projects button { text-decoration: underline; } }
+  }
+
+  &.news {
+    .toggle { img.white { display: block; } }
+    .menu { .news button { text-decoration: underline; } }
+  }
+
+  &.expanded {
+    cursor: initial;
+
+    &.projects {
+      .toggle {
+        img.white { display: block; }
+        img.black { display: none; }
+      }
+    }
+
+    nav {
+      .translateY(0%);
+    }
+  }
+
+  .toggle {
+    .navButtonMixin;
+    padding: @buttonPadding;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
-    cursor: pointer;
+    z-index: 2;
 
-    .navButtonMixin {
-      background: none;
-      border: 2px solid transparent;
-      border-radius: 0.5em;
-      font-size: @fontSize;
-
-      &:active {
-        border-color: grey;
-      }
+    img {
+      display: none;
+      height: 1.1em;
     }
+  }
 
-    &.expanded {
-      cursor: initial;
-      background-color: rgba(0, 0, 0, 0.85);
-      width: 100%;
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
 
-      &.projects {
-        .toggle {
-          img.white { display: block; }
-          img.black { display: none; }
-        }
-      }
-    }
-
-    /* Set styles in the menu according to the currently active page */
-    &.contact { display: none; }
-
-    &.projects {
-      .toggle { img.black { display: block; } }
-      .menu { .projects button { text-decoration: underline; } }
-    }
-
-    &.news {
-      .toggle { img.white { display: block; } }
-      .menu { .news button { text-decoration: underline; } }
-    }
-
-    .toggle {
-      .navButtonMixin;
-      padding: @buttonPadding;
-
-      img {
-        display: none;
-        height: 1.1em;
-      }
-    }
+    .transition(all, 300ms);
+    .translateY(-100%);
 
     .menu {
-      display: none;
-      float: right;
+      display: block;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      text-align: right;
 
       li {
         display: inline-block;
@@ -206,7 +225,6 @@ svg {
     }
 
   }
-
 }
 
 #modal {
