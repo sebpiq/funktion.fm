@@ -61,8 +61,11 @@ audio {
   width: 100%;
 }
 
-.jspane {
-  padding: 0;
+.jspPane {
+
+  >* { /* could also use the jScrollPane setting 'verticalGutter', but css is better */
+    padding-right: 2em;
+  }
 }
 
 .jspVerticalBar {
