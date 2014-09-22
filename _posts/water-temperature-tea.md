@@ -36,7 +36,7 @@ Usage is very simple. You just need a measuring cup and something to boil water.
 
   $(function() {
     refresh()
-    $('input.water-temperature-tea').on('change', refresh)
+    $('input.water-temperature-tea').on('keyup', refresh)
   })
 
 </script>
