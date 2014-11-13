@@ -181,6 +181,7 @@
             <span>Versificator</span>
           </div>
           <div class="content">
+            <p>Experiments on automatic recycling of the overwhelming amount of music available on the planet.</p>
           </div>
         </div>
 
@@ -201,11 +202,29 @@
             <p>
               <b>Note</b> : only ogg stream is available at the moment, so it won't work in Internet Explorer, and might not work in Safari.
             </p>
-            <audio controls>
+            <audio controls="">
               <!--<source src="http://versificator.fm:8000/main" type="audio/mpeg" />-->
               <source data-src="http://versificator.fm:8000/main" type="audio/ogg" />
               <em>Sorry, your browser doesn't support HTML5 audio.</em>
             </audio>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="thumbnail" style="background-image:url('')">
+            <div class="subtitle">
+              11/2014, Stretched and Droned &#9655;
+            </div>
+          </div>
+          <div class="content">
+            <p>Demo &gt; <a href="http://sebpiq.github.io/paulstretch.js/examples/stretched-and-droned/dist/index.html">HERE</a></p>
+            <p>I had an implementation of the PaulStretch algorithm in JavaScript sleeping for a while in a drawer, so I decided to dust it of, <a href="https://github.com/sebpiq/paulstretch.js">publish it</a> and do a little demo with it.</p>
+
+            <p>There is lot of audio content and music readily available on the Internet. In fact more than you could ever listen to. So instead of composing everything from scratch all over again, why not just recycling what's already there?</p>
+
+            <p>Based on this idea, I built a simple "instrument" that allows you to fetch any track from soundcloud and turn it into a drone by using paulstretch and bit of amplitude modulation and filtering.</p>
+
+            <p>Unfortunately, I expect this demo to stop working before long, as <a href="http://webaudio.github.io/web-audio-api/#security-with-mediaelementaudiosourcenode-and-cross-origin-resources">Web Audio API specifies</a> that fetching sounds like that from other web sites is a security issue and must be prevented.</p>
           </div>
         </div>
 
