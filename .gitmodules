@@ -1,0 +1,3 @@
+[submodule "poet"]
+	path = poet
+	url = https://github.com/sebpiq/poet.git

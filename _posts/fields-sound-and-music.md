@@ -2,7 +2,7 @@
   "title" : "Fields chosen for Sound And Music's incubator program",
   "tags" : [ "fields", "award"],
   "category": "fields",
-  "date" : "03-11-2014"
+  "date" : "11-03-2014"
 }}}
 
 We're excited to annouce that [Fields](#/projects) will receive support from [Sound And Music](http://soundandmusic.org), the UK's national agency for new music.

@@ -15,7 +15,6 @@
   "dependencies": {
     "underscore": "1.5.x",
     "express": "3.4.x",
-    "poet": "1.0.x",
     "hbs": "2.4.x",
     "grunt": "0.4.x",
     "grunt-contrib-uglify": "0.2.x",
@@ -24,7 +23,6 @@
     "grunt-contrib-watch": "0.5.x",
     "grunt-contrib-copy": "0.4.x",
     "grunt-browserify": "1.2.x",
-
     "director": "1.2.x"
   },
   "bugs": {
