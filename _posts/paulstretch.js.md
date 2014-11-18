@@ -45,7 +45,7 @@ paulstretch.setRatio(newRatio)
 The web audio API code
 ========================
 
-As all the processing will happen in a worker, the only thing we want from web audio API is to read incoming blocks of audio (here from an `<audio>` tag) and send them for processing to our worker.
+As all the processing will happen in a worker, the only thing we want from web audio API is to read incoming blocks of audio and send them for processing to our worker.
 
 So we create a `ScriptProcessorNode`, with an `onaudioprocess` method that :
 
@@ -75,7 +75,7 @@ paulstretchNode.onaudioprocess = function(event) {
 The worker file
 ==================
 
-Here is a template of our worker file with a message handler for receiving commands from the UI thread.
+Here is a template of our worker file with a message handler for receiving commands from the main thread.
 
 ```javascript
 onmessage = function (event) {
@@ -105,13 +105,14 @@ Reading is more tricky. We need to make sure that we have enough processed audio
   case 'read':
     var i
 
-    // Send audio from the buffer if there is at least `batchSize` blocks
+    // If there is at least `batchSize` blocks of audio ready to be sent in the 'read queue',
+    // we send the whole batch block by block.
     if (Math.floor(paulStretch.readQueueLength() / blockSize) >= batchSize) {
       for (i = 0; i < batchSize; i++) paulStretch.read(blocksOut[i])
       postMessage({ type: 'read', data: blocksOut })
     }
  
-    // Fill-up the buffers to at least `batchSize` blocks
+    // Fill-up the 'read queue' to at least `batchSize` blocks
     while ((paulStretch.readQueueLength() < (batchSize * blockSize)) 
       && (paulStretch.process() !== 0)) paulStretch.readQueueLength()
 
@@ -121,14 +122,14 @@ Reading is more tricky. We need to make sure that we have enough processed audio
 Complete worker code can be found [here](https://github.com/sebpiq/paulstretch.js/blob/master/examples/simple/js/paulstretch-worker.js).
 
 
-Wiring-up with the main thread
+Communication with the worker
 ================================
 
-Now that we have everything there, we will need to implement the code that will send raw audio to the worker, and receive the processed audio.
+Now that all the parts are there, we will need to wire them up.
 
-For this we will run a function with `setInterval` that will periodically communicate with the worker.
+For this we will run in the main thread a function with `setInterval` that will periodically communicate with the worker : sending raw audio, and receiving processed audio.
 
-Once again, for raw audio there is no problem, as we will send the raw audio as it comes ... but for reading we will apply a similar technique as in the worker and use a buffer that should always contain at least `batchSize` blocks. Therefore, we check the state of our buffer `blocksOut` at each interval, and request new data from the worker only when the buffer runs low. 
+Once again, for raw audio there is no problem, as we will send the blocks as they comes ... but for processed audio we will apply a similar technique as in the worker and use a buffer that should always contain at least `batchSize` blocks. Therefore, we check the state of our buffer `blocksOut` at each interval, and request new data from the worker only when the buffer runs low. 
 
 ```javascript
 setInterval(function() {
