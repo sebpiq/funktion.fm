@@ -4,14 +4,34 @@ var express = require('express')
   , hbs = require('hbs')
   , fs = require('fs')
   , _ = require('underscore')
+  , markdown = require('marked')
+  , pygmentize = require('pygmentize-bundled')
   , poet = Poet(app, {
-    posts: __dirname + '/_posts',
-    postsPerPage: 5,
-    readMoreLink: function(post) {
-      return '<a href="#' + post.url + '" class="readMore">&gt;&gt;&gt;</a>'
-    },
-    metaFormat: 'json'
-  })
+      posts: __dirname + '/_posts',
+      postsPerPage: 5,
+      readMoreLink: function(post) {
+        return '<a href="#' + post.url + '" class="readMore">&gt;&gt;&gt;</a>'
+      },
+      metaFormat: 'json'
+    })
+
+markdown.setOptions({
+  sanitize: false,
+  pedantic: true,
+  highlight: function (code, lang, callback) {
+    pygmentize({ lang: lang, format: 'html' }, code, function (err, result) {
+      callback(err, result.toString())
+    })
+  }
+})
+
+// Add markdown template renderer to add syntax highlighting
+poet.addTemplate({
+  ext: 'md', 
+  fn: function(options, callback) {
+    markdown(options.source, callback)
+  }
+})
 
 app.locals.static = { static: { root: '/' }, site: { root: '/' } }
 app.set('views', __dirname + '/templates')
@@ -19,7 +39,7 @@ app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'))
 app.use(app.routes)
 
-app.listen(80, function() {
+app.listen(8000, function() {
   console.log('listening on port ' + 80)
 })
 
