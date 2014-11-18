@@ -57,14 +57,6 @@ context.svg = d3.select('#bgSvg')
   .attr('class', 'PiYG')
 context.path = context.svg.append('g').selectAll('path')
 
-// Create the vertices
-_.forEach(_.range(config.vertexCount), function(i) {
-  context.vertices.push(new Vertex(
-    (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
-    Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
-  )
-})
-
 // Expandable menu
 var toggleNav = new FastButton($('header .toggle').get(0), function(event) {
   if ($('header').hasClass('expanded')) collapseMenu()
@@ -93,8 +85,18 @@ newsText.on('click', function() { window.location.hash = '/news' })
 contactText = createSvgMenuItem('funktion.fm', 'contactText')
 contactText.on('click', function() { window.location.hash = '/contact' })
 
+// Create the vertices
+_.forEach(_.range(config.vertexCount), function(i) {
+  context.vertices.push(new Vertex(
+    (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
+    Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
+  )
+})
+
 // Object to handle animations of the vertices positions,
-// transitions between one drawing and another, but also gravitation
+// transitions between one drawing and another, but also gravitation.
+// The actual calculations for each frame are handled by the vertices themselves.
+// This object is just handling timing.
 var animations = {
 
   startTime: 0,
@@ -106,13 +108,15 @@ var animations = {
     this.rafHandle = requestAnimationFrame(this._transitionFrame)
   },
 
+  // Should be called with `progress` during a transition. `progress` is a number
+  // between 0 and 1.
   _redraw: function(progress) {
     _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
     tessellations.draw()
   },
 
   _transitionFrame: function() {
-    var progress = (+(new Date) - this.startTime) / config.transitionTime
+    var progress = Math.min((+(new Date) - this.startTime) / config.transitionTime, 1)
     this._redraw(progress)
     if (progress < 1)
       this.rafHandle = requestAnimationFrame(this._transitionFrame)
@@ -128,7 +132,6 @@ var animations = {
 }
 animations._transitionFrame = _.bind(animations._transitionFrame, animations)
 animations._redrawLoop = _.bind(animations._redrawLoop, animations)
-if (!context.isMobile) animations.startTransition()
 
 
 // Modal to display project tiles

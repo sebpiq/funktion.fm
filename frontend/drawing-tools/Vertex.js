@@ -20,7 +20,7 @@ _.extend(Vertex.prototype, {
   _nextFrame: function() {},
 
   _nextTransitionFrame: function(progress) {
-    if (progress < 1) {
+    if (_.isNumber(progress) && progress < 1) {
       this[0] = this.transition.origin[0] + (this.ideal[0] - this.transition.origin[0]) * progress
       this[1] = this.transition.origin[1] + (this.ideal[1] - this.transition.origin[1]) * progress
     } else {
