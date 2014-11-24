@@ -11,7 +11,7 @@ A few concerts are already planned :
 - *10th October* : NK Projekt, Berlin
 - *25th October* : Third Space, Helsinki
 - *27th October* : NordiCHI conference, Helsinki
-- *23th November* : Zé dos Bos ICLI conference, Lisbon
+- *23th November* : Zé dos Bis ICLI conference, Lisbon
 
 <!--more-->
 

@@ -13,6 +13,7 @@
   "author": "Sébastien Piquemal",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "poet": "2.0.x",
     "underscore": "1.5.x",
     "express": "3.4.x",
     "hbs": "2.4.x",
