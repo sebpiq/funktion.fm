@@ -1,4 +1,5 @@
-@linkColor: #226;
+@linkColor: #1551b3;
+@titleColor: #226;
 @fontSize: 14px;
 
 .transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { -webkit-transition: @property @duration @style; -moz-transition: @property @duration @style; -ms-transition: @property @duration @style; transition: @property @duration @style; }
@@ -272,8 +273,10 @@ header {
   .title {
     font-size: 180%;
     letter-spacing: -0.05em;
-    color: @linkColor;
+    color: @titleColor;
     font-family: 'source_code_proextralight', courier;
+    a { color: @titleColor; }
+    a:visited { color: @titleColor; }
   }
 }
 
