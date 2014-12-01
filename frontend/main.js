@@ -225,12 +225,15 @@ var routes = {
     // Set the `src` on iframes, audio, etc ... to start loading those 
     content.find('img, iframe, audio, source').each(function() {
       var el = $(this)
-      if (el.data('src')) el.attr('src', el.data('src'))
+      if (el.data('src'))
+        el.attr('src', el.data('src'))
     })
 
     modal.open(content.find('>*'))
+
     $('#modal .content iframe').each(function() {
       $(this).css({ 'min-height': $('#modal .content').width() * 0.57 })
+      $(this).css({'background-image': 'url("../images/spinner.gif")'})
     })
   },
 
