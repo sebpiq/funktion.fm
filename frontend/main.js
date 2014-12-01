@@ -155,21 +155,13 @@ var modal = {
 
 }
 $('#modal .content').click(function(event) { event.stopPropagation() })
-$('#modal').click(function(event) { modal.close() })
-
-// Opening project tiles
-$('#projectsBody .project .tile').click(function() {
-  var content = $(this).find('.content')
-  content.find('img, iframe, audio, source').each(function() {
-    var el = $(this)
-    if (el.data('src')) el.attr('src', el.data('src'))
-  })
-  modal.open(content.find('>*'))
-  $('#modal .content iframe').each(function() {
-    $(this).css({ 'min-height': $('#modal .content').width() * 0.57 })
-  })
+$('#modal').click(function(event) {
+  modal.close()
+  window.location.hash = '/projects'
 })
-
+$('.tile').click(function() {
+  window.location.hash = $(this).attr('href')
+})
 
 var routes = {
   '/contact': function() {
@@ -220,6 +212,29 @@ var routes = {
   },
 
   '/projects': function() {
+    routes._showProjectsPage()
+  },
+
+  '/projects/:tileId': function(tileId) {
+    routes._showProjectsPage()
+
+    // Show the tile
+    var tile = $('.tile[href="#/projects/' + tileId + '"]')
+      , content = tile.find('.content')
+
+    // Set the `src` on iframes, audio, etc ... to start loading those 
+    content.find('img, iframe, audio, source').each(function() {
+      var el = $(this)
+      if (el.data('src')) el.attr('src', el.data('src'))
+    })
+
+    modal.open(content.find('>*'))
+    $('#modal .content iframe').each(function() {
+      $(this).css({ 'min-height': $('#modal .content').width() * 0.57 })
+    })
+  },
+
+  _showProjectsPage: function() {
     drawings.projects()
     animations.startTransition()
 
@@ -228,7 +243,7 @@ var routes = {
 
     initMainPageLayout(function() {
       $('header').attr('class', 'projects').show()
-      $('#projectsBody').show()
+      $('#projectsBody').fadeIn(300)
       // We need to wait for the div to show before initializing the scrollbars
       if (!$('#projectsBody').hasClass('jspScrollable'))
         $('#projectsBody').jScrollPane({ hideFocus: true })
