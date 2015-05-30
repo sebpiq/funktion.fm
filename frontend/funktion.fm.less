@@ -289,23 +289,25 @@ header {
   display: none;
 
   .summary {
-    margin-bottom: 4em;
-    font-size: 100%;
+    margin-bottom: 2em;
+    font-size: 85%;
 
     .title {
+      @dateWidth: 14%;
       display: block;
       text-transform: uppercase;
 
       a {
         display: block;
+        float: right;
+        width: 98% - @dateWidth;
       }
 
       .date {
-        float: right;
+        display: block;
+        float: left;
+        width: @dateWidth;
         color: grey;
-        width: 14%;
-        font-size: 85%;
-        margin-left: 1em;
       }
     }
 
