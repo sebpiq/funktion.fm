@@ -1,5 +1,6 @@
 @linkColor: #1551b3;
 @titleColor: #226;
+@dateColor: grey;
 @fontSize: 14px;
 
 .transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { -webkit-transition: @property @duration @style; -moz-transition: @property @duration @style; -ms-transition: @property @duration @style; transition: @property @duration @style; }
@@ -20,6 +21,12 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.resetUlMixin {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 html, body {
@@ -73,7 +80,7 @@ iframe {
   }
 }
 
-.jspVerticalBar {
+.jspVerticalBar, .jspHorizontalBar {
   background-color: transparent;
 
   .jspTrack {
@@ -87,9 +94,10 @@ iframe {
 .menuItem {
   .unselectableMixin;
   cursor: pointer;
+  font-family: 'source_code_proextralight', courier;
 }
 
-#contactBody, .menuItem, .project {
+#contactBody {
   font-family: 'source_code_proextralight', courier;
 }
 
@@ -118,10 +126,7 @@ svg {
 
 /* Style for both landing menu and pages menus */
 .menu {
-
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  .resetUlMixin;
 
   li {
     .menuItem;
@@ -273,28 +278,29 @@ header {
   margin-top: 2.7%;
   overflow: auto;
   color: black;
+}
 
-  .title {
-    font-size: 180%;
-    letter-spacing: -0.05em;
-    color: @titleColor;
-    font-family: 'source_code_proextralight', courier;
-    a { color: @titleColor; }
-    a:visited { color: @titleColor; }
-  }
+/* class for post titles, post list titles, concerts titles */
+.title {
+  font-size: 180%;
+  letter-spacing: -0.05em;
+  color: @titleColor;
+  font-family: 'source_code_proextralight', courier;
+  a { color: @titleColor; }
+  a:visited { color: @titleColor; }
 }
 
 #newsBody {
   .newsMixin;
   display: none;
 
-  .summary {
-    margin-bottom: 2em;
-    font-size: 85%;
+  ul {
+    .resetUlMixin;
 
-    .title {
+    li {
       @dateWidth: 14%;
       display: block;
+      margin-bottom: 0.5em;
       text-transform: uppercase;
 
       a {
@@ -307,14 +313,8 @@ header {
         display: block;
         float: left;
         width: @dateWidth;
-        color: grey;
+        color: @dateColor;
       }
-    }
-
-    .preview {
-      font-size: 110%;
-      p { margin: 0.5em 0; }
-      .readMore { display: none; }
     }
   }
 
@@ -418,24 +418,46 @@ header {
 }
 
 #projectsBody {
+  .fullScreenMixin;
   display: none;
-  overflow: auto;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 90%;
-  height: 100%;
-  padding-right: 0.5em;
+  overflow: none;
 
   @tileSize: 13em;
 
-  .project {
+  #concertsList {
     width: 100%;
-    margin: 2em 0;
+    height: 50%;
     text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    ul {
+      .resetUlMixin;
+      margin-right: 0.9em;
+      margin-top: 0.7em;
+      text-transform: uppercase;
+      li {
+        .date {
+          color: @dateColor;
+        }
+        .project {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  #projectsList {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+    width: 98%;
+    overflow: auto;
+    white-space: nowrap;
 
     .tile {
-      text-align: left;
+      padding-right: 0; /* override the hack used to get a vertical gutter in jsScrollPane */
       width: @tileSize;
       height: @tileSize;
       opacity: 0.7;
@@ -444,6 +466,9 @@ header {
       background-color: #000;
       cursor: pointer;
       overflow: hidden;
+      font-family: 'source_code_proextralight', courier;
+      white-space: normal;
+      margin-right: 0.5em;
 
       &.expanded {
         opacity: 1;

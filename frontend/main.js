@@ -248,8 +248,8 @@ var routes = {
       $('header').attr('class', 'projects').show()
       $('#projectsBody').fadeIn(300)
       // We need to wait for the div to show before initializing the scrollbars
-      if (!$('#projectsBody').hasClass('jspScrollable'))
-        $('#projectsBody').jScrollPane({ hideFocus: true })
+      if (!$('#projectsList').hasClass('jspScrollable'))
+        $('#projectsList').jScrollPane({ hideFocus: true })
     })
   }
 
