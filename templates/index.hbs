@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
   <!--
   <script type="text/javascript">
       var disqus_shortname = 'funktionfm';
@@ -74,116 +73,13 @@
 
       <div id="concertsList">
         <ul>
+          {{#each dates}}
           <li class="title">
-            <span class="date">02/06/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">NIME, Baton Rouge</span>
+            <span class="venue">{{venue}}</span>
+            <a class="project" href="{{projectUrl}}">{{projectName}}</a>
+            <span class="date">{{date}}</span>
           </li>
-          <li class="title">
-            <span class="date">20/05/2015</span>
-            <a class="project" href="#/projects/newweave">New Weave</a>
-            <span class="venue">Vapaan Taiteen Tila, Helsinki</span>
-          </li>
-          <li class="title">
-            <span class="date">23/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Durham Castle, Durham</span>
-          </li>
-          <li class="title">
-            <span class="date">22/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Islington Mill, Manchester</span>
-          </li>
-          <li class="title">
-            <span class="date">19/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Ulverston Parish Rooms, Ulverston</span>
-          </li>
-          <li class="title">
-            <span class="date">17/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields workshop</a>
-            <span class="venue">Goldsmiths, London</span>
-          </li>
-          <li class="title">
-            <span class="date">16/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Music Hack Space, London</span>
-          </li>
-          <li class="title">
-            <span class="date">14/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">The Louisiana Cellar, Bristol</span>
-          </li>
-          <li class="title">
-            <span class="date">12/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Cafe OTO, London</span>
-          </li>
-          <li class="title">
-            <span class="date">11/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Other Worlds Festival, Blackpool</span>
-          </li>
-          <li class="title">
-            <span class="date">09/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Green Door Store, Brighton</span>
-          </li>
-          <li class="title">
-            <span class="date">09/04/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">University of Sussex, Brighton</span>
-          </li>
-          <li class="title">
-            <span class="date">27/01/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">WAC, Paris</span>
-          </li>
-          <li class="title">
-            <span class="date">24/01/2015</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Gap in the Air, Edinburgh</span>
-          </li>
-          <li class="title">
-            <span class="date">22/01/2015</span>
-            <a class="project" href="#/projects/newweave">New Weave</a>
-            <span class="venue">3rd Space, Helsinki</span>
-          </li>
-          <li class="title">
-            <span class="date">23/11/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">ICLI, Zé Dos Bois, Lisbon</span>
-          </li>
-          <li class="title">
-            <span class="date">27/10/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">NordiCHI, Helsinki</span>
-          </li>
-          <li class="title">
-            <span class="date">25/10/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">3rd Space, Helsinki</span>
-          </li>
-          <li class="title">
-            <span class="date">10/10/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">NK, Berlin</span>
-          </li>
-          <li class="title">
-            <span class="date">19/09/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">ICMC, Athens</span>
-          </li>
-          <li class="title">
-            <span class="date">22/06/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Mining Institute, Newcastle</span>
-          </li>
-          <li class="title">
-            <span class="date">08/04/2014</span>
-            <a class="project" href="#/projects/fields-infos">Fields</a>
-            <span class="venue">Arkadia bookstore, Helsinki</span>
-          </li>
+          {{/each}}
         </ul>
       </div>
 
