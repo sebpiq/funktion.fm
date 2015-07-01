@@ -45,6 +45,7 @@ app.listen(80, function() {
 
 app.get('/', function (req, res) { 
   res.render('index', {dates: [
+    {date: '15/08/2015', projectName: 'New Weave', projectUrl: '#/projects/newweave', venue: 'Flow festival, Helsinki'},
     {date: '02/06/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'NIME, Baton Rouge'},
     {date: '20/05/2015', projectName: 'New Weave', projectUrl: '#/projects/newweave', venue: 'Vapaan Taiteen Tila, Helsinki'},
     {date: '23/04/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'Durham Castle, Durham'},
