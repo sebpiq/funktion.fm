@@ -457,6 +457,7 @@ header {
     white-space: nowrap;
 
     .tile {
+      position: relative;
       padding-right: 0; /* override the hack used to get a vertical gutter in jsScrollPane */
       width: @tileSize;
       height: @tileSize;
@@ -481,7 +482,9 @@ header {
 
       .thumbnail {
         font-size: 150%;
+        position: absolute;
         height: 100%;
+        width: 100%;
         display: flex;
         justify-content: center; /* align horizontal */
         align-items: center; /* align vertical */
