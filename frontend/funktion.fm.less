@@ -1,6 +1,7 @@
 @linkColor: #1551b3;
 @titleColor: #226;
 @dateColor: #272727;
+@quoteColor: #555;
 @fontSize: 14px;
 
 .transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { -webkit-transition: @property @duration @style; -moz-transition: @property @duration @style; -ms-transition: @property @duration @style; transition: @property @duration @style; }
@@ -71,6 +72,11 @@ audio {
 
 iframe {
   background: no-repeat url('') center center;
+}
+
+blockquote {
+  color: @quoteColor;
+  font-style: italic;
 }
 
 .jspPane {
