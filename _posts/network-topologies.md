@@ -108,3 +108,5 @@ WIFI network protection
 ---------------------------
 
 In most cases, it is fine to not have a password on your WIFI network. It is faster for people to connect. However, if you play in a venue will a lot of people passing near-by (for example a festival or a public space), phones from passerbys might automatically connect to your network, taking space for nothing. In that case it might be a good idea to protect the network with a simple password, so that only participants can connect.
+
+[comments](http://twitter.com/sebpiq/status/636197123587969024)

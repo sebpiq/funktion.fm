@@ -100,3 +100,5 @@ So yes, there is still a lot to do
  ... but I think that all these things will happen quite soon. In fact they are already possible today, but they take a lot of time to implement. Meanwhile, please keep faith, be patient and bear with the current quirks and limitations of WebPd, and when the next version will be out, I'll feel more comfortable about gathering a small developer base to help in developing this faster and further.
 
 Also, please continue to send comments and questions, either on the pd mailing list, or on the WebPd github page, or directly to me, by email.
+
+[comment on this post](https://twitter.com/sebpiq/status/640887792470499328)
