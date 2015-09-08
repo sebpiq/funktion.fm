@@ -55,6 +55,14 @@ How is WebPd using the web audio API?
 
 With WebPd I have hesitated for a long time between these two solutions, and though the inital version was all custom DSP running in a single `ScriptProcessorNode`, I decided last autumn to go for performance and see how much of the Pure Data functionality I could implement with only native nodes. Unfortunately, the answer is *"not much"* as the [list of objects](https://github.com/sebpiq/WebPd/blob/5cee4dce15f1e2d2388311145fbb09ccaaa0f780/OBJECTLIST.md) from the current version shows. In fact, I came to the conclusion that native audio nodes are just not going to cut it. 
 
+*Chris Mc Cormick, the original creator of WebPd answered to my original post by saying :*
+
+> one feature that was important to me was to have WebPd work as a system where you could take an existing Pd patch and be pretty sure it would sound and work the same
+
+And it is true that this is a problem which many people have encountered. Not only are many objects not implemented, but some of WebPd dsp objects have different behaviour than their Pd counterparts (e.g. filters and oscillators). Obviously this is bad ... and this is one strong argument against using native audio nodes and in favor of custom dsp.
+
+However, what pushed me towards native nodes at the time, is that you couldn't really use WebPd on mobile devices with custom dsp. `ScriptProcessorNode` would immediately choke, and make the whole thing pretty much unusable. So this was a choice between on one hand purity and compliance with Pd, on the other hand usability and being able to run on any device. I chose pragmatism over purity (and was [totally gutted about Web Audio API](https://github.com/WebAudio/web-audio-api/issues/263)).
+
 
 Near future (WebPd 0.4.0)
 ==========================
@@ -94,6 +102,14 @@ Graphical programming is great for dataflow but not so great for control flow. I
 WebPd being built in JavaScript, it is possible to take the best of both worlds : writing dataflow in Pd and script dynamic behaviours with JavaScript. In fact WebPd already allows this! However the API will most likely change in the future, so I won't make it public before it becomes more stable. At this point, I'll publish a full documentation and examples showing how powerful a paradigm this is! 
 
 
+Better compliance with Pd
+-------------------------
+
+The possibility of having different implementations of WebPd, in particular one that uses a custom dsp engine, means that it will be possible to have a distribution of WebPd that tries to comply as much as possible with Pd.
+
+Hopefully with the arrival of the `AudioWorker`, custom dsp could become so efficient that such a distribution of WebPd could also be a viable cross-browser and cross-platform option. But without an `AudioWorker` implementation to do some testing, there's no way to know ...
+
+
 So yes, there is still a lot to do
 ====================================
 
@@ -102,3 +118,5 @@ So yes, there is still a lot to do
 Also, please continue to send comments and questions, either on the pd mailing list, or on the WebPd github page, or directly to me, by email.
 
 [comment on this post](https://twitter.com/sebpiq/status/640887792470499328)
+
+**EDIT 08/09/2015** : added answer to Chris + added the section *better compliance with Pd*
