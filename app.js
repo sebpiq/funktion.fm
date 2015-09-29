@@ -45,6 +45,7 @@ app.listen(80, function() {
 
 app.get('/', function (req, res) { 
   res.render('index', {dates: [
+    {date: '10/10/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'Connect the Dots festival, Sheffield'},
     {date: '26/09/2015', projectName: 'Murmurate', projectUrl: 'http://sanctuary2015.org/artists/murmurate-tim-shaw-sebastien-piquemal/', venue: 'Sanctuary, Galloway, Scotland'},
     {date: '15/08/2015', projectName: 'New Weave', projectUrl: '#/projects/newweave', venue: 'Flow festival, Helsinki'},
     {date: '02/06/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'NIME, Baton Rouge'},
