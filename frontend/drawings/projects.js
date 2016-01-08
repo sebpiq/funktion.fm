@@ -41,7 +41,7 @@ module.exports = function() {
   makeStar([0.4*context.width, 0.8*context.height], cluster4)
   */
 
-  var gradient = utils.makeGradient([10, 10, 10], [35, 0, 35])
+  var gradient = utils.makeGradient([10, 10, 10], [0, 35, 35])
 
   shapes.makePolygon(context.vertices, {
     polygon: [
