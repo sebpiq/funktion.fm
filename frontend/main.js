@@ -3,6 +3,7 @@ var _ = require('underscore')
   , raf = require('./shim/raf')
   , FastButton = require('./shim/FastButton')
   , tessellations = require('./drawing-tools/tessellations')
+  , drawingUtils = require('./drawing-tools/utils')
   , drawings = require('./drawings')
   , context = require('./context')
   , config = require('./config')
@@ -245,11 +246,18 @@ var routes = {
     collapseMenu()
 
     initMainPageLayout(function() {
+      var textGradient = drawingUtils.makeGradient([250, 250, 250], [0, 0, 0])
       $('header').attr('class', 'projects').show()
       $('#projectsBody').fadeIn(300)
       // We need to wait for the div to show before initializing the scrollbars
       if (!$('#projectsList').hasClass('jspScrollable'))
         $('#projectsList').jScrollPane({ hideFocus: true })
+
+      $('#concertsList li > *').each(function(i, li) {
+        var ratio = $(li).position().top / $(window).height()
+        ratio = Math.min(1, ratio)
+        $(li).css({ 'color': textGradient(ratio), 'opacity': 1 - ratio })
+      })
     })
   }
 
