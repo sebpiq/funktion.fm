@@ -45,6 +45,11 @@ app.listen(80, function() {
 
 app.get('/', function (req, res) { 
   res.render('index', {dates: [
+    {date: '14/05/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'Cumberland Arms, Newcastle, England'},
+    {date: '13/05/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'FACT, Liverpool, England'},
+    {date: '20/04/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'Stereolux, Nantes, France'},
+    {date: '13/04/2016', projectName: 'Fields Workshop', projectUrl: '#/projects/fields-infos', venue: 'Stereolux, Nantes, France'},
+    {date: '11/04/2016', projectName: 'Residency Stereolux', projectUrl: '#/projects', venue: 'Stereolux, Nantes, France'},
     {date: '19/11/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'Piksel festival, Bergen, Norway'},
     {date: '10/10/2015', projectName: 'Fields', projectUrl: '#/projects/fields-infos', venue: 'Connect the Dots festival, Sheffield, England'},
     {date: '26/09/2015', projectName: 'Murmurate', projectUrl: '#/projects/murmurate', venue: 'Sanctuary, Galloway, Scotland'},
