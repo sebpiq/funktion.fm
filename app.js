@@ -45,6 +45,10 @@ app.listen(80, function() {
 
 app.get('/', function (req, res) { 
   res.render('index', {dates: [
+    {date: '28/09/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'Sight and Sound festival, Montreal, Canada'},
+    {date: '19/08/2016', projectName: 'Atmosphere | La Jetée', projectUrl:'https://www.edef.co.uk/event/8/', venue: 'Assembly Rooms, Edinburgh, Scotland'},
+    {date: '19-21/08/2016', projectName: 'Freedom Portal', projectUrl:'http://apo33.org/electropixel/index.php/2016/08/20/tim-shaw-sebastien-piquemal/', venue: 'Electropixel, Nantes, France'},
+    {date: '01/07/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'The Wired Lab, Wagga-Wagga, Australia'},
     {date: '14/05/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'Cumberland Arms, Newcastle, England'},
     {date: '13/05/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'FACT, Liverpool, England'},
     {date: '20/04/2016', projectName: 'Murmurate', projectUrl: '#/projects/fields-infos', venue: 'Stereolux, Nantes, France'},
