@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <div id="ROOT">{{static.static.root}}</div>
   <!--
   <script type="text/javascript">
       var disqus_shortname = 'funktionfm';
@@ -48,11 +49,11 @@
       <div class="name">Sébastien Piquemal</div>
       <div class="mail">sebpiq@gmail.com</div>
       <div class="social">
-        <a href="https://twitter.com/sebpiq"><img src="images/twitter.png" /></a>
-        <a href="https://github.com/sebpiq"><img src="images/github.png" /></a>
-        <a href="https://soundcloud.com/sebpiq"><img src="images/soundcloud.png" /></a>
-        <a href="https://vimeo.com/sebpiq"><img src="images/vimeo.png" /></a>
-        <a href="https://www.youtube.com/channel/UCsny0xNztCl_aMSUvbLKJuQ"><img src="images/youtube.png" /></a>
+        <a href="https://twitter.com/sebpiq"><img src="{{static.root}}images/twitter.png" /></a>
+        <a href="https://github.com/sebpiq"><img src="{{static.root}}images/github.png" /></a>
+        <a href="https://soundcloud.com/sebpiq"><img src="{{static.root}}images/soundcloud.png" /></a>
+        <a href="https://vimeo.com/sebpiq"><img src="{{static.root}}images/vimeo.png" /></a>
+        <a href="https://www.youtube.com/channel/UCsny0xNztCl_aMSUvbLKJuQ"><img src="{{static.root}}images/youtube.png" /></a>
       </div>
     </div>
 
@@ -61,7 +62,7 @@
         {{#each getPosts}}
         <li class="title">
           <div class="date">{{prettifyDate date}}</div>
-          <a href="#post/{{slug}}">{{title}}</a>
+          <a href="/news/{{slug}}">{{title}}</a>
           <div class="clearfix"></div>
         </li>
         {{/each}}
@@ -88,7 +89,7 @@
       <div id="projectsList">
         
         <!-- FIELDS -->
-        <div class="tile info" href="#/projects/fields-infos">
+        <div class="tile info" href="/projects/fields-infos">
           <div class="thumbnail">
             <span>Fields</span>
           </div>
@@ -99,8 +100,8 @@
             <p>Fields is a networked system exploring new areas of musical performance and audience participation through the use of mobile technology as a medium for sound diffusion. This project is realized in collaboration with English sound artist <a href="tim-shaw.net">Tim Shaw</a>.</p>
 
             <p>
-              <img data-src="images/projects/fields-6.jpg" style="width:49%" />
-              <img data-src="images/projects/fields-1-smaller.png" style="width:49%" />
+              <img data-src="{{static.root}}images/projects/fields-6.jpg" style="width:49%" />
+              <img data-src="{{static.root}}images/projects/fields-1-smaller.png" style="width:49%" />
             </p>
 
             <p>Fields stems from a desire to reconfigure the audience-performer relationship. The system allows any audience member to join in, at any time, by simply connecting to a specially designed website with their mobile phone, laptop or tablet. The connected devices become an array of speakers which the performers can control live, resulting in an omnidirectional sonic experience.</p>
@@ -120,8 +121,8 @@
           </div>
         </div>
 
-        <div class="tile" href="#/projects/fields-live-recordings">
-          <div class="thumbnail" style="background-image:url('../images/projects/fields-5-small.png')">
+        <div class="tile" href="/projects/fields-live-recordings">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/fields-5-small.png')">
             <div class="subtitle">Live Recordings </div>
           </div>
           <div class="content">
@@ -131,8 +132,8 @@
           </div>
         </div>
 
-        <div class="tile" href="#/projects/fields-documentation-videos">
-          <div class="thumbnail" style="background-image:url('../images/projects/fields-4-small.png')">
+        <div class="tile" href="/projects/fields-documentation-videos">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/fields-4-small.png')">
             <div class="subtitle">Documentation videos </div>
           </div>
           <div class="content">
@@ -141,8 +142,8 @@
           </div>
         </div>
 
-        <div class="tile" href="#/projects/murmurate">
-          <div class="thumbnail" style="background-image:url('../images/projects/murmurate-1.jpg')">
+        <div class="tile" href="/projects/murmurate">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/murmurate-1.jpg')">
             <div class="subtitle">Murmurate </div>
           </div>
           <div class="content">
@@ -158,15 +159,15 @@
             <p>Murmurate explores the interject between sound and vision, gaining a unique perspective on the immediate landscape. A connection is established between people, the portable devices they always carry and the surrounding nature as it is plunged into darkness.</p>
 
             <p>
-              <img data-src="images/projects/murmurate-3.png" style="width:49%" />
-              <img data-src="images/projects/murmurate-2.png" style="width:49%" />
+              <img data-src="{{static.root}}images/projects/murmurate-3.png" style="width:49%" />
+              <img data-src="{{static.root}}images/projects/murmurate-2.png" style="width:49%" />
             </p>
 
           </div>
         </div>
 
         <!-- Possessed rooms -->
-        <div class="tile info" href="#/projects/possessed-rooms">
+        <div class="tile info" href="/projects/possessed-rooms">
           <div class="thumbnail">
             <span>possessed rooms</span>
           </div>
@@ -175,8 +176,8 @@
           </div>
         </div>
 
-        <div class="tile" href="#/projects/possessed-rooms-1">
-          <div class="thumbnail" style="background-image:url('images/projects/possessed-rooms-1-small.png')">
+        <div class="tile" href="/projects/possessed-rooms-1">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/possessed-rooms-1-small.png')">
             <div class="subtitle">
               #1 -> computer room 515 
             </div>
@@ -187,7 +188,7 @@
         </div>
 
         <!-- New Weave -->
-        <div class="tile info" href="#/projects/newweave">
+        <div class="tile info" href="/projects/newweave">
           <div class="thumbnail">
             <span>New Weave</span>
           </div>
@@ -211,8 +212,8 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
           </div>
         </div>
 
-        <div class="tile" href="#/projects/newweave-videos">
-          <div class="thumbnail" style="background-image:url('images/projects/newweave-1-small.png')">
+        <div class="tile" href="/projects/newweave-videos">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/newweave-1-small.png')">
             <div class="subtitle">
               3rd Space, 22/01/2015 
             </div>
@@ -223,19 +224,19 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
         </div>
 
         <!-- Raspberry Pi workshops -->
-        <div class="tile info" href="#/projects/pd-rpi-workshops-infos">
+        <div class="tile info" href="/projects/pd-rpi-workshops-infos">
           <div class="thumbnail">
             <span>Pure Data and Raspberry Pi workshops</span>
           </div>
           <div class="content">
             <p>Pure Data running like a charm on a Raspberry Pi, opens-up a world of possibilities for live performance. Forget expensive, clumsy, heavy computers and synthesizers. You can program this cheap, lovely, credit-card sized computer to be a synthesizer, a granulator, or something much more crazy... Just drop a few of them in your backpack, and you're ready to play anywhere!</p>
 
-            <p><img data-src="images/projects/pd-rpi-workshop-3.jpg" style="width:100%" /></p>
+            <p><img data-src="{{static.root}}images/projects/pd-rpi-workshop-3.jpg" style="width:100%" /></p>
           </div>
         </div>
 
-        <div class="tile" href="#/projects/pd-rpi-workshops-helsinki">
-          <div class="thumbnail" style="background-image:url('images/projects/pd-rpi-workshop-5-small.jpg')">
+        <div class="tile" href="/projects/pd-rpi-workshops-helsinki">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/pd-rpi-workshop-5-small.jpg')">
             <div class="subtitle">
               04/2014, Helsinki 
             </div>
@@ -245,8 +246,8 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
           </div>
         </div>
 
-        <div class="tile" href="#/projects/pd-rpi-workshops-riga">
-          <div class="thumbnail" style="background-image:url('images/projects/pd-rpi-workshop-2-small.jpg')">
+        <div class="tile" href="/projects/pd-rpi-workshops-riga">
+          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/pd-rpi-workshop-2-small.jpg')">
             <div class="subtitle">
               10/2013, Riga </br> &#32;&#32; 
             </div>
@@ -258,7 +259,7 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
         </div>
 
         <!-- Versificator -->
-        <div class="tile info" href="#/projects/versificator-infos">
+        <div class="tile info" href="/projects/versificator-infos">
           <div class="thumbnail">
             <span>Versificator</span>
           </div>
@@ -267,7 +268,7 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
           </div>
         </div>
 
-        <div class="tile" href="#/projects/versificator-rubbish-stream">
+        <div class="tile" href="/projects/versificator-rubbish-stream">
           <div class="thumbnail" style="background-image:url('')">
             <div class="subtitle">
               05/2013, stream prototype 
@@ -292,7 +293,7 @@ Snapping their fingers, speaking, whistling into their phones, the participants 
           </div>
         </div>
 
-        <div class="tile" href="#/projects/versificator-paulstretch">
+        <div class="tile" href="/projects/versificator-paulstretch">
           <div class="thumbnail" style="background-image:url('')">
             <div class="subtitle">
               11/2014, Stretched and Droned 

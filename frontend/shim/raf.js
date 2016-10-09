@@ -14,10 +14,6 @@ for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
                                || window[vendors[x]+'CancelRequestAnimationFrame'];
 }
 
-$('<div>').html(window.requestAnimationFrame ? 'YES' : 'NO').prependTo('body').css({
-    position: 'absolute', top: 0, right: 0
-})
-
 if (!window.requestAnimationFrame)
     window.requestAnimationFrame = function(callback, element) {
         var currTime = new Date().getTime();

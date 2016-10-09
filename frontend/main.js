@@ -74,17 +74,17 @@ var collapseMenu = function() {
 
 $('nav .menu li').each(function(i, li) {
   new FastButton($(li).find('button').get(0), function() {
-    window.location.hash = '/' + $(li).attr('class')
+    router.setRoute('/' + $(li).attr('class'))
   })
 })
 
 // Creating menu items for contact page
 projectsText = createSvgMenuItem('PROJECTS', 'projectsText')
-projectsText.on('click', function() { window.location.hash = '/projects' })
+projectsText.on('click', function() { router.setRoute('/projects') })
 newsText = createSvgMenuItem('NEWS', 'newsText')
-newsText.on('click', function() { window.location.hash = '/news' })
+newsText.on('click', function() { router.setRoute('/news') })
 contactText = createSvgMenuItem('funktion.fm', 'contactText')
-contactText.on('click', function() { window.location.hash = '/contact' })
+contactText.on('click', function() { router.setRoute('/contact') })
 
 // Create the vertices
 _.forEach(_.range(config.vertexCount), function(i) {
@@ -158,12 +158,29 @@ var modal = {
 $('#modal .content').click(function(event) { event.stopPropagation() })
 $('#modal').click(function(event) {
   modal.close()
-  window.location.hash = '/projects'
-})
-$('.tile').click(function() {
-  window.location.hash = $(this).attr('href')
+  router.setRoute('/projects')
 })
 
+// Set click handlers to change the route when clicking on a project tile 
+// or a link in concert list.
+$('.tile').click(function(event) {
+  router.setRoute($(this).attr('href'))
+})
+$('#concertsList a.project').click(function(event) {
+  var url = $(this).attr('href')
+  if (url.startsWith('/'))
+    router.setRoute(url)
+  else 
+    window.open(url)
+  event.preventDefault()
+})
+$('#newsBody .title a').click(function(event) {
+  var url = $(this).attr('href')
+  console.log(url)
+  router.setRoute(url)
+  event.preventDefault()
+})
+console.log('MAIN')
 var routes = {
   '/contact': function() {
     var cores = drawings.contact()
@@ -195,7 +212,7 @@ var routes = {
 
   },
 
-  '/post/:postId': function() {
+  '/news/:postId': function(postId) {
     drawings.news()
     animations.startTransition()
 
@@ -205,7 +222,7 @@ var routes = {
     initMainPageLayout(function() {
       $('header').attr('class', 'news').fadeIn()
       $('#postBody').show()
-      $.get(window.location.hash.substr(1), function(postHtml) {
+      $.get('/post/' + postId, function(postHtml) {
         $('#postBody').html(postHtml)
         $('#postBody .post').jScrollPane({ hideFocus: true, autoReinitialise: true })
       })
@@ -220,7 +237,7 @@ var routes = {
     routes._showProjectsPage()
 
     // Show the tile
-    var tile = $('.tile[href="#/projects/' + tileId + '"]')
+    var tile = $('.tile[href="/projects/' + tileId + '"]')
       , content = tile.find('.content')
 
     // Set the `src` on iframes, audio, etc ... to start loading those 
@@ -262,6 +279,9 @@ var routes = {
   }
 
 }
+
 var router = Router(routes)
-router.init()
-window.location.hash = window.location.hash || '#contact'
+router.configure({ html5history: true })
+if (window.location.pathname === '/')
+  router.init('/contact')
+else router.init()
