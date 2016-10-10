@@ -1,3 +1,5 @@
+// These are just functions which organize vertices in different shapes
+// and apply colors to them.
 var _ = require('underscore')
   , context = require('../context')
   , utils = require('./utils')
@@ -30,13 +32,6 @@ module.exports.makeFlower = function(vertices, core, r, randomize) {
   corePath = polygons[0]
   j = 0
   _.forEach(polygons.slice(1), function(path, i) {
-    
-    // We hide polygons whose points are outside the bounds of the drawing
-    /*if (utils.outOfBounds(vertices[i + 1].ideal)) {
-      vertices[i].style = { fill: 'none', stroke: 'none' }
-      return
-    }*/
-
     isPetal = utils.intersects(path, corePath)
     if (isPetal) {
       vertices[i + 1].style = {

@@ -2,8 +2,8 @@ var d3 = require('d3')
   , _ = require('underscore')
 
 
-// Debugging tessetlations, also shows vertices. `true` or `false`.
-exports.debugTesselations = false
+// Debugging tessellations, also shows vertices. `true` or `false`.
+exports.debugTessellations = false
 
 // Duration of transition between 2 drawings, in milliseconds.
 exports.transitionTime = 800
@@ -37,7 +37,7 @@ exports.vertices = []
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
   exports.isMobile = true
 else 
-  exports.isMobile = true//false
+  exports.isMobile = false
 
 // Voronoi layout to use throughout the application
 exports.voronoi = d3.voronoi()

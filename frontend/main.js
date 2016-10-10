@@ -3,7 +3,7 @@ var _ = require('underscore')
   , d3 = require('d3')
   , raf = require('./shim/raf')
   , FastButton = require('./shim/FastButton')
-  , tessellations = require('./drawing-tools/tessellations')
+  , animations = require('./drawing-tools/animations')
   , drawingUtils = require('./drawing-tools/utils')
   , drawings = require('./drawings')
   , context = require('./context')
@@ -37,9 +37,9 @@ var createSvgMenuItem = function(val, extraClass) {
 
 // Test for mobile devices
 if (context.isMobile) 
-  Vertex = require('./drawing-tools/Vertex')
+  Vertex = require('./drawing-tools/vertices').Vertex
 else 
-  Vertex = require('./drawing-tools/GravitatingVertex')
+  Vertex = require('./drawing-tools/vertices').GravitatingVertex
 
 // Move the read more links to the last paragraph
 $('#newsBody .preview .readMore').each(function() {
@@ -81,47 +81,6 @@ _.forEach(_.range(context.vertexCount), function(i) {
     Math.floor(i/context.initialVertices.cols) * context.width/context.initialVertices.rows)
   )
 })
-
-// Object to handle animations of the vertices positions,
-// transitions between one drawing and another, but also gravitation.
-// The actual calculations for each frame are handled by the vertices themselves.
-// This object is just handling timing.
-var animations = {
-
-  startTime: 0,
-  rafHandle: null, // handle to cancel an animation frame
-
-  startTransition: function() {
-    if (this.rafHandle) cancelAnimationFrame(this.rafHandle)
-    this.startTime = +(new Date)
-    this.rafHandle = requestAnimationFrame(this._transitionFrame)
-  },
-
-  // Should be called with `progress` during a transition. `progress` is a number
-  // between 0 and 1.
-  _redraw: function(progress) {
-    _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
-    tessellations.draw()
-  },
-
-  _transitionFrame: function() {
-    var progress = Math.min((+(new Date) - this.startTime) / context.transitionTime, 1)
-    this._redraw(progress)
-    if (progress < 1)
-      this.rafHandle = requestAnimationFrame(this._transitionFrame)
-    // If the browser is desktop, we continue animating even when the transition is over
-    else if (!context.isMobile)
-      this.rafHandle = requestAnimationFrame(this._redrawLoop)
-  },
-
-  _redrawLoop: function() {
-    this._redraw()
-    this.rafHandle = requestAnimationFrame(this._redrawLoop)
-  }
-}
-animations._transitionFrame = _.bind(animations._transitionFrame, animations)
-animations._redrawLoop = _.bind(animations._redrawLoop, animations)
-
 
 // Modal to display project tiles
 var modal = {

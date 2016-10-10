@@ -1,11 +1,45 @@
+// Module to handle animations of the vertices positions,
+// transitions between one drawing and another, but also gravitation.
+// The actual calculations for each frame are handled by the vertices themselves.
+// This module is just handling timing and rendering.
+
 var _ = require('underscore')
   , d3 = require('d3')
   , context = require('../context')
   , polygonGroup = context.svg.append('g')
+  , transitionStartTime = 0
+  , rafHandle = null // handle to cancel an animation frame
 
-// Draw tesselation
-module.exports.draw = function() {
-  if (context.debugTesselations) {
+exports.startTransition = function() {
+  if (rafHandle) cancelAnimationFrame(rafHandle)
+  transitionStartTime = +(new Date)
+  rafHandle = requestAnimationFrame(transitionFrame)
+}
+
+// Should be called with `progress` during a transition. `progress` is a number
+// between 0 and 1.
+var redraw = function(progress) {
+  _.forEach(context.vertices, function(v) { v.nextFrame(progress) })
+  drawTessellations()
+}
+
+var transitionFrame = function() {
+  var progress = Math.min((+(new Date) - transitionStartTime) / context.transitionTime, 1)
+  redraw(progress)
+  if (progress < 1)
+    rafHandle = requestAnimationFrame(transitionFrame)
+  // If the browser is desktop, we continue animating even when the transition is over
+  else if (!context.isMobile)
+    rafHandle = requestAnimationFrame(redrawLoop)
+}
+
+var redrawLoop = function() {
+  redraw()
+  rafHandle = requestAnimationFrame(redrawLoop)
+}
+
+var drawTessellations = function() {
+  if (context.debugTessellations) {
     context.svg.selectAll('circle').data(context.vertices).enter().append('circle')
       .attr('r', function (d) { return 5 })
     context.svg.selectAll('circle').data(context.vertices)
