@@ -93,7 +93,7 @@ blockquote {
     background-color: rgba(255, 255, 255, 0.1);
   }
   .jspDrag {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.4);
   }
 }
 
@@ -149,14 +149,15 @@ header {
   z-index: 10;
   cursor: pointer;
 
-  @buttonPadding: 0.8em;
-  @fontSize: 250%;
+  @toggleWidth: 1.1em;
 
+  /* mixin for both menu toggle and menu items */
   .navButtonMixin {
     background: none;
     border: 2px solid transparent;
     border-radius: 0.5em;
-    font-size: @fontSize;
+    font-size: 250%;
+    padding: 0.8em;
 
     &:active {
       border-color: grey;
@@ -193,15 +194,14 @@ header {
 
   .toggle {
     .navButtonMixin;
-    padding: @buttonPadding;
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0.1em;
+    right: 0;
     z-index: 2;
 
     img {
       display: none;
-      height: 1.1em;
+      width: @toggleWidth;
     }
   }
 
@@ -228,14 +228,10 @@ header {
           .navButtonMixin;
           min-width: 7em;
           color: #bbb;
-          padding: @buttonPadding;
         }
 
-        &:first-child {
-          button {
-            font-weight: bold;
-          }
-        }
+        &:first-child { button { font-weight: bold; } }
+        &:last-child { margin-right: 10em; }
       }
     }
 
@@ -275,10 +271,11 @@ header {
 
 .newsMixin {
   height: 78%;
-  margin-left: 27%;
-  margin-top: 2.7%;
   overflow: auto;
   color: black;
+  width: 95%;
+  margin: auto;
+  margin-top: 4em;
 }
 
 /* class for post titles, post list titles, concerts titles */
@@ -295,26 +292,32 @@ header {
   .newsMixin;
   display: none;
 
+  @media screen and (min-width: 950px) and (max-width: 1000px) { font-size: 80%; }
+  @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 65%; }
+  @media screen and (min-width: 500px) and (max-width: 700px) { font-size: 60%; }
+  @media screen and (max-width: 500px) { font-size: 55%; }
+
   ul {
     .resetUlMixin;
 
+    /* Two column layout realized with float + margin */
     li {
-      @dateWidth: 14%;
+      @leftColWidth: 7em;
       display: block;
       margin-bottom: 0.5em;
       text-transform: uppercase;
 
-      a {
-        display: block;
-        float: right;
-        width: 98% - @dateWidth;
-      }
-
       .date {
         display: block;
+        width: @leftColWidth;
         float: left;
-        width: @dateWidth;
         color: @dateColor;
+        text-align: center;
+      }
+
+      a {
+        display: block;
+        margin-left: @leftColWidth + 0.5em;
       }
     }
   }
