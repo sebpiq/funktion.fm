@@ -1,12 +1,13 @@
 var _ = require('underscore')
   , Router = require('director').Router
+  , d3 = require('d3')
   , raf = require('./shim/raf')
   , FastButton = require('./shim/FastButton')
   , tessellations = require('./drawing-tools/tessellations')
   , drawingUtils = require('./drawing-tools/utils')
   , drawings = require('./drawings')
   , context = require('./context')
-  , config = require('./config')
+  , Vertex
 
 var initMainPageLayout = function(done) {
   $('#contactBody').hide()
@@ -20,12 +21,10 @@ var initMainPageLayout = function(done) {
 }
 
 var createSvgMenuItem = function(val, extraClass) {
-  var classed = {'menuItem': true}
-    , text = context.svg.append('text')
-
-  classed[extraClass] = true
+  var text = context.svg.append('text')
   text.text(val)
-    .classed(classed)
+    .attr('class', 'menuItem ' + extraClass)
+    .attr('fill', 'black')
 
   text.moveToPosition = function(position) {
     this.attr('x', function(d) { return position[0] })
@@ -37,26 +36,15 @@ var createSvgMenuItem = function(val, extraClass) {
 
 
 // Test for mobile devices
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  var Vertex = require('./drawing-tools/Vertex')
-  context.isMobile = true
-} else var Vertex = require('./drawing-tools/GravitatingVertex')
+if (context.isMobile) 
+  Vertex = require('./drawing-tools/Vertex')
+else 
+  Vertex = require('./drawing-tools/GravitatingVertex')
 
 // Move the read more links to the last paragraph
 $('#newsBody .preview .readMore').each(function() {
   $(this).prev('p').append(this)
 })
-
-// Window width and height
-context.width = $(window).width()
-context.height = $(window).height()
-
-// Get d3 selections
-context.svg = d3.select('#bgSvg')
-  .attr('width', context.width)
-  .attr('height', context.height)
-  .attr('class', 'PiYG')
-context.path = context.svg.append('g').selectAll('path')
 
 // Expandable menu
 var toggleNav = new FastButton($('header .toggle').get(0), function(event) {
@@ -86,11 +74,11 @@ newsText.on('click', function() { router.setRoute('/news') })
 contactText = createSvgMenuItem('funktion.fm', 'contactText')
 contactText.on('click', function() { router.setRoute('/contact') })
 
-// Create the vertices
-_.forEach(_.range(config.vertexCount), function(i) {
+// Create vertices
+_.forEach(_.range(context.vertexCount), function(i) {
   context.vertices.push(new Vertex(
-    (i%config.initialVertices.cols) * context.width/config.initialVertices.cols,
-    Math.floor(i/config.initialVertices.cols) * context.width/config.initialVertices.rows)
+    (i%context.initialVertices.cols) * context.width/context.initialVertices.cols,
+    Math.floor(i/context.initialVertices.cols) * context.width/context.initialVertices.rows)
   )
 })
 
@@ -117,7 +105,7 @@ var animations = {
   },
 
   _transitionFrame: function() {
-    var progress = Math.min((+(new Date) - this.startTime) / config.transitionTime, 1)
+    var progress = Math.min((+(new Date) - this.startTime) / context.transitionTime, 1)
     this._redraw(progress)
     if (progress < 1)
       this.rafHandle = requestAnimationFrame(this._transitionFrame)
@@ -176,11 +164,10 @@ $('#concertsList a.project').click(function(event) {
 })
 $('#newsBody .title a').click(function(event) {
   var url = $(this).attr('href')
-  console.log(url)
   router.setRoute(url)
   event.preventDefault()
 })
-console.log('MAIN')
+
 var routes = {
   '/contact': function() {
     var cores = drawings.contact()

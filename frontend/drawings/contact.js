@@ -1,10 +1,9 @@
 var _ = require('underscore')
   , shapes = require('../drawing-tools/shapes')
   , context = require('../context')
-  , config = require('../config')
 
 module.exports = function() {
-  var clusterSize = Math.floor(config.vertexCount / 3)
+  var clusterSize = Math.floor(context.vertexCount / 3)
     , cluster1 = context.vertices.slice(0, clusterSize)
     , cluster2 = context.vertices.slice(clusterSize, 2 * clusterSize)
     , cluster3 = context.vertices.slice(2 * clusterSize)

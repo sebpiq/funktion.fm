@@ -1,10 +1,11 @@
 var _ = require('underscore')
+  , context = require('../context')
   , utils = require('./utils')
 
 // Function to make appear flower petals from the tesselation
 module.exports.makeFlower = function(vertices, core, r, randomize) {
   var debugColor = utils.getRandomColor()
-    , paths, corePath
+    , polygons, corePath
     , isPetal
     , teta, j
 
@@ -22,13 +23,20 @@ module.exports.makeFlower = function(vertices, core, r, randomize) {
     vertex.debugColor = debugColor
   })
 
-  // Generate the tesselation paths for the gravity centers of all vertices 
-  paths = d3.geom.voronoi(_.pluck(vertices, 'ideal'))
+  // Generate the tesselation paths for the gravity centers of all vertices
+  polygons = context.voronoi.polygons(_.pluck(vertices, 'ideal'))
 
   // Find all paths that have a common edge with the core, and make them a petal
-  corePath = paths[0]
+  corePath = polygons[0]
   j = 0
-  _.forEach(paths.slice(1), function(path, i) {
+  _.forEach(polygons.slice(1), function(path, i) {
+    
+    // We hide polygons whose points are outside the bounds of the drawing
+    /*if (utils.outOfBounds(vertices[i + 1].ideal)) {
+      vertices[i].style = { fill: 'none', stroke: 'none' }
+      return
+    }*/
+
     isPetal = utils.intersects(path, corePath)
     if (isPetal) {
       vertices[i + 1].style = {

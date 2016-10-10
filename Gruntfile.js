@@ -35,7 +35,6 @@ module.exports = function(grunt) {
           'frontend/vendor/jquery-2.0.3.js',
           'frontend/vendor/jquery.mousewheel.js',
           'frontend/vendor/jquery.jscrollpane.js',
-          'frontend/vendor/d3.js',
           '/tmp/browserified.js'
         ],
         dest: '/tmp/concatenated.js',

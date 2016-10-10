@@ -5,7 +5,7 @@
 
 // MIT license
 
-var config = require('../config')
+var context = require('../context')
 
 var vendors = ['ms', 'moz', 'webkit', 'o'];
 for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -17,7 +17,7 @@ for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
 if (!window.requestAnimationFrame)
     window.requestAnimationFrame = function(callback, element) {
         var currTime = new Date().getTime();
-        var timeToCall = config.animateInterval;
+        var timeToCall = context.animateInterval;
         var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
           timeToCall);
         return id;

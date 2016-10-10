@@ -1,12 +1,13 @@
 var _ = require('underscore')
   , utils = require('./utils')
-  , config = require('../config')
+  , context = require('../context')
 
 var Vertex = module.exports = function(x, y) {
   this[0] = x
   this[1] = y
   this.ideal = [0, 0]
   this.transition = null
+  this.polygon = null
 }
 
 _.extend(Vertex.prototype, {
@@ -31,7 +32,7 @@ _.extend(Vertex.prototype, {
   },
 
   transitionTo: function(target) {
-    var numSteps = Math.round(config.transitionTime / config.animateInterval)
+    var numSteps = Math.round(context.transitionTime / context.animateInterval)
     this.ideal = target
 
     this.transition = {

@@ -1,4 +1,5 @@
 var _ = require('underscore')
+  , context = require('../context')
 
 // Calculate Euclidian distance between vertex `a` and vertex `b`.
 exports.distance = function(a, b) {
@@ -22,15 +23,10 @@ exports.intersects = function(path1, path2) {
   })
 }
 
-// Returns the bounding box of `vertices`, as `[[yMin, yMin], [xMax, yMax]]` 
-exports.boundingBox = function(vertices) {
-  var xVals = _.pluck(vertices, 0)
-    , yVals = _.pluck(vertices, 1)
-    , xMax = _.max(xVals)
-    , xMin = _.min(xVals)
-    , yMax = _.max(yVals)
-    , yMin = _.min(yVals)
-  return [[yMin, yMin], [xMax, yMax]]
+// Returns true if the vertex is out of the bounds of the drawing, false otherwise
+exports.outOfBounds = function(vertex) {
+  return (vertex[0] < context.bounds[0][0] || vertex[0] > context.bounds[1][0]
+    || vertex[1] < context.bounds[0][1] || vertex[1] > context.bounds[1][1])
 }
 
 // Random number in [-val, val]  

@@ -13,6 +13,7 @@
   "author": "Sébastien Piquemal",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "d3": "^4.2.6",
     "director": "^1.2.8",
     "express": "3.4.x",
     "grunt": "0.4.x",
