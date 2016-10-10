@@ -123,11 +123,6 @@ svg {
   path {
     stroke-width: 1;
   }
-
-  text {
-    font-size: 200%;
-    opacity: 0;
-  }
 }
 
 /* Style for both landing menu and pages menus */
@@ -401,24 +396,32 @@ header {
   }
 }
 
+svg {
+  /* SVG text displayed in contact page */
+  text.menuItem {
+    font-size: 100%;
+    opacity: 0;
+  }
+}
+
 #contactBody {
   display: none;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1.5em 1.5em;
-  font-size: 120%;
-
-  > div {
-    margin-bottom: 0.4em;
-  }
+  padding: 0.5em;
+  font-size: 100%;
+  text-align: center;
 
   .title {
     font-size: 280%;
   }
 
   .social {
-    margin-top: 0.8em;
+    margin: 0.8em 0;
+    img {
+      width: 2.9em;
+    }
   }
 
 }

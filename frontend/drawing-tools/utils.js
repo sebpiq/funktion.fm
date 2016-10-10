@@ -23,10 +23,23 @@ exports.intersects = function(path1, path2) {
   })
 }
 
-// Returns true if the vertex is out of the bounds of the drawing, false otherwise
-exports.outOfBounds = function(vertex) {
-  return (vertex[0] < context.bounds[0][0] || vertex[0] > context.bounds[1][0]
-    || vertex[1] < context.bounds[0][1] || vertex[1] > context.bounds[1][1])
+// Returns the bounding box of the polygon `[[<xleft>, <ytop>], [<xright>, <ybottom>]]`
+// If `crop` is true, crop to the window [[0, 0], [width, height]]
+exports.boundingBox = function(polygon, crop) {
+  var xList = _.chain(polygon).pluck(0).filter(_.isNumber).value()
+    , yList = _.chain(polygon).pluck(1).filter(_.isNumber).value()
+
+  if (crop === true) {
+    return [
+      [Math.max(_.min(xList), 0), Math.max(_.min(yList), 0)],
+      [Math.min(_.max(xList), context.width), Math.min(_.max(yList), context.height)]
+    ]
+  } else {
+    return [
+      [_.min(xList), _.min(yList)],
+      [_.max(xList), _.max(yList)]
+    ]
+  }
 }
 
 // Random number in [-val, val]  

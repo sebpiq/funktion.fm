@@ -27,8 +27,8 @@ var createSvgMenuItem = function(val, extraClass) {
     .attr('fill', 'black')
 
   text.moveToPosition = function(position) {
-    this.attr('x', function(d) { return position[0] })
-      .attr('y', function(d) { return position[1] })
+    this.attr('x', position[0])
+      .attr('y', position[1])
   }
 
   return text
@@ -132,8 +132,8 @@ var routes = {
     var cores = drawings.contact()
     animations.startTransition()
 
-    newsText.moveToPosition([cores[1][0] - newsText.text().length * 10, cores[1][1] + 7])
-    projectsText.moveToPosition([cores[2][0] - projectsText.text().length * 8, cores[2][1] + 7])
+    newsText.moveToPosition([cores[1][0] - $('text.newsText').width() / 2, cores[1][1] + 7])
+    projectsText.moveToPosition([cores[2][0] - $('text.projectsText').width() / 2, cores[2][1] + 7])
     $('header').fadeOut()
     initMainPageLayout(function() {
       d3.selectAll('text.menuItem').transition().style('opacity', 1)
