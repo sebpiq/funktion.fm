@@ -49,10 +49,12 @@ module.exports = function() {
   // We size menu items in reference to "projects" which is the longest item
   // For title, we need to calculate the size taking into account that part of the flower is outside
   // the viewport. So we take into acccount `core1`
+  $('svg text.menuItem').css('font-size', '100%') // restore default width for calculation
   textMenuFontSize = r3 / $('.menuItem.projectsText').width() * 0.85 * 100
   textMenuFontSize = Math.min(textMenuFontSize, 220)
   $('svg text.menuItem').css('font-size', '' + textMenuFontSize + '%')
   // !!! we need to show and hide so elements have sizes and we can do calculations
+  $('#contactBody').css('font-size', '100%') // restore default width for calculation
   $('#contactBody').show()
   contactBodyFontSize = ((core1[0] + r1 * 0.5) / $('#contactBody .title').width() * 0.85 * 100)
   contactBodyFontSize = Math.min(contactBodyFontSize, 120)
