@@ -1,4 +1,5 @@
-var d3 = require('d3')
+var $ = require('jquery')
+  , d3 = require('d3')
   , _ = require('underscore')
 
 

@@ -79,24 +79,6 @@ blockquote {
   font-style: italic;
 }
 
-.jspPane {
-
-  >* { /* could also use the jScrollPane setting 'verticalGutter', but css is better */
-    padding-right: 2em;
-  }
-}
-
-.jspVerticalBar, .jspHorizontalBar {
-  background-color: transparent;
-
-  .jspTrack {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  .jspDrag {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
-}
-
 .menuItem {
   .unselectableMixin;
   cursor: pointer;
@@ -290,10 +272,11 @@ header {
 
 #newsBody {
   .newsMixin;
+  position: relative; /* required by perfect-scroll plugin */
   display: none;
 
-  @media screen and (min-width: 950px) and (max-width: 1000px) { font-size: 80%; }
-  @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 65%; }
+  @media screen and (min-width: 950px) { font-size: 85%; }
+  @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 75%; }
   @media screen and (min-width: 500px) and (max-width: 700px) { font-size: 60%; }
   @media screen and (max-width: 500px) { font-size: 55%; }
 
@@ -328,6 +311,7 @@ header {
   .newsMixin;
 
   .post {
+    position: relative; /* required by perfect-scroll plugin */
     height: 100%;
     font-size: 130%;
 

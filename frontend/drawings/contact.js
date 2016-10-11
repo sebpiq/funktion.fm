@@ -1,4 +1,5 @@
-var _ = require('underscore')
+var $ = require('jquery')
+  , _ = require('underscore')
   , shapes = require('../drawing-tools/shapes')
   , utils = require('../drawing-tools/utils')
   , context = require('../context')

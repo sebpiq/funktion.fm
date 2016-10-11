@@ -1,4 +1,5 @@
-var _ = require('underscore')
+var $ = require('jquery')
+  , _ = require('underscore')
   , Router = require('director').Router
   , d3 = require('d3')
   , raf = require('./shim/raf')
@@ -8,6 +9,7 @@ var _ = require('underscore')
   , drawings = require('./drawings')
   , context = require('./context')
   , Vertex
+require('perfect-scrollbar/jquery')($)
 
 var initMainPageLayout = function(done) {
   $('#contactBody').hide()
@@ -89,10 +91,8 @@ var modal = {
     el = $(el)
     var innerContent = $('<div>').appendTo('#modal .content')
       .html(el.clone())
-    $('#modal').fadeIn(function() {
-      innerContent.css({ overflow: 'auto' })
-      innerContent.jScrollPane()
-    })
+    $('#modal').perfectScrollbar()
+    $('#modal').fadeIn()
   },
 
   close: function() {
@@ -151,9 +151,7 @@ var routes = {
     initMainPageLayout(function() {
       $('header').attr('class', 'news').fadeIn()
       $('#newsBody').show()
-      // We need to wait for the div to show before initializing the scrollbars
-      if (!$('#newsBody').hasClass('jspScrollable'))
-        $('#newsBody').jScrollPane({ hideFocus: true })
+      $('#newsBody').perfectScrollbar()
     })
 
   },
@@ -170,7 +168,7 @@ var routes = {
       $('#postBody').show()
       $.get('/post/' + postId, function(postHtml) {
         $('#postBody').html(postHtml)
-        $('#postBody .post').jScrollPane({ hideFocus: true, autoReinitialise: true })
+        $('#postBody .post').perfectScrollbar()
       })
     })
   },
@@ -212,9 +210,7 @@ var routes = {
       var textGradient = drawingUtils.makeGradient([250, 250, 250], [0, 0, 0])
       $('header').attr('class', 'projects').show()
       $('#projectsBody').fadeIn(300)
-      // We need to wait for the div to show before initializing the scrollbars
-      if (!$('#projectsList').hasClass('jspScrollable'))
-        $('#projectsList').jScrollPane({ hideFocus: true })
+      $('#projectsList').perfectScrollbar()
 
       $('#concertsList li > *').each(function(i, li) {
         var ratio = $(li).position().top / $(window).height()
