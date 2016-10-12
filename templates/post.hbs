@@ -3,28 +3,25 @@
   <div class="date">posted the {{prettifyDate post.date}}</div>
   <div class="social">
 
-    <a class="facebook" href="#" 
+    <a class="twitter" href=""
+      onclick="
+        window.open(
+          'https://twitter.com/intent/tweet?text={{post.title}} ' + encodeURIComponent(location.href) + ' via @sebpiq',
+          'twitter-share-dialog',
+          'width=626,height=436');
+        return false;">
+      <img src="{{static.root}}images/twitter-blue.svg">
+    </a>
+
+    <a class="facebook" href="" 
       onclick="
         window.open(
           'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 
           'facebook-share-dialog',
           'width=626,height=436'); 
         return false;">
-      <img src="{{static.root}}images/fb-share.png" />
-      <span>Share</span>
+      <img src="{{static.root}}images/facebook-blue.svg">
     </a>
-
-    <a href="https://twitter.com/share"
-      class="twitter-share-button" 
-      data-url="http://funktion.fm/post/{{post.slug}}" 
-      data-text="{{post.title}} http://funktion.fm/post/{{post.slug}}" 
-      data-via="sebpiq"
-      data-count="none">
-      Tweet
-    </a>
-    <script>
-      twttr.widgets.load()
-    </script>
 
   </div>
 
