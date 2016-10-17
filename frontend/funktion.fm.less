@@ -4,8 +4,18 @@
 @quoteColor: #555;
 @fontSize: 14px;
 
-.transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { -webkit-transition: @property @duration @style; -moz-transition: @property @duration @style; -ms-transition: @property @duration @style; transition: @property @duration @style; }
-.translateY (@y:0) { -webkit-transform: translateY(@y); -moz-transform: translateY(@y); -ms-transform: translateY(@y); transform: translateY(@y); }
+.transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { 
+  -webkit-transition: @property @duration @style; 
+  -moz-transition: @property @duration @style; 
+  -ms-transition: @property @duration @style; 
+  transition: @property @duration @style; 
+}
+.translateY (@y:0) { 
+  -webkit-transform: translateY(@y); 
+  -moz-transform: translateY(@y); 
+  -ms-transform: translateY(@y); 
+  transform: translateY(@y); 
+}
 
 .unselectableMixin {
   -webkit-touch-callout: none;
@@ -133,27 +143,12 @@ header {
 
   @toggleWidth: 1.1em;
 
-  /* mixin for both menu toggle and menu items */
-  .navButtonMixin {
-    background: none;
-    border: 2px solid transparent;
-    border-radius: 0.5em;
-    font-size: 250%;
-    padding: 0.8em;
-
-    &:active {
-      border-color: grey;
-    }
-  }
-
   /* Set styles in the menu according to the currently active page */
   &.contact { display: none; }
-
   &.projects {
     .toggle { img.white { display: block; } }
     .menu { .projects button { text-decoration: underline; } }
   }
-
   &.news {
     .toggle { img.white { display: block; } }
     .menu { .news button { text-decoration: underline; } }
@@ -171,19 +166,10 @@ header {
 
     nav {
       .translateY(0%);
-    }
-  }
-
-  .toggle {
-    .navButtonMixin;
-    position: fixed;
-    top: 0.1em;
-    right: 0;
-    z-index: 2;
-
-    img {
-      display: none;
-      width: @toggleWidth;
+      .menu li.toggle {
+        .translateY(0%);
+        text-align: center;
+      }
     }
   }
 
@@ -194,8 +180,8 @@ header {
     width: 100%;
     z-index: 1;
 
-    .transition(all, 300ms);
     .translateY(-100%);
+    .transition(all, 300ms);
 
     .menu {
       display: block;
@@ -207,14 +193,60 @@ header {
         display: inline-block;
 
         button {
-          .navButtonMixin;
-          min-width: 7em;
-          color: #bbb;
+          background: none;
+          border: 2px solid transparent;
+          border-radius: 0.5em;
+          font-size: 250%;
+          padding: 0.8em;
+
+          &:active {
+            border-color: grey;
+          }
         }
 
-        &:first-child { button { font-weight: bold; } }
-        &:last-child { margin-right: 10em; }
+        &.toggle {
+          .transition(all, 300ms);
+          .translateY(100%);
+          text-align: right;
+          img {
+            display: none;
+            width: @toggleWidth;
+          }
+        }
+
+        &.link {
+          button {
+            min-width: 7em;
+            color: #bbb;
+          }
+        }
+
+        &.contact { button { font-weight: bold; } }
+        &.projects { margin-right: 10em; }
       }
+
+      @media screen and (min-width: 900px) and (max-width: 1050px) {
+        li button { font-size: 210%; }
+        li.projects { margin-right: 5em; }
+      }
+      @media screen and (min-width: 700px) and (max-width: 900px) {
+        li button { font-size: 180%; }
+        li.projects { margin-right: 3em; }
+      }
+      @media screen and (min-width: 600px) and (max-width: 700px) {
+        li button { font-size: 150%; }
+        li.projects { margin-right: 0; }
+      }
+      @media screen and (max-width: 600px) {
+        text-align: center;
+        li {
+          display: block;
+          button { font-size: 150%; }
+          &.contact { padding-top: @toggleWidth; }
+          &.projects { margin-right: 0; }
+        }
+      }
+
     }
 
   }

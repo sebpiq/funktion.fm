@@ -36,7 +36,6 @@ var createSvgMenuItem = function(val, extraClass) {
   return text
 }
 
-
 // Test for mobile devices
 if (context.isMobile) 
   Vertex = require('./drawing-tools/vertices').Vertex
@@ -62,9 +61,13 @@ var collapseMenu = function() {
   $('header').removeClass('expanded')
 }
 
-$('nav .menu li').each(function(i, li) {
+$('nav .menu li.link').each(function(i, li) {
   new FastButton($(li).find('button').get(0), function() {
-    router.setRoute('/' + $(li).attr('class'))
+    var route
+    if ($(li).hasClass('projects')) route = 'projects'
+    else if ($(li).hasClass('contact')) route = 'contact'
+    else if ($(li).hasClass('news')) route = 'contact'
+    router.setRoute('/' + route)
   })
 })
 
