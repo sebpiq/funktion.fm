@@ -29,7 +29,7 @@
 .fullScreenMixin {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: absolute; /* a value for "position" is required by perfect-scroll plugin */
   top: 0;
   left: 0;
 }
@@ -260,25 +260,18 @@ header {
 
   .content {
     cursor: initial;
-    width: 50%;
-    height: 100%;
+    background-color: black;
+    width: 60%;
+    min-height: 100%;
     margin: auto;
-    position: relative; /* to fix the offset introduced by jscrollpane */
-    right: 3%;
+    padding: 2em;
     font-size: 150%;
     color: white;
 
-    /* innerContent, to add jscrollpane */
+    /* innerContent */
     >div {
-      background-color: black;
-      padding: 2em;
-      overflow: hidden;
       width: 100%;
-      height: 100%;
-    }
-
-    .jspDrag {
-      background-color: rgba(255, 255, 255, 0.7);
+      min-height: 100%;
     }
   }
 }

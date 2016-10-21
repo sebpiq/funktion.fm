@@ -227,6 +227,12 @@ var routes = {
 
 var router = Router(routes)
 router.configure({ html5history: true })
-if (window.location.pathname === '/')
-  router.init('/contact')
-else router.init()
+if (window.location.pathname === '/') {
+  // Redirect to not break old links with #
+  if (location.hash) {
+    var hash = location.hash.slice(1)
+    location.hash = ''
+    router.init(hash)
+  }
+  else router.init('/contact')
+} else router.init()
