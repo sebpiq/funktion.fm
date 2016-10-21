@@ -66,7 +66,7 @@ $('nav .menu li.link').each(function(i, li) {
     var route
     if ($(li).hasClass('projects')) route = 'projects'
     else if ($(li).hasClass('contact')) route = 'contact'
-    else if ($(li).hasClass('news')) route = 'contact'
+    else if ($(li).hasClass('news')) route = 'news'
     router.setRoute('/' + route)
   })
 })
