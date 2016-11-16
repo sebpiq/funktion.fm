@@ -1,15 +1,17 @@
 var $ = require('jquery')
   , _ = require('underscore')
   , Router = require('director').Router
-  , d3 = require('d3')
+  , d3 = require('d3-selection')
   , raf = require('./shim/raf')
   , FastButton = require('./shim/FastButton')
-  , animations = require('./drawing-tools/animations')
+require('perfect-scrollbar/jquery')($)
+require('d3-transition')
+
+var animations = require('./drawing-tools/animations')
   , drawingUtils = require('./drawing-tools/utils')
   , drawings = require('./drawings')
   , context = require('./context')
   , Vertex
-require('perfect-scrollbar/jquery')($)
 
 var initMainPageLayout = function(done) {
   $('#contactBody').hide()
@@ -226,7 +228,7 @@ var routes = {
 }
 
 var router = Router(routes)
-router.configure({ html5history: true })
+router.configure({ html5history: true, strict: false })
 if (window.location.pathname === '/') {
   // Redirect to not break old links with #
   if (location.hash) {

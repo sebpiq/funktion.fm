@@ -146,7 +146,12 @@ header {
   /* Set styles in the menu according to the currently active page */
   &.contact { display: none; }
   &.projects {
-    .toggle { img.white { display: block; } }
+    .toggle { 
+      button {
+        background-color: rgba(0,0,0,0.6);
+        img.white { display: block; }
+      } 
+    }
     .menu { .projects button { text-decoration: underline; } }
   }
   &.news {
@@ -159,8 +164,11 @@ header {
 
     &.projects {
       .toggle {
-        img.white { display: block; }
-        img.black { display: none; }
+        button {
+          background-color: rgba(0,0,0,0);
+          img.white { display: block; }
+          img.black { display: none; }
+        }
       }
     }
 

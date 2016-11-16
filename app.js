@@ -14,7 +14,7 @@ var express = require('express')
       },
       metaFormat: 'json'
     })
-  , httpPort = 8000
+  , httpPort = 80
   , datesList = require('./public/datesList.json')
 
 markdown.setOptions({
