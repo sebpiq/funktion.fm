@@ -13,7 +13,9 @@
   "author": "Sébastien Piquemal",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "d3": "^4.2.6",
+    "d3-selection": "^1.0.2",
+    "d3-transition": "^1.0.3",
+    "d3-voronoi": "^1.1.0",
     "director": "^1.2.8",
     "express": "3.4.x",
     "grunt": "0.4.x",

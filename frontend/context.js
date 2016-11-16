@@ -1,7 +1,7 @@
 var $ = require('jquery')
-  , d3 = require('d3')
+  , d3 = require('d3-selection')
   , _ = require('underscore')
-
+d3.voronoi = require('d3-voronoi').voronoi
 
 // Debugging tessellations, also shows vertices. `true` or `false`.
 exports.debugTessellations = false

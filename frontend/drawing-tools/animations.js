@@ -4,7 +4,7 @@
 // This module is just handling timing and rendering.
 
 var _ = require('underscore')
-  , d3 = require('d3')
+  , d3 = require('d3-selection')
   , context = require('../context')
   , polygonGroup = context.svg.append('g')
   , transitionStartTime = 0
