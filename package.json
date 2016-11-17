@@ -19,7 +19,7 @@
     "director": "^1.2.8",
     "express": "3.4.x",
     "grunt": "0.4.x",
-    "grunt-browserify": "1.2.x",
+    "grunt-browserify": "^5.0.0",
     "grunt-contrib-copy": "0.4.x",
     "grunt-contrib-less": "0.7.x",
     "grunt-contrib-uglify": "0.2.x",
