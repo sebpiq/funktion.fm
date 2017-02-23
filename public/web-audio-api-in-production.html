@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="https://sebpiq.github.io/web-audio-boilerplate/dist/web-audio-boilerplate-min.js"></script>
+</head>
+<body>
+  <button id="startButton" style="display:none;">START</button>
+  <script type="text/javascript">
+    // ---------- Globals ---------- //
+    var startButton = document.getElementById('startButton')
+    var mutedAudioContext = new AudioContext
+    var audioBuffer, bufferNode
+
+    // ---------- Helper functions ---------- //
+    // Load `url` as an ArrayBuffer and calls `done(err, arrayBuffer)`.
+    function loadArrayBuffer(url, done) {
+      var req = new XMLHttpRequest()
+      req.onload = function(e) {
+        if (this.status === 200) {
+          done(null, this.response)
+        } else done(new Error('HTTP ' + this.status + ': ' + this.statusText))
+      }
+      req.onerror = function(e) {
+        done(e)
+      }
+      req.open('GET', url, true)
+      req.responseType = 'arraybuffer'
+      req.send()
+    }
+
+    // Starts playing a loopy sound from `audioBuffer` using `audioContext`
+    function playSound(audioContext) {
+      bufferNode = audioContext.createBufferSource()
+      bufferNode.loop = true
+      bufferNode.buffer = audioBuffer
+      bufferNode.start(0)
+      bufferNode.connect(audioContext.destination)
+    }
+
+    // ---------- Main code ---------- //
+    webAudioBoilerplate.getSupportedFormats(mutedAudioContext, function(err, formats) {
+      if (err) throw err
+
+      // Constructs the url depending on the formats supported in the current browser
+      var url = '/audio/web-audio-in-production/'
+      if (formats.ogg)
+        url += 'breathing.ogg'
+      else if (formats.mp3)
+        url += 'breathing.mp3'
+      else if (formats.wav)
+        url += 'breathing.wav'
+
+      // Add the url of sound loaded to the page (for info)
+      var elem = document.createElement('div')
+      elem.innerHTML = 'Loaded : ' + url
+      document.body.appendChild(elem)
+
+      // Downloads the sound with the appropriate format
+      loadArrayBuffer(url, function(err, arrayBuffer) {
+        if (err) throw err
+
+        // Decode downloaded sound and once decoded shows the "start" button
+        mutedAudioContext.decodeAudioData(arrayBuffer, function(buffer) {
+          audioBuffer = buffer
+          startButton.setAttribute('style', 'display:block;')
+        }, function() {
+          throw new Error('decoding error')
+        })
+
+      })
+    })
+
+    webAudioBoilerplate.getAudioContextOnClick(startButton, function(err, audioContext) {
+      playSound(audioContext)
+    })
+
+  </script>
+</body>
+</html>
