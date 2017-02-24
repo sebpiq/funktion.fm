@@ -11,24 +11,13 @@
 Normalizing the API
 =====================
 
-Web Audio API is a moving target. As of February 2017, the API, method names, functionalities have changed many times and are still not stable. Also, on webkit the `AudioContext` object, entry point to Web Audio API is still prefixed and called `webkitAudioContext`. A simple way to normalize all the names is to use Chris Wilson's [AudioContext-MonkeyPatch](https://github.com/cwilso/AudioContext-MonkeyPatch). It is a small script that monkey-patches the functions of Web Audio API in the calling browser and makes sure that names comply with the latest version of the specification, so you don't need to think about that when writing your code.
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <script type="text/javascript" src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
-</head>
-</html>
-```
+Web Audio API is a moving target. As of February 2017, the API, method names, functionalities have changed many times and are still not stable. Also, on webkit, the `AudioContext` object, entry point to Web Audio API, is still prefixed and called `webkitAudioContext`. A simple way to normalize all the names is to use Chris Wilson's [AudioContext-MonkeyPatch](https://github.com/cwilso/AudioContext-MonkeyPatch). It is a small script that monkey-patches the functions of Web Audio API in the calling browser and makes sure that names comply with the latest version of the specification, so you don't need to think about that when writing your code.
 
 
 Audio formats supported
 ========================
 
-If you want to use the Web Audio API, chance is you will want to load some sound files. Problem is, different browsers on different platforms support different formats. However if you encode your sound in both **mp3** and **ogg** (and **wav** as a nearly universal fallback), you can cover all the browsers supporting Web Audio API. Firefox supports ogg but not mp3, Safari mp3 but not ogg, Chrome supports all, etc ... It is therefore necessary to select which file to load depending on what formats the current browser supports. For that, I recommend to use [web-audio-boilerplate](https://github.com/sebpiq/web-audio-boilerplate), a small library I wrote.
-
-**note** : note that for convenience, the built version also includes the `AudioContextMonkeyPatch.js` mentioned above ...
+If you want to use the Web Audio API, chance is you will want to load some sound files. Problem is, different browsers on different platforms support different audio formats. However if you encode your sound in both **mp3** and **ogg** (and **wav** as a nearly universal fallback), you can cover all the browsers supporting Web Audio API. Firefox supports ogg but not always mp3 (depending on the codecs installed on the user's system), Safari mp3 but not ogg, Chrome supports all, etc ... Your app must therefore load a different file depending on what formats the current browser supports. For that, I recommend to use [web-audio-boilerplate](https://github.com/sebpiq/web-audio-boilerplate), a small library I wrote :
 
 ```html
 <!DOCTYPE html>
@@ -51,11 +40,15 @@ If you want to use the Web Audio API, chance is you will want to load some sound
 </html>
 ```
 
+**note** : note that for convenience, the built version of **web-audio-boilerplate** also includes the **AudioContextMonkeyPatch.js** mentioned above ...
 
-iOS "sounds need to be triggered from an explicit user action" policy 
-=======================================================================
+**note2** : you can also encode to other formats tested by **web-audio-boilerplate**. However, be careful as some encoders (mp3, aac, ...) sometimes add silence at the beginning or end of the file, which will cause a glitch when looping your audio.
 
-On iOS, `AudioContext` instances are [created muted](https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html). The only place you can unmute an instance of `AudioContext` and make sound with Web Audio API is in the callback of a user action. This means that on iOS, your audio application must have some sort of "start" button. Before **iOS 8**, listening to `click` on that button would work, but with **iOS 9** and later, we need to listen for a `touch` event. If you then create your `AudioContext` in that handler, it will be created unmuted. There are other options, which all require a "start" button, but this is the simplest in my opinion. Here is code using [web-audio-boilerplate](https://github.com/sebpiq/web-audio-boilerplate) for a cross-browser start button for your web audio app : 
+
+iOS "sounds need to be triggered from an explicit user action" 
+================================================================
+
+On iOS, `AudioContext` instances are [created muted](https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html). The only place you can unmute an instance of `AudioContext` and make sound with Web Audio API is in the callback of a user action. This means that on iOS, your audio application must have some sort of "start" button. Before **iOS 8**, listening to `click` on that button would work, but with **iOS 9** and later, we need to listen for a `touch` event. So, if you create your `AudioContext` directly in the handler of a `touch` event everything will work fine. Again, you can use [web-audio-boilerplate](https://github.com/sebpiq/web-audio-boilerplate) for a cross-browser start button for your web audio app :
 
 ```html
 <!DOCTYPE html>
@@ -76,19 +69,23 @@ On iOS, `AudioContext` instances are [created muted](https://developer.apple.com
 </html>
 ```
 
+**note** : if you implement this technique yourself form scratch, be careful of creating your AudioContext **directly** in the event handler, and not in a callback within that event handler ... 
+
+**note2** : There are other methods fo unmuting audio on iOS. They all require a "start" button. For example creating a silent node to kickstart a previously created AudioContext, etc ... but the method describe above is the simplest in my opinion.
+
 A cross-browser sound player
 ==============================
 
 To summarize all of this, here is a full, working, [cross-browser app that just loops a sound](/web-audio-api-in-production.html).
 
 
-Other little debugging tricks
-================================
+Debugging tips
+===================
 
 A couple of silly errors that I have made countless times :
 
 - If testing on iOS and you have no sound ... check that your **mute switch** is off!
-- Check that your volume is not at zero!
+- On any device ... also check that your volume is not at zero!
 
 
 Despite all this ...
