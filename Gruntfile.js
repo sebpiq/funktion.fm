@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     less: {
       prod: {
         files: {
-          'public/css/funktion.fm.css': 'frontend/funktion.fm.less'
+          'public/css/funktion.fm.css': 'frontend/less/funktion.fm.less'
         }
       }
     },
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         files: [
           'frontend/**/*.js',
           'frontend/*.js',
-          'frontend/funktion.fm.less',
+          'frontend/less/*.less',
           'Gruntfile.js'
         ],
         tasks: ['devBuild'],

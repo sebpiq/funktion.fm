@@ -1,44 +1,4 @@
-@linkColor: #1551b3;
-@titleColor: #226;
-@dateColor: #272727;
-@quoteColor: #555;
-@fontSize: 14px;
-
-.transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { 
-  -webkit-transition: @property @duration @style; 
-  -moz-transition: @property @duration @style; 
-  -ms-transition: @property @duration @style; 
-  transition: @property @duration @style; 
-}
-.translateY (@y:0) { 
-  -webkit-transform: translateY(@y); 
-  -moz-transform: translateY(@y); 
-  -ms-transform: translateY(@y); 
-  transform: translateY(@y); 
-}
-
-.unselectableMixin {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.fullScreenMixin {
-  width: 100%;
-  height: 100%;
-  position: absolute; /* a value for "position" is required by perfect-scroll plugin */
-  top: 0;
-  left: 0;
-}
-
-.resetUlMixin {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+@import "mixins.less";
 
 html, body {
   margin: 0;
@@ -137,20 +97,108 @@ svg {
 }
 
 header {
+  @toggleHeight: 1em;
+  @togglePadding: 0.8em;
   display: none;
   z-index: 10;
   cursor: pointer;
 
-  @toggleWidth: 1.1em;
+  /* common style for toggle and menu items */
+  .baseStyleMenu {
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 0.5em;
+    font-size: 250%;
+    padding: @togglePadding;
+  }
+
+  .toggle {
+    .baseStyleMenu;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    img {
+      display: none;
+      height: @toggleHeight;
+    }
+  }
+
+  .menu {
+    .translateY(-100%);
+    .transition(all, 300ms);
+    
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.85);
+    text-align: right;
+
+    li {
+      display: inline-block;
+      button {
+        .baseStyleMenu;
+        min-width: 7em;
+        color: #bbb;
+      }
+      &.contact { button { font-weight: bold; } }
+      /* let space on the right for toggle */
+      &.projects { margin-right: 8em; }
+    }
+  }
+
+  &.expanded {
+    cursor: initial;
+    .menu {
+      .translateY(0%);
+    }
+  }
+
+  /* Adjust font-size with page width in desktop layout */
+  @media screen and (min-width: 900px) and (max-width: 1050px) {
+    .menu li button, .toggle { font-size: 210%; }
+    li.projects { margin-right: 5em; }
+  }
+  @media screen and (min-width: 700px) and (max-width: 900px) {
+    .menu li button, .toggle { font-size: 180%; }
+    li.projects { margin-right: 3em; }
+  }
+  @media screen and (min-width: 600px) and (max-width: 700px) {
+    .menu li button, .toggle { font-size: 150%; }
+    li.projects { margin-right: 0; }
+  }
+
+  /* mobile layout */
+  @media screen and (max-width: 600px) {
+    .menu {
+      padding-top: @toggleHeight + @togglePadding * 2;
+      text-align: center;
+      li {
+        display: block;
+        &.projects { margin-right: 0; }
+      }
+    }
+    .menu li button, .toggle {
+      font-size: 150%;
+    }
+  }
 
   /* Set styles in the menu according to the currently active page */
   &.contact { display: none; }
   &.projects {
     .toggle { 
-      button {
-        background-color: rgba(0,0,0,0.6);
+      background-color: rgba(0,0,0,0.6);
+      img.white { display: block; }
+    }
+    &.expanded {
+      .toggle {
+        background-color: rgba(0,0,0,0);
         img.white { display: block; }
-      } 
+        img.black { display: none; }
+      }
     }
     .menu { .projects button { text-decoration: underline; } }
   }
@@ -159,105 +207,6 @@ header {
     .menu { .news button { text-decoration: underline; } }
   }
 
-  &.expanded {
-    cursor: initial;
-
-    &.projects {
-      .toggle {
-        button {
-          background-color: rgba(0,0,0,0);
-          img.white { display: block; }
-          img.black { display: none; }
-        }
-      }
-    }
-
-    nav {
-      .translateY(0%);
-      .menu li.toggle {
-        .translateY(0%);
-        text-align: center;
-      }
-    }
-  }
-
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-
-    .translateY(-100%);
-    .transition(all, 300ms);
-
-    .menu {
-      display: block;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      text-align: right;
-
-      li {
-        display: inline-block;
-
-        button {
-          background: none;
-          border: 2px solid transparent;
-          border-radius: 0.5em;
-          font-size: 250%;
-          padding: 0.8em;
-
-          &:active {
-            border-color: grey;
-          }
-        }
-
-        &.toggle {
-          .transition(all, 300ms);
-          .translateY(100%);
-          text-align: right;
-          img {
-            display: none;
-            width: @toggleWidth;
-          }
-        }
-
-        &.link {
-          button {
-            min-width: 7em;
-            color: #bbb;
-          }
-        }
-
-        &.contact { button { font-weight: bold; } }
-        &.projects { margin-right: 10em; }
-      }
-
-      @media screen and (min-width: 900px) and (max-width: 1050px) {
-        li button { font-size: 210%; }
-        li.projects { margin-right: 5em; }
-      }
-      @media screen and (min-width: 700px) and (max-width: 900px) {
-        li button { font-size: 180%; }
-        li.projects { margin-right: 3em; }
-      }
-      @media screen and (min-width: 600px) and (max-width: 700px) {
-        li button { font-size: 150%; }
-        li.projects { margin-right: 0; }
-      }
-      @media screen and (max-width: 600px) {
-        text-align: center;
-        li {
-          display: block;
-          button { font-size: 150%; }
-          &.contact { padding-top: @toggleWidth; }
-          &.projects { margin-right: 0; }
-        }
-      }
-
-    }
-
-  }
 }
 
 #modal {

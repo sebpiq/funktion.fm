@@ -76,7 +76,7 @@ On iOS, `AudioContext` instances are [created muted](https://developer.apple.com
 A cross-browser sound player
 ==============================
 
-To summarize all of this, here is a full, working, [cross-browser app that just loops a sound](/web-audio-api-in-production.html).
+To summarize all of this, here is a full, working, [cross-browser app that just loops a sound](/audio/web-audio-in-production/looper.html).
 
 
 Debugging tips
