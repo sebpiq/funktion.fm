@@ -4,6 +4,12 @@
 @quoteColor: #555;
 @fontSize: 14px;
 
+.borderBoxMixin {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .transition (@property, @duration, @style: cubic-bezier(0.860, 0.000, 0.070, 1.000) ) { 
   -webkit-transition: @property @duration @style; 
   -moz-transition: @property @duration @style; 
@@ -51,6 +57,7 @@ for list of dates such as posts or concert dates */
     width: @leftColWidth;
     float: left;
     text-align: center;
+    white-space: nowrap;
   }
 
   a {

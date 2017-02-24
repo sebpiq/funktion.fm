@@ -134,6 +134,7 @@ $('#newsBody .title a').click(function(event) {
 
 var routes = {
   '/contact': function() {
+    modal.close()
     var cores = drawings.contact()
     animations.startTransition()
 
@@ -147,6 +148,7 @@ var routes = {
   },
 
   '/news': function() {
+    modal.close()
     drawings.news()
     animations.startTransition()
 
@@ -162,6 +164,7 @@ var routes = {
   },
 
   '/news/:postId': function(postId) {
+    modal.close()
     drawings.news()
     animations.startTransition()
 
@@ -179,6 +182,7 @@ var routes = {
   },
 
   '/projects': function() {
+    modal.close()
     routes._showProjectsPage()
   },
 
