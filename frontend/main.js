@@ -63,7 +63,7 @@ var collapseMenu = function() {
   $('header').removeClass('expanded')
 }
 
-$('nav .menu li.link').each(function(i, li) {
+$('nav .menu li').each(function(i, li) {
   new FastButton($(li).find('button').get(0), function() {
     var route
     if ($(li).hasClass('projects')) route = 'projects'
@@ -118,7 +118,7 @@ $('#modal').click(function(event) {
 $('.tile').click(function(event) {
   router.setRoute($(this).attr('href'))
 })
-$('#concertsList a.project').click(function(event) {
+$('#concertsList a').click(function(event) {
   var url = $(this).attr('href')
   if (url.startsWith('/'))
     router.setRoute(url)
@@ -214,13 +214,14 @@ var routes = {
     initMainPageLayout(function() {
       var textGradient = drawingUtils.makeGradient([250, 250, 250], [0, 0, 0])
       $('header').attr('class', 'projects').show()
-      $('#projectsBody').fadeIn(300)
-      $('#projectsList').perfectScrollbar()
+      $('#projectsBody')
+        .fadeIn(300)
+        .perfectScrollbar()
 
       $('#concertsList li > *').each(function(i, li) {
-        var ratio = $(li).position().top / $(window).height()
+        var ratio = $(li).position().top / $('#concertsList').height()
         ratio = Math.min(1, ratio)
-        $(li).css({ 'color': textGradient(ratio), 'opacity': 1 - ratio })
+        $(li).css({ 'color': textGradient(ratio), 'opacity': 1.5 - ratio })
       })
     })
   }

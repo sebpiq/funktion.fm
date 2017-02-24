@@ -78,9 +78,9 @@
         <ul>
           {{#each dates}}
           <li class="title">
-            <span class="venue">{{venue}}</span>
-            <a class="project" href="{{projectUrl}}">{{projectName}}</a>
             <span class="date">{{date}}</span>
+            <a href="{{projectUrl}}"><span class="project">{{projectName}}</span> <span class="venue">{{venue}}</span></a>
+            <div class="clearfix"></div>
           </li>
           {{/each}}
         </ul>

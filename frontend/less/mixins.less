@@ -39,3 +39,30 @@
   padding: 0;
   margin: 0;
 }
+
+/* Two column layout realized with float + margin,
+for list of dates such as posts or concert dates */
+.dateLiMixin(@leftColWidth: 7em) {
+  display: block;
+  text-transform: uppercase;
+
+  .date {
+    display: block;
+    width: @leftColWidth;
+    float: left;
+    text-align: center;
+  }
+
+  a {
+    display: block;
+    margin-left: @leftColWidth + 0.5em;
+  }
+}
+
+/* Responsive font sizes for dates list such as posts or concert dates */
+.dateUlResponsiveSize {
+  @media screen and (min-width: 950px) { font-size: 85%; }
+  @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 75%; }
+  @media screen and (min-width: 500px) and (max-width: 700px) { font-size: 60%; }
+  @media screen and (max-width: 500px) { font-size: 55%; }
+}

@@ -239,7 +239,6 @@ header {
   color: black;
   width: 95%;
   margin: auto;
-  margin-top: 4em;
 }
 
 /* class for post titles, post list titles, concerts titles */
@@ -256,41 +255,25 @@ header {
   .newsMixin;
   position: relative; /* required by perfect-scroll plugin */
   display: none;
-
-  @media screen and (min-width: 950px) { font-size: 85%; }
-  @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 75%; }
-  @media screen and (min-width: 500px) and (max-width: 700px) { font-size: 60%; }
-  @media screen and (max-width: 500px) { font-size: 55%; }
+  margin-top: 2em;
 
   ul {
     .resetUlMixin;
+    .dateUlResponsiveSize;
 
-    /* Two column layout realized with float + margin */
     li {
-      @leftColWidth: 7em;
-      display: block;
+      .dateLiMixin;
       margin-bottom: 0.5em;
-      text-transform: uppercase;
-
-      .date {
-        display: block;
-        width: @leftColWidth;
-        float: left;
-        color: @dateColor;
-        text-align: center;
-      }
-
-      a {
-        display: block;
-        margin-left: @leftColWidth + 0.5em;
-      }
+      .date { color: @dateColor; }
     }
   }
 
 }
 
+
 #postBody {
   .newsMixin;
+  margin-top: 1em;
 
   .post {
     position: relative; /* required by perfect-scroll plugin */
@@ -366,48 +349,54 @@ svg {
 #projectsBody {
   .fullScreenMixin;
   display: none;
-  overflow: none;
-
-  @tileSize: 13em;
+  overflow: scroll;
 
   #concertsList {
+    overflow: hidden;
     width: 100%;
-    height: 50%;
-    text-align: right;
-    position: absolute;
-    top: 0;
-    right: 0;
+    height: 65%;
 
     ul {
       .resetUlMixin;
+      .dateUlResponsiveSize;
+
       margin-right: 0.9em;
       margin-top: 0.7em;
       text-transform: uppercase;
       li {
+        .dateLiMixin(8em);
         .date {
           font-size: 80%;
           font-weight: bold;
         }
-        .project {
-          text-decoration: underline;
+        a {
+          .project { text-decoration: underline; }
         }
       }
     }
   }
 
   #projectsList {
-    position: absolute;
-    bottom: 1%;
-    left: 1%;
-    width: 98%;
-    overflow: auto;
-    white-space: nowrap;
+    text-align: justify;
+    /* to remove space between tiles which are inline-blocks */
+    font-size: 0;
 
     .tile {
+      width: 50vw;
+      height: 50vw;
+      @media screen and (min-width: 400px) and (max-width: 700px) { 
+        width: 33vw;
+        height: 33vw;
+      }
+      @media screen and (min-width: 700px) { 
+        width: 20vw;
+        height: 20vw;
+      }
+
       position: relative;
-      padding-right: 0; /* override the hack used to get a vertical gutter in jsScrollPane */
-      width: @tileSize;
-      height: @tileSize;
+      /* restore font-size */
+      font-size: @fontSize;
+      margin-bottom: 0.2em;
       opacity: 0.7;
       color: white;
       display: inline-block;
@@ -415,30 +404,20 @@ svg {
       cursor: pointer;
       overflow: hidden;
       font-family: 'source_code_proextralight', courier;
-      white-space: normal;
-      margin-right: 0.5em;
-
-      &.expanded {
-        opacity: 1;
-        overflow: auto;
-        .thumbnail { display: none; }
-        .content { display: block; }
-      }
 
       &:hover { opacity: 1; }
 
       .thumbnail {
         font-size: 150%;
-        position: absolute;
         height: 100%;
         width: 100%;
-        display: flex;
-        justify-content: center; /* align horizontal */
-        align-items: center; /* align vertical */
-        text-align: center;
         background-size: 100%;
 
         .subtitle {
+          .translateY(-50%);
+          text-align: center;
+          position: relative;
+          top: 50%;
           background-color: rgba(0, 0, 0, 0.9);
           font-size: 80%;
           width: 100%;
