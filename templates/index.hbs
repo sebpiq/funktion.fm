@@ -15,7 +15,7 @@
 <body>
 
   <svg id="bgSvg"></svg>
-  <div id="mainPage">
+  <div id="pages">
     <header>
       <nav>
         <button class="toggle">
@@ -24,13 +24,13 @@
         </button>
         <ul class="menu">
           <li class="contact"><button>funktion.fm</button></li>
-          <li class="news"><button>NEWS</button></li>
+          <li class="posts"><button>POSTS</button></li>
           <li class="projects"><button>PROJECTS</button></li>
         </ul>
       </nav>
     </header>
 
-    <div id="contactBody">
+    <div id="contact" class="page">
       <div class="title">funktion.fm</div>
       <div class="social">
         <a href="https://twitter.com/sebpiq"><img src="{{static.root}}images/twitter-grey.svg" /></a>
@@ -43,7 +43,7 @@
       <div class="mail">sebpiq@gmail.com</div>
     </div>
 
-    <div id="newsBody">
+    <div id="postList" class="page">
       <ul>
         {{#each getPosts}}
         <li class="title">
@@ -55,9 +55,9 @@
       </ul>
     </div>
 
-    <div id="postBody"></div>
+    <div id="postDetail" class="page"></div>
 
-    <div id="projectsBody">
+    <div id="projectList" class="page">
 
       <div id="concertsList">
         <ul>
@@ -73,271 +73,21 @@
 
 
       <div id="projectsList">
-
-        <!-- Freedom portal -->
-        <div class="tile" href="/projects/freedom-portal">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/freedom-portal-1-small.png')">
-              <div class="subtitle">Freedom Portal</div>
+        {{#each projects}}
+          <div class="tile" href="{{url}}">
+            <div class="thumbnail" style="background-image:url('{{imgUrl}}')">
+                <div class="subtitle">{{title}}</div>
+            </div>
           </div>
-
-          <div class="content">
-            <h2>Freedom Portal</h2>
-
-            <p>Wi-Fi networks populate our urban environments and create intersecting boundaries within physical space. These territories provide us with new and interesting topographies especially if we consider the creative potential of these new spaces.</p>
-
-            <p>Captive portals provide a temporary gateway to the Internet, generally a place for businesses to harvest data but for us a place to provocatively host digital artworks. With this we creatively explore captive portal technology as a place to embed artwork in public space.</p>
-
-            <p>
-              <img data-src="{{static.root}}images/projects/freedom-portal-5.jpg" style="width:32%" />
-              <img data-src="{{static.root}}images/projects/freedom-portal-6.jpg" style="width:32%" />
-              <img data-src="{{static.root}}images/projects/freedom-portal-7.jpg" style="width:32%" />
-            </p>
-
-            <p>A curated collection of artworks are installed in the urban environment in one city, hosted on small autonomous Wi-Fi routers. Each work is available through a web-enable device (smart phone, tablet or laptop). To access the piece connect to the Wi-Fi name related to the artwork and a captive portal will appear on screen. This project is realized in collaboration with artist <a href="tim-shaw.net">Tim Shaw</a>.</p>
-
-            <p>
-              <img data-src="{{static.root}}images/projects/freedom-portal-2.jpg" style="width:32%" />
-              <img data-src="{{static.root}}images/projects/freedom-portal-3.jpg" style="width:32%" />
-              <img data-src="{{static.root}}images/projects/freedom-portal-4.jpg" style="width:32%" />
-            </p>
-
-            <p>Pictures above : three works were installed as part of <a href="http://apo33.org/electropixel/index.php/2016/08/20/tim-shaw-sebastien-piquemal/">electropixel #6</a> in Nantes, 2016.</p>
-
-            <p>Freedom Portal was made with support from Stereolux Nantes and the Finnish Arts Council (Taike).</p>
-
-            <h3>Links</h3>
-            <p>
-              <ul>
-                <li><a href="https://github.com/sebpiq/FreedomPortal">Source code and instructions to install the system</a></li>
-              </ul>
-            </p>
-
-          </div>
-
-        </div>
-
-        <!-- Murmurate -->
-        <div class="tile" href="/projects/fields-infos">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/murmurate-1-small.png')">
-            <div class="subtitle">Murmurate</div>
-          </div>
-
-          <div class="content">
-            <h2>Murmurate</h2>
-
-            <p>
-              <iframe data-src="//player.vimeo.com/video/144312243?byline=0&portrait=0" width="100%" height="50%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            </p>
-
-            <p><b>Murmurate</b> (previously called Fields) is a networked system exploring new areas of musical performance and audience participation through the use of mobile technology as a medium for sound diffusion. This project is realized in collaboration with artist <a href="tim-shaw.net">Tim Shaw</a>.</p>
-
-            <p>
-              <img data-src="{{static.root}}images/projects/fields-6.jpg" style="width:49%" />
-              <img data-src="{{static.root}}images/projects/fields-1-smaller.png" style="width:49%" />
-              <div>Image © <a href="http://www.chrisdonia.co.uk/">http://www.chrisdonia.co.uk/</a></div>
-            </p>
-
-            <p>Murmurate has been performed around Europe and in the USA. Venues include Cafe OTO (UK), FACT Liverpool (UK), Piksel (NOR), Stereolux (FR) Islington Mill (UK), ZDB (PRT), NK Project (DEU), NIME (USA), Talbot Rice Gallery (UK) and Third Space (FIN).
-            </p>
-
-            <p>Murmurate has been kindly supported by New Media Scotland, Newcastle Institute for Creative Arts Practice, Culture Lab, Media Lab Helsinki, The Creative Exchange and Sound and Music.</p>
-
-            <h3>Links</h3>
-            <p>
-              <ul>
-                <li><a href="http://github.com/sebpiq/fields">Source code of the Fields system, used in Murmurate</a></li>
-                <li><a href="https://nime2015.lsu.edu/proceedings/196/index.html">Paper in proceedings of NIME 2015</a></li>
-              </ul>
-            </p>
-            
-            <h3>More videos</h3>
-            <p>
-              <iframe data-src="//player.vimeo.com/video/120524097?byline=0&portrait=0" width="100%" height="50%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-              <iframe width="100%" height="50%" data-src="//www.youtube.com/embed/P1aj6vwFITI" frameborder="0" allowfullscreen></iframe>
-            </p>
-
-          </div>
-        </div>
-
-        <!-- La jetée -->
-        <div class="tile" href="/projects/la-jetee">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/la-jetee-3-small.jpg')">
-            <div class="subtitle">La Jetée (movie-concert)</div>
-          </div>
-
-          <div class="content">
-            <h2>La Jetée (movie-concert)</h2>
-
-            <p>In the aftermath of World War III, survivors live underground in a post-apocalyptic Paris where scientists research time travel to rescue the present.</p>
-
-            <p>With live narration by David McKechnie, Tim Shaw and Sébastien Piquemal re-score this acclaimed short film by Chris Marker in a performance that explores digital mobile technology and hyperlocal networks for surround sound diffusion.</p>
-
-            <p>
-              <img data-src="{{static.root}}images/projects/la-jetee-1.jpg" style="width:49%" />
-              <img data-src="{{static.root}}images/projects/la-jetee-2.jpg" style="width:49%" />
-              <div>Image © <a href="http://www.chrisdonia.co.uk/">http://www.chrisdonia.co.uk/</a></div>
-            </p>
-
-            <p>This performance was produced by <a href="http://www.mediascot.org/">New Media Scotland.</a></p>
-
-            <h3>Links</h3>
-            <p>
-              <ul>
-                <li><a href="http://github.com/sebpiq/fields">Source code of the Fields system, used in the performance</a></li>
-              </ul>
-            </p>
-
-          </div>
-        </div>
-
-
-        <!-- Possessed rooms -->
-        <div class="tile info" href="/projects/possessed-rooms">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/possessed-rooms-1-small.png')">
-            <div class="subtitle">possessed rooms</div>
-          </div>
-          <div class="content">
-            <h2>Possessed rooms</h2>
-
-            <p><b>Possessed rooms</b> is a series of parasitic performances happening in public computer rooms. The project is a collaboration with <a href="http://fernandovisockis.net/">Fernando Visockis</a>.</p>
-
-            <iframe data-src="//player.vimeo.com/video/165747866?byline=0&portrait=0" width="100%" height="50%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-            <p><b>possessed room #1</b> Media Lab Helsinki, computer room 515. 
-              <br/>13 desktop computers, custom made software.
-              <br/>Audio : samples extracted from thousands of random SoundCloud tracks.
-              <br/>Visuals : Random images of country leaders downloaded from twitter.
-              <br/>Live recording, 11/03/2016.
-            </p>
-
-            <h3>Links</h3>
-            <p>
-              <ul>
-                <li><a href="http://github.com/sebpiq/rhizome">Source code of the rhizome system, used in the performance</a></li>
-              </ul>
-            </p>
-
-          </div>
-        </div>
-
-        <!-- New Weave -->
-        <div class="tile" href="/projects/newweave">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/newweave-1-small.png')">
-            <div class="subtitle">New Weave</div>
-          </div>
-          <div class="content">
-            <h2>New Weave</h2>
-            
-            <p>
-              <iframe data-src="//player.vimeo.com/video/120474851?byline=0&portrait=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            </p>
-
-            <p><b>New Weave</b> is an experimental sound performance where the performers improvise with small audio snippets recorded and sent live by audience members with their smartphones.
-            </p>
-
-            <p>Snapping their fingers, speaking, whistling into their phones, the participants expose themselves. The performers on the other hand have to respond instantly to any incoming sound, and are thus in a permanent state of destabilization. Through this open outcome and this double vulnerability, a different type of relationship emerges, based on dialogue and exchange rather than blind hierarchy ; a fragile equilibrium, held together with glitchy rhythms and deep pulsating pads.
-            </p>
-            
-            <p>New Weave has been kindly supported by The Finnish Arts Council (Taike) and Media Lab Helsinki.</p>
-
-            <h3>Links</h3>
-            <p>
-              <ul>
-                <li><a href="http://github.com/sebpiq/rhizome">Source code of the rhizome system, used in the performance</a></li>
-              </ul>
-            </p>
-
-          </div>
-        </div>
-
-        <!-- Raspberry Pi workshops -->
-        <div class="tile" href="/projects/pd-rpi-workshops-infos">
-          <div class="thumbnail" style="background-image:url('{{static.root}}images/projects/pd-rpi-workshop-2-small.jpg')">
-              <div class="subtitle">Pure Data and Raspberry Pi workshops</div>
-          </div>
-
-          <div class="content">
-            <h2>Pure Data and Raspberry Pi workshops</h2>
-
-            <p>Teaching how to program and design a pocket-sized instrument with Pure Data and Raspberry Pi.</p>
-
-            <p><img data-src="{{static.root}}images/projects/pd-rpi-workshop-3.jpg" style="width:100%" /></p>
-
-            <iframe data-src="//player.vimeo.com/video/98737686?byline=0&portrait=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            <iframe data-src="//player.vimeo.com/video/76642179?byline=0&portrait=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            <iframe data-src="//player.vimeo.com/video/76307579?byline=0&portrait=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-          </div>
-
-        </div>
-
-        <!-- Versificator -->
-        <div class="tile" href="/projects/versificator-infos">
-          <div class="thumbnail">
-            <div class="subtitle">Versificator</div>
-          </div>
-          <div class="content">
-
-            <h2>Versificator</h2>
-
-            <p>Experiments on automatically recycling the overwhelming amount of recorded music available.</p>
-
-            <h3>1 ---</h3>
-
-            <p>A simple "instrument" that allows you to fetch any track from soundcloud and turn it into a drone by using paulstretch and bit of amplitude modulation and filtering.</p>
-
-            <p>Demo &gt; <a href="http://sebpiq.github.io/paulstretch.js/examples/stretched-and-droned/dist/index.html">HERE</a></p>
-
-            <h3>2 ---</h3>
-            
-            <p>
-              Sketches on generating tracks with different algorithms to recycle SoundCloud sound tracks.
-            </p>            
-            <audio controls="">
-              <source data-src="{{static.root}}audio/versificator/sketch1.mp3" src="" type="audio/mpeg" />
-              <source data-src="{{static.root}}audio/versificator/sketch1.ogg" src="" type="audio/ogg" />
-              <em>Sorry, your browser doesn't support HTML5 audio.</em>
-            </audio>
-            <audio controls="">
-              <source data-src="{{static.root}}audio/versificator/sketch2.mp3" src="" type="audio/mpeg" />
-              <source data-src="{{static.root}}audio/versificator/sketch2.ogg" src="" type="audio/ogg" />
-              <em>Sorry, your browser doesn't support HTML5 audio.</em>
-            </audio>
-
-            <h3>3 ---</h3>
-
-            <p>This is a stream generated continuously from bits of tracks downloaded from SoundCloud. Press play to start listening.
-              This generates mostly random rubish, but it is really just a prototype to test out different technologies.
-            </p>
-            <p>
-              <b>Note</b> : only ogg stream is available at the moment, so it won't work in Internet Explorer, and might not work in Safari.
-            </p>
-            <audio controls="">
-              <!--<source src="http://versificator.fm:8000/main" type="audio/mpeg" />-->
-              <source data-src="http://versificator.fm:8000/main" type="audio/ogg" />
-              <em>Sorry, your browser doesn't support HTML5 audio.</em>
-            </audio>
-
-            <h3>More links</h3>
-
-            <p>
-              <ul>
-                <li><a href="https://github.com/sebpiq/pychedelic">Python library to process audio.</a></li>
-                <li><a href="https://github.com/sebpiq/paulstretch.js">JS implementation of paulstretch.</a></li>
-              </ul>
-            </p>
-
-          </div>
-        </div>
-
+        {{/each}}
       </div>
-
 
     </div>
 
-  </div>
+    <div id="projectDetail" class="page">
+    </div>
 
-  <div id="modal">
-    <div class="content"></div>
+
   </div>
 
   <script src="{{static.root}}js/funktion.fm.js"></script>

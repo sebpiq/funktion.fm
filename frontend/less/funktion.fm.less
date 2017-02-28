@@ -71,6 +71,13 @@ svg {
   path {
     stroke-width: 1;
   }
+
+  /* SVG text displayed in contact page */
+  text.menuItem {
+    font-size: 100%;
+    opacity: 0;
+    letter-spacing: 0.15em;
+  }
 }
 
 /* Style for both landing menu and pages menus */
@@ -87,11 +94,7 @@ svg {
 
 }
 
-#mainPage {
-  height: 100%;
-  width: 100%;
-}
-
+/* top menu */
 header {
   @toggleHeight: 0.7em;
   @togglePadding: 0.8em;
@@ -199,49 +202,11 @@ header {
     }
     .menu { .projects button { text-decoration: underline; } }
   }
-  &.news {
+  &.posts {
     .toggle { img.white { display: block; } }
-    .menu { .news button { text-decoration: underline; } }
+    .menu { .posts button { text-decoration: underline; } }
   }
 
-}
-
-#modal {
-  .fullScreenMixin;
-  display: none;
-  background-color: rgba(0, 0, 0, 0.7);
-  cursor: url('../images/close-cursor.png'), auto;
-
-  .content {
-    .borderBoxMixin;
-    cursor: initial;
-    background-color: black;
-    width: 60%;
-    min-height: 100%;
-    margin: auto;
-    padding: 2em;
-    font-size: 150%;
-    color: white;
-
-    @media screen and (max-width: 700px) {
-      font-size: 90%;
-      width: 100%;
-    }
-
-    /* innerContent */
-    >div {
-      width: 100%;
-      min-height: 100%;
-    }
-  }
-}
-
-.newsMixin {
-  height: 100%;
-  overflow: auto;
-  color: black;
-  width: 95%;
-  margin: auto;
 }
 
 /* class for post titles, post list titles, concerts titles */
@@ -254,8 +219,12 @@ header {
   a:visited { color: @titleColor; }
 }
 
-#newsBody {
-  .newsMixin;
+#pages {
+  height: 100%;
+  width: 100%;
+}
+
+#postList {
   position: relative; /* required by perfect-scroll plugin */
   display: none;
   margin-top: 2em;
@@ -273,57 +242,25 @@ header {
 
 }
 
+#postDetail {
+  .textPageMixin;
+  .date {
+    color: grey;
+    display: inline-block;
+  }
 
-#postBody {
-  .newsMixin;
-  margin-top: 1em;
-
-  .post {
-    position: relative; /* required by perfect-scroll plugin */
-    height: 100%;
-    font-size: 130%;
-
-    .title {
-      font-size: 170%;
+  .social {
+    display: inline-block;
+    position: relative;
+    top: 0.5em;
+    margin-left: 0.8em;
+    a img {
+      height: 1.8em;
     }
-
-    .date {
-      color: grey;
-      display: inline-block;
-    }
-
-    .social {
-      display: inline-block;
-      position: relative;
-      top: 0.5em;
-      margin-left: 0.8em;
-      a img {
-        height: 1.8em;
-      }
-    }
-
-    .content {
-      padding-bottom: 3em;
-    }
-
-    .highlight {
-      font-size: 80%;
-      background-color: rgba(255, 255, 255, 0.5);
-    }
-
   }
 }
 
-svg {
-  /* SVG text displayed in contact page */
-  text.menuItem {
-    font-size: 100%;
-    opacity: 0;
-    letter-spacing: 0.15em;
-  }
-}
-
-#contactBody {
+#contact {
   .titlesFontMixin;
   display: none;
   position: absolute;
@@ -357,7 +294,7 @@ svg {
 
 }
 
-#projectsBody {
+#projectList {
   .fullScreenMixin;
   display: none;
   overflow: scroll;
@@ -425,10 +362,6 @@ svg {
         }
       }
 
-      .content {
-        display: none;
-      }
-
       @media screen and (max-width: 400px) {
         .thumbnail {
           .subtitle {
@@ -451,4 +384,9 @@ svg {
 
   }
 
+}
+
+#projectDetail {
+  .textPageMixin;
+  color: white;
 }

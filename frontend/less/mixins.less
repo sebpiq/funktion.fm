@@ -114,3 +114,30 @@ for list of dates such as posts or concert dates */
   font-weight: 300;
   font-family: @titlesFont, sans-serif;
 }
+
+.textPageMixin {
+  .borderBoxMixin;
+  font-size: 130%;
+  position: relative; /* required by perfect-scroll plugin */
+  height: 100%;
+  padding: 2em;
+
+  @media screen and (max-width: 700px) {
+    font-size: 90%;
+    width: 100%;
+  }
+
+  >.container {
+    margin: auto;
+    width: 60%;
+
+    .title {
+      font-size: 170%;
+    }
+
+    .highlight {
+      font-size: 80%;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}

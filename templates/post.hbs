@@ -1,4 +1,4 @@
-<div class="post">
+<div class="container">
   <div class="title">{{post.title}}</div>
   <div class="date">posted the {{prettifyDate post.date}}</div>
   <div class="social">
@@ -25,25 +25,6 @@
 
   </div>
 
-  <div class="content">{{{post.content}}}</div>
-
-  <!--
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-      window.disqus_shortname = 'funktionfm';
-      window.disqus_identifier = '{{post.url}}';
-      window.disqus_url = '{{post.url}}';
-
-      DISQUS.reset({
-        reload: true,
-        config: function () {  
-          this.page.identifier = '{{post.url}}';
-          this.page.url = document.location.href;
-        }
-     })
-     $('#disqus_thread').show()
-  </script>
-  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-  -->    
+  <div class="content">{{{post.content}}}</div>   
 
 </div>

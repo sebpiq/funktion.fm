@@ -1,3 +1,3 @@
 exports.contact = require('./contact')
-exports.news = require('./news')
+exports.posts = require('./posts')
 exports.projects = require('./projects')

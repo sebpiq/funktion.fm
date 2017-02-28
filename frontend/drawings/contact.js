@@ -56,12 +56,12 @@ module.exports = function() {
   textMenuFontSize = Math.min(textMenuFontSize, 220)
   $('svg text.menuItem').css('font-size', '' + textMenuFontSize + '%')
   // !!! we need to show and hide so elements have sizes and we can do calculations
-  $('#contactBody').css('font-size', '100%') // restore default width for calculation
-  $('#contactBody').show()
-  contactBodyFontSize = ((core1[0] + r1 * 0.5) / $('#contactBody .title').width() * 0.85 * 100)
+  $('#contact').css('font-size', '100%') // restore default width for calculation
+  $('#contact').show()
+  contactBodyFontSize = ((core1[0] + r1 * 0.5) / $('#contact .title').width() * 0.85 * 100)
   contactBodyFontSize = Math.min(contactBodyFontSize, 120)
-  $('#contactBody').css('font-size', '' + contactBodyFontSize + '%')
-  $('#contactBody').hide()
+  $('#contact').css('font-size', '' + contactBodyFontSize + '%')
+  $('#contact').hide()
 
   // (vertices, core, r, randomize)
   shapes.makeFlower(cluster1, core1, r1, 0.1)
