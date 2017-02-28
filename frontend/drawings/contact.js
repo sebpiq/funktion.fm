@@ -46,6 +46,7 @@ module.exports = function() {
     r1 *= 0.99; r2 *= 0.99; r3 *= 0.99
   }
 
+  // !!! bug when fonts not loaded, width are not right
   // Size menu items and titles
   // We size menu items in reference to "projects" which is the longest item
   // For title, we need to calculate the size taking into account that part of the flower is outside

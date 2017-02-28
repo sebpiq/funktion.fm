@@ -4,6 +4,42 @@
 @quoteColor: #555;
 @fontSize: 14px;
 
+
+
+/*
+    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Dosis', sans-serif;
+    font-family: 'NTR', sans-serif;
+    font-family: 'Didact Gothic', sans-serif;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Mandali', sans-serif;
+    font-family: 'Biryani', sans-serif;
+    font-family: 'Tenor Sans', sans-serif;
+    font-family: 'Lekton', sans-serif;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-family: 'Hind Vadodara', sans-serif;
+    font-family: 'Work Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+
+  
+    
+
+
+    Titles
+    -------
+    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Lekton', sans-serif;
+*/
+
+
+@titlesFont: 'Source Sans Pro';
+@normalFont: 'Nunito Sans';
+
 .borderBoxMixin {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -72,4 +108,9 @@ for list of dates such as posts or concert dates */
   @media screen and (min-width: 700px) and (max-width: 950px) { font-size: 75%; }
   @media screen and (min-width: 500px) and (max-width: 700px) { font-size: 60%; }
   @media screen and (max-width: 500px) { font-size: 55%; }
+}
+
+.titlesFontMixin {
+  font-weight: 300;
+  font-family: @titlesFont, sans-serif;
 }

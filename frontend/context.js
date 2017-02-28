@@ -38,7 +38,7 @@ exports.vertices = []
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
   exports.isMobile = true
 else 
-  exports.isMobile = false
+  exports.isMobile = true//false
 
 // Voronoi layout to use throughout the application
 exports.voronoi = d3.voronoi()

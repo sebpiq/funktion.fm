@@ -138,8 +138,8 @@ var routes = {
     var cores = drawings.contact()
     animations.startTransition()
 
-    newsText.moveToPosition([cores[1][0] - $('text.newsText').width() / 2, cores[1][1] + 7])
-    projectsText.moveToPosition([cores[2][0] - $('text.projectsText').width() / 2, cores[2][1] + 7])
+    newsText.moveToPosition([cores[1][0] - $('text.newsText').width() / 2, cores[1][1] + 10])
+    projectsText.moveToPosition([cores[2][0] - $('text.projectsText').width() / 2, cores[2][1] + 10])
     $('header').fadeOut()
     initMainPageLayout(function() {
       d3.selectAll('text.menuItem').transition().style('opacity', 1)
