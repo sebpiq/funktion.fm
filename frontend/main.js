@@ -113,7 +113,7 @@ var routes = {
   '/projects': function() {
     drawings.projects()
     routes._notContact(function() {
-      var textGradient = drawingUtils.makeGradient([250, 250, 250], [0, 0, 0])
+      var textGradient = drawingUtils.makeGradient([250, 250, 250], [50, 50, 50])
       $('header').attr('class', 'projects').show()
       $('#projectList')
         .fadeIn(300)
