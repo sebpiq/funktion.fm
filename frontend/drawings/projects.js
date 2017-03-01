@@ -4,7 +4,7 @@ var _ = require('underscore')
   , context = require('../context')
 
 module.exports = function() {
-  var gradient = utils.makeGradient([10, 10, 10], [23, 35, 35])
+  var gradient = utils.makeGradient([10, 10, 10], [20, 25, 25])
 
   shapes.makePolygon(context.vertices, {
     polygon: [
@@ -15,7 +15,7 @@ module.exports = function() {
       [[context.height / 5, context.height / 5], [1.5 * context.height / 5, 1.5 * context.height / 5]]
     ]
   }, function(vertex, row, col) {
-    vertex.perturbation = 0.05
+    vertex.perturbation = 0.1
     vertex.style = {fill: gradient(Math.random()), 'fill-opacity': 1}
   })
 }
