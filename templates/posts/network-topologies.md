@@ -2,10 +2,10 @@
   "title" : "Rhizome, interactive performances and network topologies",
   "tags" : [ "rhizome", "tutorial", "networks", "tips" ],
   "category": "rhizome",
-  "date" : "08-25-2015"
+  "date" : "25/08/2015"
 }}}
 
-[Fields](http://funktion.fm/projects/fields-infos) and [New weave](http://funktion.fm/projects/newweave) are two interactive performances which allow audience members to participate by using their mobile phone. They use a tool which I have released about one and a half years ago, and which is called [rhizome](http://github.com/sebpiq/rhizome).
+[Fields](http://funktion.fm/projects/murmurate) and [New weave](http://funktion.fm/projects/newweave) are two interactive performances which allow audience members to participate by using their mobile phone. They use a tool which I have released about one and a half years ago, and which is called [rhizome](http://github.com/sebpiq/rhizome).
 
 In this post, I will quickly introduce **rhizome**, and explain what kind of network setup, equipment and configuration I use for these live performances.
 

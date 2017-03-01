@@ -2,7 +2,7 @@
   "title" : "Using Web Audio API in production",
   "tags" : [ "web audio api" ],
   "category": "rhizome",
-  "date" : "02-23-2017"
+  "date" : "23/02/2017"
 }}}
 
 [Web Audio API](https://webaudio.github.io/web-audio-api/) allows to synthesize sound in the web browser with JavaScript. However, as with anything on the web, it can be very challenging to write code that works on all browsers, mobile and desktop. Web Audio API is no exception and here is a little checklist of things to know ...

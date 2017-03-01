@@ -45,10 +45,10 @@
 
     <div id="postList" class="page">
       <ul>
-        {{#each getPosts}}
+        {{#each posts}}
         <li class="title">
-          <div class="date">{{prettifyDate date}}</div>
-          <a href="/news/{{slug}}">{{title}}</a>
+          <div class="date">{{date}}</div>
+          <a href="/news/{{url.basename}}">{{title}}</a>
           <div class="clearfix"></div>
         </li>
         {{/each}}
@@ -74,7 +74,7 @@
 
       <div id="projectsList">
         {{#each projects}}
-          <div class="tile" href="{{url}}">
+          <div class="tile" href="{{url.basename}}">
             <div class="thumbnail" style="background-image:url('{{imgUrl}}')">
                 <div class="subtitle">{{title}}</div>
             </div>

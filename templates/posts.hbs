@@ -1,16 +1,16 @@
 <div class="container">
-  <div class="title">{{post.title}}</div>
-  <div class="date">posted the {{prettifyDate post.date}}</div>
+  <div class="title">{{metadata.title}}</div>
+  <div class="date">posted the {{metadata.date}}</div>
   <div class="social">
 
     <a class="twitter" href=""
       onclick="
         window.open(
-          'https://twitter.com/intent/tweet?text={{post.title}} ' + encodeURIComponent(location.href) + ' via @sebpiq',
+          'https://twitter.com/intent/tweet?text={{metadata.title}} ' + encodeURIComponent(location.href) + ' via @sebpiq',
           'twitter-share-dialog',
           'width=626,height=436');
         return false;">
-      <img src="{{static.root}}images/twitter-blue.svg">
+      <img src="/images/twitter-blue.svg">
     </a>
 
     <a class="facebook" href="" 
@@ -20,11 +20,11 @@
           'facebook-share-dialog',
           'width=626,height=436'); 
         return false;">
-      <img src="{{static.root}}images/facebook-blue.svg">
+      <img src="/images/facebook-blue.svg">
     </a>
 
   </div>
 
-  <div class="content">{{{post.content}}}</div>   
+  <div class="content">{{{content}}}</div>   
 
 </div>

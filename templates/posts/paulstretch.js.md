@@ -2,7 +2,7 @@
   "title" : "Paulstretch algorithm with Web Audio API, and how to delegate audio processing to web workers",
   "tags" : [ "Web Audio API", "experiment"],
   "category": "experiments",
-  "date" : "11-17-2014"
+  "date" : "17/11/2014"
 }}}
 
 Just published an implementation of PaulStretch in JavaScript which I made about a year ago. The [repository is here](https://github.com/sebpiq/paulstretch.js) and in addition there is a demo [which allows you to create nice drones from SoundCloud tracks](http://sebpiq.github.io/paulstretch.js/examples/stretched-and-droned/dist/index.html). The following post is a more general tutorial on how to process audio live with web workers, and it uses **paulstretch.js** as an example.

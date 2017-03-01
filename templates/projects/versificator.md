@@ -1,6 +1,5 @@
 {{{
   "title" : "Versificator",
-  "url": "/projects/versificator",
   "imgUrl": ""
 }}}
 

@@ -1,6 +1,5 @@
 {{{
   "title": "Freedom Portal",
-  "url": "/projects/freedom-portal",
   "imgUrl": "/images/projects/freedom-portal-1-small.png"
 }}}
 

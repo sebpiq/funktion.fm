@@ -28,7 +28,6 @@
     "jquery": "^3.1.1",
     "marked": "^0.3.6",
     "perfect-scrollbar": "^0.6.12",
-    "poet": "2.0.x",
     "pygmentize-bundled": "2.3.x",
     "underscore": "1.5.x"
   },

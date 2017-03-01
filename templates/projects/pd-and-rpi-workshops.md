@@ -1,6 +1,5 @@
 {{{
   "title" : "Pure Data and Raspberry Pi workshops",
-  "url": "/projects/pd-rpi-workshops-infos",
   "imgUrl": "/images/projects/pd-rpi-workshop-2-small.jpg"
 }}}
 

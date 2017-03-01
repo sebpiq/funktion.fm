@@ -49,6 +49,12 @@ blockquote {
   font-style: italic;
 }
 
+code pre {
+  overflow: auto;
+  position: relative;
+  font-size: 80%;
+}
+
 .menuItem {
   .unselectableMixin;
   .titlesFontMixin;
@@ -97,7 +103,7 @@ svg {
 /* top menu */
 header {
   @toggleHeight: 0.7em;
-  @togglePadding: 0.8em;
+  @togglePadding: 0.5em;
   @fontSizeBase: 210%;
   display: none;
   z-index: 10;
@@ -244,6 +250,8 @@ header {
 
 #postDetail {
   .textPageMixin;
+  /* cause the sea is too dark, so we can't read the text */
+  padding-bottom: 8em;
   .date {
     color: grey;
     display: inline-block;
@@ -389,4 +397,10 @@ header {
 #projectDetail {
   .textPageMixin;
   color: white;
+  .title {
+    color: @titleColor2;
+  }
+  a {
+    color: @linkColor2;
+  }
 }

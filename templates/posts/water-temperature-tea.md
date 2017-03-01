@@ -1,7 +1,7 @@
 {{{
   "title" : "Brewing your tea properly.",
   "tags" : [ "random" ],
-  "date" : "09-22-2014"
+  "date" : "22/09/2014"
 }}}
 
 With this simple calculator, you can finally brew your fancy tea at the proper temperature! 

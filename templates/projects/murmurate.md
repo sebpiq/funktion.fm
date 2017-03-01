@@ -1,6 +1,5 @@
 {{{
   "title": "Murmurate",
-  "url": "/projects/fields-infos",
   "imgUrl": "/images/projects/murmurate-1-small.png"
 }}}
 

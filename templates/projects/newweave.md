@@ -1,6 +1,5 @@
 {{{
   "title" : "New Weave",
-  "url": "/projects/newweave",
   "imgUrl": "/images/projects/newweave-1-small.png"
 }}}
 

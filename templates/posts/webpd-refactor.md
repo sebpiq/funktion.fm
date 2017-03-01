@@ -2,7 +2,7 @@
   "title" : "WebPd refactor, status update",
   "tags" : ["project"],
   "project": "webpd",
-  "date" : "10-12-2013"
+  "date" : "12/10/2013"
 }}}
 
 [WebPd](https://github.com/sebpiq/WebPd) as a proof-of-concept has worked quite well so far. It's about time to think about a better, faster, more durable architecture for the library. And so, I started refactoring WebPd last spring.

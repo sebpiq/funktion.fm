@@ -1,6 +1,5 @@
 {{{
   "title": "Possessed rooms",
-  "url": "/projects/possessed-rooms",
   "imgUrl": "/images/projects/possessed-rooms-1-small.png"
 }}}
 

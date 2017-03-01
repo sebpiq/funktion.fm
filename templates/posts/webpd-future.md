@@ -1,7 +1,7 @@
 {{{
   "title" : "Present and future of WebPd",
   "tags" : [ "WebPd", "programming", "web audio api" ],
-  "date" : "09-7-2015"
+  "date" : "07/09/2015"
 }}}
 
 Over the past few months, I have received a lot of emails, questions, comments about [WebPd](https://github.com/sebpiq/WebPd). So here is a little post to recap it all ... WebPd's present, WebPd's future, challenges and utopia of Pd and sound programming on the web.

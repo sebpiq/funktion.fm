@@ -4,7 +4,7 @@ var _ = require('underscore')
   , context = require('../context')
 
 module.exports = function() {
-  var gradient = utils.makeGradient([10, 10, 10], [0, 35, 35])
+  var gradient = utils.makeGradient([10, 10, 10], [23, 35, 35])
 
   shapes.makePolygon(context.vertices, {
     polygon: [

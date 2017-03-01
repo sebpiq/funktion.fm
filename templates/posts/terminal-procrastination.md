@@ -2,7 +2,7 @@
   "title" : "Audio glitches with a linux terminal",
   "tags" : ["other"],
   "project": "other",
-  "date" : "01-15-2016"
+  "date" : "15/01/2016"
 }}}
 
 Here is an old hack with a terminal to listen to the guts of your computer.

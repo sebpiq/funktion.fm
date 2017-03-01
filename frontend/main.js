@@ -6,6 +6,7 @@ var raf = require('./shim/raf')
 var FastButton = require('./shim/FastButton')
 require('perfect-scrollbar/jquery')($)
 require('d3-transition')
+window.$ = $ // needed by some posts using JS
 
 var animations = require('./drawing-tools/animations')
 var drawingUtils = require('./drawing-tools/utils')
@@ -100,12 +101,12 @@ var routes = {
     })
   },
 
-  '/news/:postId': function(postId) {
+  '/news/:filename': function(filename) {
     drawings.posts()
     routes._notContact(function() {
       $('header').attr('class', 'posts').fadeIn()
       $('#postDetail').show()
-      routes._loadTextPage('/post/' + postId, $('#postDetail'))
+      routes._loadTextPage('/_partials/posts/' + filename + '.md', $('#postDetail'))
     })
   },
 
@@ -153,6 +154,9 @@ var routes = {
         if (el.data('src'))
           el.attr('src', el.data('src'))
       })
+
+      container.find('code pre')
+        .perfectScrollbar()
 
       container
         .perfectScrollbar()

@@ -1,6 +1,5 @@
 {{{
   "title": "La Jetée (movie-concert)",
-  "url": "/projects/la-jetee",
   "imgUrl": "/images/projects/la-jetee-3-small.jpg"
 }}}
 
