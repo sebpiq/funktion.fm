@@ -10,7 +10,7 @@ const handlebars = require('handlebars')
 const datesList = require('./datesList.json')
 const templatesDir = path.join(__dirname, 'templates')
 const publicDir = path.join(__dirname, 'docs')
-const compiledPagesDir = path.join(publicDir, '_compiledPages')
+const compiledPagesDir = path.join(publicDir, 'compiledPages')
 
 marked.setOptions({
   sanitize: false,
@@ -35,19 +35,19 @@ function readMarkdown(filePath, done) {
 }
 
 // Gather all compiled pages here
-const _compiledPages = {
+const compiledPages = {
   projects: [],
   posts: []
 }
 
-async.each(Object.keys(_compiledPages), (subpath, subpathDone) => {
+async.each(Object.keys(compiledPages), (subpath, subpathDone) => {
   const subpathDir = path.join(templatesDir, subpath)
   const subpathTemplate = handlebars.compile(fs.readFileSync(subpathDir + '.hbs').toString())
   const namelist = fs.readdirSync(subpathDir)
 
   async.series([
 
-    // For each md template, parse the markdown and metadata, add it to `_compiledPages`
+    // For each md template, parse the markdown and metadata, add it to `compiledPages`
     // and write the compiled templates to the public folder.
     (next) => {
       async.each(namelist, (filename, fileDone) => {
@@ -62,7 +62,7 @@ async.each(Object.keys(_compiledPages), (subpath, subpathDone) => {
               filename: filename,
               basename: path.basename(filename, '.md')
             }
-            _compiledPages[subpath][filename] = data
+            compiledPages[subpath][filename] = data
             fs.writeFile(compiledFilePath, subpathTemplate(data), fileNext)
           }
         ], fileDone)
@@ -79,8 +79,8 @@ async.each(Object.keys(_compiledPages), (subpath, subpathDone) => {
         static: { root: '/' },
         site: { root: '/' },
         dates: datesList,
-        projects: _.chain(_compiledPages.projects).values().pluck('metadata').value(),
-        posts: _.chain(_compiledPages.posts).values().pluck('metadata')
+        projects: _.chain(compiledPages.projects).values().pluck('metadata').value(),
+        posts: _.chain(compiledPages.posts).values().pluck('metadata')
           .sortBy(function(d) {
             var date = d.date.split('/').reverse()
             return -new Date(date[0], date[1], date[2])

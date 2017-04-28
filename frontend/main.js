@@ -106,7 +106,7 @@ var routes = {
     routes._notContact(function() {
       $('header').attr('class', 'posts').fadeIn()
       $('#postDetail').show()
-      routes._loadTextPage('/_compiledPages/posts/' + filename + '.md', $('#postDetail'))
+      routes._loadTextPage('/compiledPages/posts/' + filename + '.md', $('#postDetail'))
     })
   },
 
@@ -135,7 +135,7 @@ var routes = {
     drawings.projects()
     routes._notContact(function() {
       $('header').attr('class', 'projects').show()
-      routes._loadTextPage('/_compiledPages/projects/' + tileId + '.md', $('#projectDetail'))
+      routes._loadTextPage('/compiledPages/projects/' + tileId + '.md', $('#projectDetail'))
     })
   },
 
