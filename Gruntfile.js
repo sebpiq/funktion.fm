@@ -6,14 +6,14 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         src: '/tmp/browserified.js',
-        dest: 'public/js/funktion.fm.js'
+        dest: 'docs/js/funktion.fm.js'
       }
     },
 
     less: {
       prod: {
         files: {
-          'public/css/funktion.fm.css': 'frontend/less/funktion.fm.less'
+          'docs/css/funktion.fm.css': 'frontend/less/funktion.fm.less'
         }
       }
     },
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {src: ['/tmp/browserified.js'], dest: 'public/js/funktion.fm.js', filter: 'isFile'}
+          {src: ['/tmp/browserified.js'], dest: 'docs/js/funktion.fm.js', filter: 'isFile'}
         ]
       }
     },
