@@ -1,0 +1,661 @@
+.borderBoxMixin {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.unselectableMixin {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.fullScreenMixin {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* a value for "position" is required by perfect-scroll plugin */
+
+  top: 0;
+  left: 0;
+}
+.resetUlMixin {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* Two column layout realized with float + margin,
+for list of dates such as posts or concert dates */
+/* Responsive font sizes for dates list such as posts or concert dates */
+@media screen and (min-width: 950px) {
+  .dateUlResponsiveSize {
+    font-size: 85%;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 950px) {
+  .dateUlResponsiveSize {
+    font-size: 75%;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 700px) {
+  .dateUlResponsiveSize {
+    font-size: 60%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .dateUlResponsiveSize {
+    font-size: 55%;
+  }
+}
+.titlesFontMixin {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.textPageMixin {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 130%;
+  position: relative;
+  /* required by perfect-scroll plugin */
+
+  height: 100%;
+  padding: 2em;
+}
+.textPageMixin > .container {
+  margin: auto;
+  width: 60%;
+}
+.textPageMixin > .container .title {
+  font-size: 250%;
+}
+.textPageMixin > .container .highlight {
+  font-size: 80%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+@media screen and (max-width: 700px) {
+  .textPageMixin {
+    font-size: 90%;
+  }
+  .textPageMixin > .container {
+    width: 100%;
+  }
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  width: 100%;
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  outline: none;
+  color: #1551b3;
+  cursor: pointer;
+}
+a img {
+  outline: none;
+}
+a:visited {
+  color: #1551b3;
+}
+button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  cursor: pointer;
+  outline: none;
+}
+img {
+  border: 0;
+}
+audio {
+  width: 100%;
+}
+iframe {
+  background: no-repeat url('') center center;
+}
+blockquote {
+  color: #555555;
+  font-style: italic;
+}
+code pre {
+  overflow: auto;
+  position: relative;
+  font-size: 80%;
+}
+.menuItem {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}
+.clearfix {
+  width: 100%;
+  height: 0;
+  clear: both;
+}
+svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* a value for "position" is required by perfect-scroll plugin */
+
+  top: 0;
+  left: 0;
+  /* SVG text displayed in contact page */
+
+}
+svg path {
+  stroke-width: 1;
+}
+svg text.menuItem {
+  font-size: 100%;
+  opacity: 0;
+  letter-spacing: 0.15em;
+}
+/* Style for both landing menu and pages menus */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu li {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  cursor: pointer;
+}
+.menu li a {
+  text-decoration: none;
+  color: white;
+}
+/* top menu */
+header {
+  display: none;
+  z-index: 10;
+  cursor: pointer;
+  /* common style for toggle and menu items */
+
+  /* Adjust font-size with page width in desktop layout */
+
+  /* mobile layout */
+
+  /* Set styles in the menu according to the currently active page */
+
+}
+header .baseStyleMenu {
+  background: none;
+  border: 2px solid transparent;
+  font-size: 210%;
+  padding: 0.5em;
+}
+header .toggle {
+  background: none;
+  border: 2px solid transparent;
+  font-size: 210%;
+  padding: 0.5em;
+  padding: 0.8em;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+header .toggle img {
+  display: none;
+  height: 0.7em;
+}
+header .menu {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: all 300ms cubic-bezier(0.86, 0, 0.07, 1);
+  -moz-transition: all 300ms cubic-bezier(0.86, 0, 0.07, 1);
+  -ms-transition: all 300ms cubic-bezier(0.86, 0, 0.07, 1);
+  transition: all 300ms cubic-bezier(0.86, 0, 0.07, 1);
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.85);
+  text-align: right;
+}
+header .menu li {
+  display: inline-block;
+  /* let space on the right for toggle */
+
+}
+header .menu li button {
+  background: none;
+  border: 2px solid transparent;
+  font-size: 210%;
+  padding: 0.5em;
+  min-width: 7em;
+  color: #bbb;
+}
+header .menu li.contact button {
+  font-weight: bold;
+}
+header .menu li.projects {
+  margin-right: 8em;
+}
+header.expanded {
+  cursor: initial;
+}
+header.expanded .menu {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+@media screen and (min-width: 900px) and (max-width: 1050px) {
+  header .menu li button,
+  header .toggle {
+    font-size: 189%;
+  }
+  header li.projects {
+    margin-right: 5em;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  header .menu li button,
+  header .toggle {
+    font-size: 168%;
+  }
+  header li.projects {
+    margin-right: 3em;
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 700px) {
+  header .menu li button,
+  header .toggle {
+    font-size: 147%;
+  }
+  header li.projects {
+    margin-right: 0;
+  }
+}
+@media screen and (max-width: 600px) {
+  header .menu {
+    padding-top: 1.7em;
+    text-align: center;
+  }
+  header .menu li {
+    display: block;
+  }
+  header .menu li.projects {
+    margin-right: 0;
+  }
+  header .menu li button,
+  header .toggle {
+    font-size: 136.5%;
+  }
+}
+header.contact {
+  display: none;
+}
+header.projects .toggle {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+header.projects .toggle img.white {
+  display: block;
+}
+header.projects.expanded .toggle {
+  background-color: rgba(0, 0, 0, 0);
+}
+header.projects.expanded .toggle img.white {
+  display: block;
+}
+header.projects.expanded .toggle img.black {
+  display: none;
+}
+header.projects .menu .projects button {
+  text-decoration: underline;
+}
+header.posts .toggle img.white {
+  display: block;
+}
+header.posts .menu .posts button {
+  text-decoration: underline;
+}
+/* class for post titles, post list titles, concerts titles */
+.title {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 180%;
+  letter-spacing: -0.05em;
+  color: #222266;
+}
+.title a {
+  color: #222266;
+}
+.title a:visited {
+  color: #222266;
+}
+#pages {
+  height: 100%;
+  width: 100%;
+}
+#postList {
+  position: relative;
+  /* required by perfect-scroll plugin */
+
+  display: none;
+  margin-top: 2em;
+}
+#postList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+@media screen and (min-width: 950px) {
+  #postList ul {
+    font-size: 85%;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 950px) {
+  #postList ul {
+    font-size: 75%;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 700px) {
+  #postList ul {
+    font-size: 60%;
+  }
+}
+@media screen and (max-width: 500px) {
+  #postList ul {
+    font-size: 55%;
+  }
+}
+#postList ul li {
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 0.5em;
+}
+#postList ul li .date {
+  display: block;
+  width: 7em;
+  float: left;
+  text-align: right;
+  white-space: nowrap;
+}
+#postList ul li a {
+  display: block;
+  margin-left: 7.5em;
+}
+#postList ul li .date {
+  color: #272727;
+}
+#postDetail {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 130%;
+  position: relative;
+  /* required by perfect-scroll plugin */
+
+  height: 100%;
+  padding: 2em;
+  /* cause the sea is too dark, so we can't read the text */
+
+  padding-bottom: 8em;
+}
+#postDetail > .container {
+  margin: auto;
+  width: 60%;
+}
+#postDetail > .container .title {
+  font-size: 250%;
+}
+#postDetail > .container .highlight {
+  font-size: 80%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+@media screen and (max-width: 700px) {
+  #postDetail {
+    font-size: 90%;
+  }
+  #postDetail > .container {
+    width: 100%;
+  }
+}
+#postDetail .date {
+  color: grey;
+  display: inline-block;
+}
+#postDetail .social {
+  display: inline-block;
+  position: relative;
+  top: 0.5em;
+  margin-left: 0.8em;
+}
+#postDetail .social a img {
+  height: 1.8em;
+}
+#contact {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1.2em;
+  padding-top: 0.8em;
+  font-size: 100%;
+  text-align: left;
+  font-weight: 200;
+}
+#contact > * {
+  letter-spacing: 0.07em;
+}
+#contact .title {
+  font-size: 280%;
+  font-weight: 200;
+}
+#contact .social {
+  margin: 0.8em 0;
+}
+#contact .social img {
+  width: 2.9em;
+}
+#contact .name,
+#contact .mail {
+  margin-left: 0.5em;
+}
+#projectList {
+  /* size of a tile in desktop layout */
+
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* a value for "position" is required by perfect-scroll plugin */
+
+  top: 0;
+  left: 0;
+  display: none;
+  overflow: scroll;
+  /* Mobile layout */
+
+}
+#projectList #concertsList {
+  float: left;
+  width: 75vw;
+}
+#projectList #concertsList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-right: 0.9em;
+  margin-top: 0.7em;
+  text-transform: uppercase;
+}
+@media screen and (min-width: 950px) {
+  #projectList #concertsList ul {
+    font-size: 85%;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 950px) {
+  #projectList #concertsList ul {
+    font-size: 75%;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 700px) {
+  #projectList #concertsList ul {
+    font-size: 60%;
+  }
+}
+@media screen and (max-width: 500px) {
+  #projectList #concertsList ul {
+    font-size: 55%;
+  }
+}
+#projectList #concertsList ul li {
+  display: block;
+  text-transform: uppercase;
+}
+#projectList #concertsList ul li .date {
+  display: block;
+  width: 6.5em;
+  float: left;
+  text-align: right;
+  white-space: nowrap;
+}
+#projectList #concertsList ul li a {
+  display: block;
+  margin-left: 7em;
+}
+#projectList #concertsList ul li a .project {
+  text-decoration: underline;
+  margin-right: 0.4em;
+}
+#projectList #projectsList {
+  text-align: right;
+  /* to stack tiles on the right */
+
+  font-size: 0;
+  /* to remove space between tiles which are inline-blocks */
+
+}
+#projectList #projectsList .tile {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', sans-serif;
+  width: 25vw;
+  height: 25vw;
+  position: relative;
+  font-size: 14px;
+  /* restore font-size */
+
+  opacity: 0.7;
+  color: white;
+  display: inline-block;
+  background-color: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+#projectList #projectsList .tile:hover {
+  opacity: 1;
+}
+#projectList #projectsList .tile .thumbnail {
+  font-size: 150%;
+  height: 100%;
+  width: 100%;
+  background-size: 100%;
+}
+#projectList #projectsList .tile .thumbnail .subtitle {
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.9);
+  font-size: 80%;
+  width: 100%;
+}
+@media screen and (max-width: 700px) {
+  #projectList #concertsList {
+    float: none;
+    width: 100%;
+    height: 70%;
+  }
+}
+@media screen and (max-width: 400px) {
+  #projectList #projectsList .tile {
+    width: 49.5vw;
+    height: 49.5vw;
+  }
+  #projectList #projectsList .tile .thumbnail .subtitle {
+    font-size: 70%;
+  }
+}
+@media screen and (min-width: 400px) and (max-width: 700px) {
+  #projectList #projectsList .tile {
+    width: 33vw;
+    height: 33vw;
+  }
+}
+#projectDetail {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 130%;
+  position: relative;
+  /* required by perfect-scroll plugin */
+
+  height: 100%;
+  padding: 2em;
+  color: white;
+}
+#projectDetail > .container {
+  margin: auto;
+  width: 60%;
+}
+#projectDetail > .container .title {
+  font-size: 250%;
+}
+#projectDetail > .container .highlight {
+  font-size: 80%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+@media screen and (max-width: 700px) {
+  #projectDetail {
+    font-size: 90%;
+  }
+  #projectDetail > .container {
+    width: 100%;
+  }
+}
+#projectDetail .title {
+  color: #b4b4c3;
+}
+#projectDetail a {
+  color: #b4b4c3;
+}

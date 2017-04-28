@@ -17,19 +17,22 @@
     "d3-transition": "^1.0.3",
     "d3-voronoi": "^1.1.0",
     "director": "^1.2.8",
-    "express": "3.4.x",
+    "jquery": "^3.1.1",
+    "perfect-scrollbar": "^0.6.12",
+    "underscore": "1.5.x"
+  },
+  "devDependencies": {
+    "async": "^2.3.0",
     "grunt": "0.4.x",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-copy": "0.4.x",
     "grunt-contrib-less": "0.7.x",
     "grunt-contrib-uglify": "0.2.x",
     "grunt-contrib-watch": "0.5.x",
-    "hbs": "2.4.x",
-    "jquery": "^3.1.1",
+    "grunt-exec": "^2.0.0",
+    "handlebars": "^4.0.6",
     "marked": "^0.3.6",
-    "perfect-scrollbar": "^0.6.12",
-    "pygmentize-bundled": "2.3.x",
-    "underscore": "1.5.x"
+    "pygmentize-bundled": "2.3.x"
   },
   "bugs": {
     "url": "https://github.com/sebpiq/funktion.fm/issues"

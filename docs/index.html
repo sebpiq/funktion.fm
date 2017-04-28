@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>funktion.fm</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans|Source+Sans+Pro:200,300,400" rel="stylesheet">
+  <link href="/css/perfect-scrollbar.css" rel="stylesheet" type="text/css">
+  <link href="/css/funktion.fm.css" rel="stylesheet" type="text/css">
+  <!-- CSS for the highlighted markdown -->
+  <link href="/css/friendly.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <svg id="bgSvg"></svg>
+  <div id="pages">
+    <header>
+      <nav>
+        <button class="toggle">
+          <img class="white" src="/images/nav-white.svg" />
+          <img class="black" src="/images/nav-black.svg" />
+        </button>
+        <ul class="menu">
+          <li class="contact"><button>funktion.fm</button></li>
+          <li class="posts"><button>POSTS</button></li>
+          <li class="projects"><button>PROJECTS</button></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div id="contact" class="page">
+      <div class="title">funktion.fm</div>
+      <div class="social">
+        <a href="https://twitter.com/sebpiq"><img src="/images/twitter-grey.svg" /></a>
+        <a href="https://github.com/sebpiq"><img src="/images/github-grey.svg" /></a>
+        <a href="https://soundcloud.com/sebpiq"><img src="/images/soundcloud-grey.svg" /></a>
+        <a href="https://vimeo.com/sebpiq"><img src="/images/vimeo-grey.svg" /></a>
+        <a href="https://www.youtube.com/channel/UCsny0xNztCl_aMSUvbLKJuQ"><img src="/images/youtube-grey.svg" /></a>
+      </div>
+      <div class="name">Sébastien Piquemal</div>
+      <div class="mail">sebpiq@gmail.com</div>
+    </div>
+
+    <div id="postList" class="page">
+      <ul>
+        <li class="title">
+          <div class="date">23/02/2017</div>
+          <a href="/news/web-audio-in-production">Using Web Audio API in production</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">15/01/2016</div>
+          <a href="/news/terminal-procrastination">Audio glitches with a linux terminal</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">07/09/2015</div>
+          <a href="/news/webpd-future">Present and future of WebPd</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">25/08/2015</div>
+          <a href="/news/network-topologies">Rhizome, interactive performances and network topologies</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">17/11/2014</div>
+          <a href="/news/paulstretch.js">Paulstretch algorithm with Web Audio API, and how to delegate audio processing to web workers</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">22/09/2014</div>
+          <a href="/news/water-temperature-tea">Brewing your tea properly.</a>
+          <div class="clearfix"></div>
+        </li>
+        <li class="title">
+          <div class="date">12/10/2013</div>
+          <a href="/news/webpd-refactor">WebPd refactor, status update</a>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+
+    <div id="postDetail" class="page"></div>
+
+    <div id="projectList" class="page">
+
+      <div id="concertsList">
+        <ul>
+          <li class="title">
+            <span class="date">19/02/2017</span>
+            <a href="/projects/la-jetee"><span class="project">Atmosphere | La Jetée</span> <span class="venue">Glasgow Film Festival, Scotland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">10-&gt;30/10/2016</span>
+            <a href="http://binauralmedia.org/news/en/arquivo/8954"><span class="project">ParaFonoM</span> <span class="venue">Nodar residency (SoCCoS), Vouzela, Portugal</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">28/09/2016</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">Sight and Sound festival, Montreal, Canada</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">19/08/2016</span>
+            <a href="/projects/la-jetee"><span class="project">Atmosphere | La Jetée</span> <span class="venue">Assembly Rooms, Edinburgh, Scotland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">19-&gt;21/08/2016</span>
+            <a href="/projects/freedom-portal"><span class="project">Freedom Portal</span> <span class="venue">Electropixel, Nantes, France</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">01/07/2016</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">The Wired Lab, Wagga-Wagga, Australia</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">14/05/2016</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">Cumberland Arms, Newcastle, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">13/05/2016</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">FACT, Liverpool, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">20/04/2016</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">Stereolux, Nantes, France</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">13/04/2016</span>
+            <a href="/projects/murmurate"><span class="project">Fields Workshop</span> <span class="venue">Stereolux, Nantes, France</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">11/04/2016</span>
+            <a href="/projects/freedom-portal"><span class="project">Freedom Portal</span> <span class="venue">Stereolux residency, Nantes, France</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">19/11/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Piksel festival, Bergen, Norway</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">10/10/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Connect the Dots festival, Sheffield, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">26/09/2015</span>
+            <a href="/projects/murmurate"><span class="project">Murmurate</span> <span class="venue">Sanctuary, Galloway, Scotland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">15/08/2015</span>
+            <a href="/projects/newweave"><span class="project">New Weave</span> <span class="venue">Flow festival, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">02/06/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">NIME, Baton Rouge, USA</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">20/05/2015</span>
+            <a href="/projects/newweave"><span class="project">New Weave</span> <span class="venue">Vapaan Taiteen Tila, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">23/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Durham Castle, Durham, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">22/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Islington Mill, Manchester, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">19/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Ulverston Parish Rooms, Ulverston, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">17/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">EAVI, Goldsmiths, London, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">16/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Music Hack Space, London, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">14/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">The Louisiana Cellar, Bristol, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">12/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Cafe OTO, London, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">11/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Other Worlds Festival, Blackpool, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">09/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Green Door Store, Brighton, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">09/04/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">University of Sussex, Brighton, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">27/01/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">WAC, Ircam, Paris, France</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">24/01/2015</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Gap in the Air, Edinburgh, Scotland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">22/01/2015</span>
+            <a href="/projects/newweave"><span class="project">New Weave</span> <span class="venue">Third Space, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">23/11/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">ICLI, Zé Dos Bois, Lisbo, Portugal</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">27/10/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">NordiCHI, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">25/10/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Third Space, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">10/10/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">NK, Berlin, Germany</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">19/09/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">ICMC, Athens, Greece</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">22/06/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Mining Institute, Newcastle-upon-Tyne, England</span></a>
+            <div class="clearfix"></div>
+          </li>
+          <li class="title">
+            <span class="date">08/04/2014</span>
+            <a href="/projects/murmurate"><span class="project">Fields</span> <span class="venue">Arkadia bookstore, Helsinki, Finland</span></a>
+            <div class="clearfix"></div>
+          </li>
+        </ul>
+      </div>
+
+
+      <div id="projectsList">
+          <div class="tile" href="/projects/freedom-portal">
+            <div class="thumbnail" style="background-image:url('/images/projects/freedom-portal-1-small.png')">
+                <div class="subtitle">Freedom Portal</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/la-jetee">
+            <div class="thumbnail" style="background-image:url('/images/projects/la-jetee-3-small.jpg')">
+                <div class="subtitle">La Jetée (movie-concert)</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/murmurate">
+            <div class="thumbnail" style="background-image:url('/images/projects/murmurate-1-small.png')">
+                <div class="subtitle">Murmurate</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/newweave">
+            <div class="thumbnail" style="background-image:url('/images/projects/newweave-1-small.png')">
+                <div class="subtitle">New Weave</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/pd-and-rpi-workshops">
+            <div class="thumbnail" style="background-image:url('/images/projects/pd-rpi-workshop-2-small.jpg')">
+                <div class="subtitle">Pure Data and Raspberry Pi workshops</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/possessed-rooms">
+            <div class="thumbnail" style="background-image:url('/images/projects/possessed-rooms-1-small.png')">
+                <div class="subtitle">Possessed rooms</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/versificator">
+            <div class="thumbnail" style="background-image:url('')">
+                <div class="subtitle">Versificator</div>
+            </div>
+          </div>
+          <div class="tile" href="/projects/webpd">
+            <div class="thumbnail" style="background-image:url('/images/projects/webpd-1-small.png')">
+                <div class="subtitle">WebPd</div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+
+    <div id="projectDetail" class="page">
+    </div>
+
+
+  </div>
+
+  <script src="/js/funktion.fm.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-17637518-4', 'funktion.fm');
+    ga('send', 'pageview');
+  </script>
+
+</body>
+
+</html>

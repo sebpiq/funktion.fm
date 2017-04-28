@@ -34,19 +34,46 @@ module.exports = function(grunt) {
       }
     },
 
+    exec: {
+      compileTemplates: {
+        cmd: 'node compileTemplates.js'
+      }
+    },
+
     watch: {
       scripts: {
         files: [
           'frontend/**/*.js',
           'frontend/*.js',
-          'frontend/less/*.less',
           'Gruntfile.js'
         ],
-        tasks: ['devBuild'],
+        tasks: ['scripts:dev'],
         options: {
           spawn: false,
         },
       },
+
+      less: {
+        files: [
+          'frontend/less/*.less',
+        ],
+        tasks: ['less'],
+        options: {
+          spawn: false,
+        },
+      },
+
+      templates: {
+        files: [
+          'templates/**/*.md',
+          'templates/**/*.hbs'
+        ],
+        tasks: ['exec:compileTemplates'],
+        options: {
+          spawn: false,
+        },
+      }
+
     },
 
 
@@ -57,8 +84,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-exec')
 
-  grunt.registerTask('default', ['less', 'browserify', 'uglify'])
-  grunt.registerTask('devBuild', ['less', 'browserify', 'copy'])
+  grunt.registerTask('scripts:dev', ['browserify', 'copy'])
+  grunt.registerTask('default', ['less', 'browserify', 'uglify', 'exec:compileTemplates'])
+  grunt.registerTask('devBuild', ['less', 'scripts:dev', 'exec:compileTemplates'])
 
 }

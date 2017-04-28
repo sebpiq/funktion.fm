@@ -15,9 +15,9 @@ var context = require('./context')
 var Vertex
 
 // Test for mobile devices
-if (context.isMobile) 
+if (context.isMobile)
   Vertex = require('./drawing-tools/vertices').Vertex
-else 
+else
   Vertex = require('./drawing-tools/vertices').GravitatingVertex
 
 // Expandable top menu
@@ -69,7 +69,7 @@ $('#concertsList a').click(function(event) {
   var url = $(this).attr('href')
   if (url.startsWith('/'))
     router.setRoute(url)
-  else 
+  else
     window.open(url)
   event.preventDefault()
 })
@@ -106,7 +106,7 @@ var routes = {
     routes._notContact(function() {
       $('header').attr('class', 'posts').fadeIn()
       $('#postDetail').show()
-      routes._loadTextPage('/_partials/posts/' + filename + '.md', $('#postDetail'))
+      routes._loadTextPage('/_compiledPages/posts/' + filename + '.md', $('#postDetail'))
     })
   },
 
@@ -128,10 +128,14 @@ var routes = {
   },
 
   '/projects/:tileId': function(tileId) {
+    // Redirect for old urls probably linked somwhere else online
+    if (tileId === 'fields-infos')
+      tileId = 'murmurate'
+
     drawings.projects()
     routes._notContact(function() {
       $('header').attr('class', 'projects').show()
-      routes._loadTextPage('/_partials/projects/' + tileId + '.md', $('#projectDetail'))
+      routes._loadTextPage('/_compiledPages/projects/' + tileId + '.md', $('#projectDetail'))
     })
   },
 
@@ -148,7 +152,7 @@ var routes = {
     $.get(url, function(content) {
       container.html(content)
 
-      // Set the `src` on iframes, audio, etc ... to start loading those 
+      // Set the `src` on iframes, audio, etc ... to start loading those
       container.find('img, iframe, audio, source').each(function() {
         var el = $(this)
         if (el.data('src'))
